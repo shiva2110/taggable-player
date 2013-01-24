@@ -167,9 +167,9 @@
     <!-- The language model configuration                         -->
     <!-- ******************************************************** -->
     <component name="trigramModel" 
-        type="edu.cmu.sphinx.linguist.language.ngram.SimpleNGramModel">
+        type="edu.cmu.sphinx.linguist.language.ngram.large.LargeTrigramModel">
         <property name="location" 
-            value="resource:/models/language/wsj/wsj5kc.Z.DMP"/>
+            value="resource:/models/language/US_English_WSJ5K_Language_Model/WSJ5K_trigram_lm/tcb05cnp.Z.DMP"/>
         <property name="logMath" value="logMath"/>
         <property name="dictionary" value="dictionary"/>
         <property name="maxDepth" value="3"/>
