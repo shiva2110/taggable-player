@@ -4,6 +4,8 @@
 *.jar
 *.war
 *.ear
+*.DS_store
 
 # directories #
 */bin/
+*/bld/
