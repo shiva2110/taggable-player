@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="main/|test/|test/resources/|main/resources/" kind="src" path="src"/>
+	<classpathentry excluding="resources/" kind="src" path="src/main"/>
+	<classpathentry excluding="resources/" kind="src" path="src/test"/>
+	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/Users/shiva2110/.m2/repository/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar"/>
+	<classpathentry kind="lib" path="/Users/shiva2110/.m2/repository/xuggle/xuggle-utils/1.22/xuggle-utils-1.22.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/xuggle-xuggler-main"/>
+	<classpathentry kind="lib" path="/Users/shiva2110/Downloads/xuggle-xuggler-arch-x86_64-xuggle-darwin11 (1).jar"/>
+	<classpathentry kind="lib" path="/Users/shiva2110/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="/Users/shiva2110/.m2/repository/org/slf4j/slf4j-log4j12/1.5.10/slf4j-log4j12-1.5.10.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Sphinx-4"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

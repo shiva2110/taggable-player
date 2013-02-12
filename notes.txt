@@ -1,0 +1,2 @@
+reference:
+http://www.netlearning2002.org/fou/cuppsats.nsf/all/e156a6197d8b0678c1256bbb003f6207/$file/Speech%20Recognition%20using%20Hidden%20Markov%20Model.pdf

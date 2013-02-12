@@ -7,5 +7,6 @@
 *.DS_store
 
 # directories #
-*/bin/
-*/*/bld/
+bin/
+bld/
+logs/

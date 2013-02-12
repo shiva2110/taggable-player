@@ -1,0 +1,27 @@
+606  [main] ERROR com.xuggle.ferry.JNILibraryLoader - Could not load library: xuggle; version: 5; Visit http://www.xuggle.com/xuggler/faq/ to find common solutions to this problem 
+5921 [main] ERROR com.xuggle.ferry.JNILibraryLoader - Could not load library: xuggle; version: 5; Visit http://www.xuggle.com/xuggler/faq/ to find common solutions to this problem 
+704  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7faa7b833e00] moov atom not found 
+786  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fa83480c000] moov atom not found 
+41144 [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7f80630afe00] moov atom not found 
+677  [main] ERROR org.ffmpeg - [matroska,webm @ 0x7fed3e822400] Read error 
+681  [main] ERROR org.ffmpeg - [matroska,webm @ 0x7fed3e822400] Read error at pos. 171 (0xab) 
+682  [main] ERROR org.ffmpeg - [matroska,webm @ 0x7fed3e822400] Read error 
+538  [main] ERROR org.ffmpeg - [matroska,webm @ 0x7fedd0088200] Read error 
+542  [main] ERROR org.ffmpeg - [matroska,webm @ 0x7fedd0088200] Read error at pos. 171 (0xab) 
+542  [main] ERROR org.ffmpeg - [matroska,webm @ 0x7fedd0088200] Read error 
+568  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fb92e865000] stream 0, offset 0xc26: partial file 
+579  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fb92e865000] stream 0, offset 0xc2d: partial file 
+58350 [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7f967b810200] stream 0, offset 0xc26: partial file 
+168919 [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fc2758f7600] stream 0, offset 0xc26: partial file 
+173367 [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fc2758f7600] stream 0, offset 0xc2d: partial file 
+952  [main] ERROR com.xuggle.xuggler - When opening StreamCoder the codec was changed by FFmpeg.  This is not good (../../../../../../../csrc/com/xuggle/xuggler/StreamCoder.cpp:784) 
+4211 [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fedcd86d000] moov atom not found 
+911  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fe8e1088400] moov atom not found 
+397  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fa3cc082a00] moov atom not found 
+641  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x1050bb600] moov atom not found 
+545  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7f97428d1400] moov atom not found 
+596  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7f90ca10ae00] moov atom not found 
+438  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fd153111c00] moov atom not found 
+463  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7fd9be032800] moov atom not found 
+441  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7f87b208ea00] moov atom not found 
+572  [main] ERROR org.ffmpeg - [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7f99e5880e00] moov atom not found 
