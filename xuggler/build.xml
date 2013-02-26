@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+    Copyright (c) 2008, 2010 Xuggle Inc.  All rights reserved.
+     
+    This file is part of Xuggle-Xuggler-Main.
+   
+    Xuggle-Xuggler-Main is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+   
+    Xuggle-Xuggler-Main is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+   
+    You should have received a copy of the GNU Lesser General Public License
+    along with Xuggle-Xuggler-Main.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<project
+  name="xuggle-xuggler"
+  default="dist"
+  basedir="."
+  xmlns:ivy="antlib:org.apache.ivy.ant"
+  >
+  <description>
+    Builder for the Xuggler Java Library
+  </description>
+
+  <!-- set global properties for this build -->
+  <!-- IMPRORTANT: If this Java build depends on a Native library
+       you must also make sure you update the major and minor
+       revisions in that library's "configure.ac" file, and
+       regenerate the build scripts -->
+  <property name="library.version.major" value="5"/>
+  <property name="library.version.minor" value="5"/>
+  <property name="license.key" value="GPL License"/>
+  <property name="app.mainclass" value="com.xuggle.xuggler.Converter"/>
+
+  <!-- And bring in the standard build rules -->
+  <import file="mk/buildtools/buildhelper.xml"/>
+</project>
+

@@ -1,0 +1,79 @@
+#!/bin/sh
+
+# Modify this script to pass the necessary parameters to 
+# the configure of the captive package you're configuring
+prefix="/usr/local"
+exec_prefix="${prefix}"
+HOST_OS="x86_64-apple-darwin11.4.2"
+CROSS_COMPILE=""
+
+OPENSSL_CONFIG=
+# OpenSSL does not follow the GNU conventions and so we
+# do minimal translation here.  This will only be used
+# when we are doing cross-compiling under our control
+# and we only support windows, linux and mac today
+# on the i386 or x86_64 architectures, so it's pretty
+# safe
+case $HOST_OS in
+  *cygwin*|*mingw*)
+    case $HOST_OS in
+      *x86_64*)
+      OPENSSL_CONFIG=mingw64
+      ;;
+      *)
+      OPENSSL_CONFIG=mingw
+      ;;
+    esac
+  ;;
+  *darwin*)
+    case $HOST_OS in
+      *x86_64*)
+      OPENSSL_CONFIG=darwin64-x86_64-cc
+      ;;
+      *ppc*)
+      OPENSSL_CONFIG=darwin-ppc-cc
+      ;;
+      *)
+      OPENSSL_CONFIG=darwin-i386-cc
+      ;;
+    esac
+  ;;
+  *linux*)
+    case $HOST_OS in
+      *x86_64*)
+      OPENSSL_CONFIG=linux-generic64
+      ;;
+      *)
+      OPENSSL_CONFIG=linux-generic32
+      ;;
+    esac
+  ;;
+esac
+
+# OpenSSL does not support in-tree builds, and so we copy the entire source
+# directory to the build directory, and then build in place.
+# copy over all the source
+if [ ! -f "/projects/workrepo/xuggle-xuggler/captive/openssl/csrc/Configure" ]; then
+  echo "Copying /projects/workrepo/xuggle-xuggler/captive/openssl/csrc to /projects/workrepo/xuggle-xuggler/captive/openssl/csrc"
+  # create the directory
+  mkdir -p "/projects/workrepo/xuggle-xuggler/captive/openssl/csrc"
+  cp -r "/projects/workrepo/xuggle-xuggler/captive/openssl/csrc/"* "/projects/workrepo/xuggle-xuggler/captive/openssl/csrc/"
+  # and make everything user writeable so distcheck will pass
+  chmod -R u+w "/projects/workrepo/xuggle-xuggler/captive/openssl/csrc/"*
+fi
+
+# We use the cross-compile setting for openssl but still pass through our
+# flags
+CFLAGS="-I/projects/workrepo/xuggle-xuggler/captive/stage${prefix}/include -arch x86_64 -g -O2" \
+LDFLAGS="-L/projects/workrepo/xuggle-xuggler/captive/stage${exec_prefix}/lib -arch x86_64 " \
+CPPFLAGS="" \
+CXXFLAGS="-arch x86_64 " \
+ASFLAGS="" \
+PATH="$PATH:/projects/workrepo/xuggle-xuggler/captive${exec_prefix}/bin@" sh "/projects/workrepo/xuggle-xuggler/captive/openssl/csrc/Configure" \
+  ${OPENSSL_CONFIG} no-shared zlib -fPIC \
+  --cross-compile-prefix="${CROSS_COMPILE}" \
+  --openssldir=${prefix} \
+  --with-zlib-include="/projects/workrepo/xuggle-xuggler/captive/stage${prefix}/include" \
+  --with-zlib-lib="/projects/workrepo/xuggle-xuggler/captive/stage${exec_prefix}/lib" \
+  --prefix="${prefix}" || \
+  (echo "Could not configure library: \"/projects/workrepo/xuggle-xuggler/captive/openssl\"; you may want to try disabling it or installing your own version" && exit 1)
