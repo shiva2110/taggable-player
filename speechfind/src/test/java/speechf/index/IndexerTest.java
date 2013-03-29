@@ -16,7 +16,7 @@ import speechf.search.SpeechFind;
 public class IndexerTest {
 	
 	@Test
-	public void testIndex() throws CorruptIndexException, IOException, ParseException {
+	public void testIndex() throws CorruptIndexException, IOException, ParseException, IndexerException {
 		IndexerFacade indexer = new IndexerFacade();
 		TranscriptWord transcriptWord = new TranscriptWord();
 		transcriptWord.addProp(TranscriptWordProp.WORD, "hello");

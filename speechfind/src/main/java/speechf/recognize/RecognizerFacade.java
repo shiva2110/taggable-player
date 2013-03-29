@@ -22,6 +22,7 @@ import edu.cmu.sphinx.linguist.lextree.LexTreeLinguist.LexTreeWordState;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
 
+import speechf.index.IndexerException;
 import speechf.index.IndexerFacade;
 import speechf.main.AudioInfo;
 import speechf.main.TranscriptWord;
@@ -56,7 +57,7 @@ public class RecognizerFacade {
 		}
 	}
 	
-	public void indexWordTimeMap(IndexerFacade indexer) throws CorruptIndexException, IOException{
+	public void indexWordTimeMap(IndexerFacade indexer) throws CorruptIndexException, IOException, IndexerException{
 		if(recognizerResult==null || audioHash==-1){
 			throw new IllegalStateException("The recognizer result is null, recognize() method should be called first");
 		}

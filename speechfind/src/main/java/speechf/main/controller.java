@@ -7,10 +7,10 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import speechf.index.IndexerException;
 import speechf.index.IndexerFacade;
 import speechf.mprocess.AudioExtractor;
 import speechf.mprocess.AudioExtractorStream;
-import speechf.mprocess.AudioExtractorTest;
 import speechf.recognize.RecognizerFacade;
 
 
@@ -18,7 +18,7 @@ public class controller {
 	
 	private static final Logger logger  = LoggerFactory.getLogger(controller.class);
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException, IndexerException{
 		
 	
 		AudioExtractor audioExtractor = new AudioExtractor("file://projects/workrepo/speech-F/sampledata/news.wav");

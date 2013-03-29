@@ -1,6 +1,7 @@
 package speechf.search;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +31,7 @@ import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import speechf.main.Helper;
 import speechf.main.TranscriptWord;
 import speechf.main.TranscriptWordProp;
 
@@ -42,7 +44,15 @@ public class SearcherFacade {
 	private static final Logger logger = LoggerFactory.getLogger(SearcherFacade.class);
 	
 
+	
+	
 	public List<TranscriptWord> booleanSearch(SearchTerm searchTerm, SearchTerm filterTerm) throws IOException, ParseException {
+		
+		List<TranscriptWord> transcriptWords = new ArrayList<TranscriptWord>();
+		if(searchTerm==null) {
+			return transcriptWords;
+		}
+		
 		Directory directory = FSDirectory.open(new File(FSdir));
 		
 		String searchBooleanTerm = addAnd(searchTerm.value);
@@ -50,7 +60,8 @@ public class SearcherFacade {
 		
 		IndexReader reader = IndexReader.open(directory);
 		IndexSearcher searcher = new IndexSearcher(reader);
-		QueryParser queryParser = new QueryParser(Version.LUCENE_36, searchTerm.fieldName.toString() , new StandardAnalyzer(Version.LUCENE_36, new HashSet<String>()));
+		QueryParser queryParser = new QueryParser(Version.LUCENE_36, searchTerm.fieldName.toString(), Helper.getStandardAnalyzer());
+		
 		Query q = queryParser.parse(searchBooleanTerm);
 		
 		Filter filter = null;
@@ -60,13 +71,45 @@ public class SearcherFacade {
 			filter = new QueryWrapperFilter(filterQ);
 		}
 		
+		TopDocs docs = searcher.search(q, filter, Integer.MAX_VALUE);
+		searcher.close();
+		directory.close();
+		
+		ScoreDoc[] scoreDocs = docs.scoreDocs;
+		transcriptWords = convertToTranscriptWordList(reader, scoreDocs);
+		reader.close();
+		return transcriptWords;
+	}
+	
+	public List<TranscriptWord> vectorSearch(SearchTerm searchTerm, SearchTerm filterTerm) throws IOException, ParseException {
+		
+		List<TranscriptWord> transcriptWords = new ArrayList<TranscriptWord>();
+		
+		if(searchTerm==null) {
+			return transcriptWords;
+		}		
+		
+		Directory directory = FSDirectory.open(new File(FSdir));
+		
+		IndexReader reader = IndexReader.open(directory);
+		IndexSearcher searcher = new IndexSearcher(reader);
+		QueryParser queryParser = new QueryParser(Version.LUCENE_36, searchTerm.fieldName.toString(), Helper.getStandardAnalyzer());
+		
+		Query q = queryParser.parse(searchTerm.value);
+		
+		Filter filter = null;
+		if(filterTerm!=null) {
+			String filterBooleanTerm = addAnd(filterTerm.value);
+			Query filterQ = new TermQuery(new Term(filterTerm.fieldName.toString(), filterBooleanTerm));
+			filter = new QueryWrapperFilter(filterQ);
+		}
 		
 		TopDocs docs = searcher.search(q, filter, Integer.MAX_VALUE);
 		searcher.close();
 		directory.close();
 		
 		ScoreDoc[] scoreDocs = docs.scoreDocs;
-		List<TranscriptWord> transcriptWords = convertToTranscriptWordList(reader, scoreDocs);
+		transcriptWords = convertToTranscriptWordList(reader, scoreDocs);
 		reader.close();
 		return transcriptWords;
 	}
