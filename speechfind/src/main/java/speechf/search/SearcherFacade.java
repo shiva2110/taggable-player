@@ -60,7 +60,7 @@ public class SearcherFacade {
 		
 		IndexReader reader = IndexReader.open(directory);
 		IndexSearcher searcher = new IndexSearcher(reader);
-		QueryParser queryParser = new QueryParser(Version.LUCENE_36, searchTerm.fieldName.toString(), Helper.getStandardAnalyzer());
+		QueryParser queryParser = new QueryParser(Version.LUCENE_36, searchTerm.fieldName.toString(), Helper.getStandardAnalyzer(true, false));
 		
 		Query q = queryParser.parse(searchBooleanTerm);
 		
@@ -93,14 +93,13 @@ public class SearcherFacade {
 		
 		IndexReader reader = IndexReader.open(directory);
 		IndexSearcher searcher = new IndexSearcher(reader);
-		QueryParser queryParser = new QueryParser(Version.LUCENE_36, searchTerm.fieldName.toString(), Helper.getStandardAnalyzer());
+		QueryParser queryParser = new QueryParser(Version.LUCENE_36, searchTerm.fieldName.toString(), Helper.getStandardAnalyzer(true, false));
 		
 		Query q = queryParser.parse(searchTerm.value);
 		
 		Filter filter = null;
 		if(filterTerm!=null) {
-			String filterBooleanTerm = addAnd(filterTerm.value);
-			Query filterQ = new TermQuery(new Term(filterTerm.fieldName.toString(), filterBooleanTerm));
+			Query filterQ = new TermQuery(new Term(filterTerm.fieldName.toString(), filterTerm.value));
 			filter = new QueryWrapperFilter(filterQ);
 		}
 		

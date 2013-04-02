@@ -1,6 +1,7 @@
 package com.speechf.find;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -13,6 +14,9 @@ import speechf.index.IndexerException;
 import speechf.index.IndexerFacade;
 import speechf.main.TranscriptWord;
 import speechf.main.TranscriptWordProp;
+import speechf.search.SearchTerm;
+import speechf.search.SpeechFind;
+import speechf.search.SpeechFind.ScoredTranscriptWord;
 
 @Path("/")
 public class SpeechfService {
@@ -48,16 +52,29 @@ public class SpeechfService {
 	@Path("/search")
 	@Produces({"application/xml", "application/json"})
 	public Response search(@QueryParam("keywords") String keywords,
-			@QueryParam("sourceDomain") String domain,
+			@QueryParam("domain") String domain,
 			@QueryParam("mediaId") String mediaId) {
 		
-		System.out.println("search keywords:" + keywords);
+		SpeechFind speechFind = new SpeechFind();
+		SearchTerm searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = keywords;
 		
-		SearchOutput[] searchOutputs = new SearchOutput[4];
-		searchOutputs[0] = new SearchOutput("3", "you think you're white, you are black", 1.00);
-		searchOutputs[1] = new SearchOutput("12", "black americans", 0.90);
-		searchOutputs[2] = new SearchOutput("16", "black woman", 0.85);
-		searchOutputs[3] = new SearchOutput("24", "native americans", 0.40);
+		SearchTerm filterQ = new SearchTerm();
+		filterQ.fieldName = TranscriptWordProp.MEDIA_ID;
+		filterQ.value = mediaId;
+		
+		SearchOutput[] searchOutputs = null;
+		try {
+			List<ScoredTranscriptWord> resultList = speechFind.find(searchQ, filterQ);
+			searchOutputs = new SearchOutput[resultList.size()];
+			for(int i=0; i<resultList.size(); i++) {
+				ScoredTranscriptWord result = resultList.get(i);
+				searchOutputs[i] = new SearchOutput(result.getStartTime(), result.getSnippet(), result.getScore());
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		return Response.ok(searchOutputs).header("Access-Control-Allow-Origin", "*").build();
 	}

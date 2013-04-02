@@ -34,7 +34,7 @@ import speechf.main.TranscriptWordProp;
  */
 public class SpeechFind {
 	
-	private static final double closenessWindow = 0.10;
+	private static final double closenessWindow = 0.04;
 	
 	public double getClosenessWindow() {
 		return closenessWindow;
@@ -43,9 +43,26 @@ public class SpeechFind {
 	public class ScoredTranscriptWord implements Comparator{
 		double score;
 		TranscriptWord transcriptWord;
+		String snippet;
 		public ScoredTranscriptWord(TranscriptWord transcriptWord, double score) {
 			this.transcriptWord = transcriptWord;
 			this.score = score;
+		}
+		
+		public void setSnippet(String snippet) {
+			this.snippet = snippet;
+		}
+		
+		public String getSnippet() {
+			return this.snippet;
+		}
+		
+		public String getStartTime() {
+			return this.transcriptWord.getValue(TranscriptWordProp.START_TIME);
+		}
+		
+		public double getScore() {
+			return this.score;
 		}
 		
 		@Override
@@ -69,7 +86,7 @@ public class SpeechFind {
 	}
 	
 	
-	public List<ScoredTranscriptWord> find(SearchTerm searchQ, SearchTerm filterQ) {
+	public List<ScoredTranscriptWord> find(SearchTerm searchQ, SearchTerm filterQ) throws SearchException {
 		
 		try {
 			//Call SearcherFacade.search to get results.
@@ -82,17 +99,254 @@ public class SpeechFind {
 			// Call pruneResults()
 			scoredTranscriptList = pruneResults(scoredTranscriptList);
 			
-			return scoredTranscriptList;
-		} catch(Exception e) {
+			// get snippet
+			for(ScoredTranscriptWord resultObj: scoredTranscriptList) {
+				String snippet = getSnippet(searchQ, 
+						resultObj.transcriptWord.getValue(TranscriptWordProp.WORD));
+				resultObj.setSnippet(snippet);
+			}			
 			
+			return scoredTranscriptList;
+		} catch(IOException | ParseException | SearchException e) {
+			throw new SearchException("Exception in find() " + e.getMessage());
+		}
+	
+	}
+	
+	public String getSnippet(SearchTerm searchQ, String result) throws IOException, SearchException {
+		
+			String resultLow = result.toLowerCase();
+			List<String> searchTermsQ = Helper.tokenize(searchQ.value, true, false);
+			
+			
+			List<String> searchTerms = new ArrayList<String>();
+			for(String term: searchTermsQ) {
+				term = term.toLowerCase();
+				if(resultLow.contains(term)) {
+					searchTerms.add(term);
+				}
+			}
+			
+			if(searchTerms.size()==0) {
+				throw new SearchException("Snippet could not be derived as there are no search terms in the result");
+			}
+			
+			Map<String, List<Integer>> tokenIndexMap = new HashMap<String, List<Integer>>();
+			for(String term: searchTerms) {
+				List<Integer> list = getAllIndex(term, resultLow);
+				if(list.size()>0) {
+					tokenIndexMap.put(term, list);
+				}
+				
+			}
+			
+			Map<String, Integer> curIndexMap = new HashMap<String, Integer>();
+			
+			
+			for(String term: tokenIndexMap.keySet()) {
+				curIndexMap.put(term, tokenIndexMap.get(term).get(0));
+			}
+			
+			int minDist = Integer.MAX_VALUE;
+			Map<String, Integer> bestIndexMap = new HashMap<String, Integer>();
+			
+			while(true) {
+				// get min
+				String minStr = getMinKey(curIndexMap);
+				
+				// get max
+				String maxStr = getMaxKey(curIndexMap);
+				
+				// get distance between min and max
+				int endIndex =  curIndexMap.get(maxStr) + maxStr.length(); //adjust end index to offset for end of maxStr
+				int dist = endIndex - curIndexMap.get(minStr);
+				
+				//update minDist and best index
+				if(dist<minDist) {
+					minDist = dist;
+					bestIndexMap.putAll(curIndexMap);
+				}
+				
+				//update curIndex of minStr by +1, if index out of bounds break
+				int curIndex = curIndexMap.get(minStr);
+				List<Integer> list = tokenIndexMap.get(minStr);
+				int indexOfCurIndex = list.indexOf(curIndex);
+				if(indexOfCurIndex == list.size()-1) {
+					break;
+				}
+				curIndex = list.get(indexOfCurIndex + 1);
+				curIndexMap.put(minStr, curIndex);
+			}
+			
+			String minStr = getMinKey(bestIndexMap);
+			String maxStr = getMaxKey(bestIndexMap);
+			
+			//adjust maxIndex to end of term
+			int index = bestIndexMap.get(maxStr);
+			index = index + maxStr.length();			
+			String snippet = result.substring(bestIndexMap.get(minStr), index);
+			
+			//get surrounding terms
+			int numberOfSurroundingTerms = 0;
+			if(bestIndexMap.get(minStr) == bestIndexMap.get(maxStr)) {
+				numberOfSurroundingTerms=2;
+			} else {
+				numberOfSurroundingTerms=1;
+			}
+			
+			String prefixTerm = getPrevTo(minStr, bestIndexMap.get(minStr), result, numberOfSurroundingTerms);
+			String suffixTerm = getNextTo(maxStr, bestIndexMap.get(maxStr), result, numberOfSurroundingTerms);
+			
+			snippet = new StringBuffer(prefixTerm).append(snippet).append(suffixTerm).toString();
+			return snippet;
+	}
+	
+	public String getPrevTo(String token, int tokenStartIndex, String originalText, int numberOfPrevTerms) throws IOException {
+		
+		token = token.toLowerCase();
+		String originalTextLo = originalText.toLowerCase();
+		
+		//validate the arguments
+		//check size
+		if(tokenStartIndex<0 || tokenStartIndex>=originalTextLo.length()) {
+			return "";
+		}
+		
+		//if the token and tokenStartIndex dont match return empty string
+		String rest = originalTextLo.substring(tokenStartIndex) ;
+		if(!rest.startsWith(token)) {
+			return "";
+		}
+		
+		StringBuffer sb = new StringBuffer("");
+		int index = tokenStartIndex;
+		index--;
+			
+		for(int i=0; i<numberOfPrevTerms; i++) {
+			while(index>=0) {
+				char ch = originalText.charAt(index);	
+				String chStr = Character.toString(ch);
+				if(chStr.matches("[A-Za-z0-9\\-]")) {
+					break;
+				}
+				sb = new StringBuffer(chStr).append(sb);
+				index--;	
+			}
+			
+			while(index>=0) {
+				char ch = originalText.charAt(index);	
+				String chStr = Character.toString(ch);
+				if(!chStr.matches("[A-Za-z0-9\\-]")) {
+					break;
+				}
+				sb = new StringBuffer(chStr).append(sb);
+				index--;	
+			}
 		}
 		
 		
-		return null;
+		return sb.toString();		
 	}
 	
-	public String getSnippet(SearchTerm searchQ, String result, int maxChars, int maxConnectionChars) {
-		return null;
+	public String getNextTo(String token, int tokenStartIndex, String originalText, int numberOfNextTerms) throws IOException {
+		
+		token = token.toLowerCase();
+		String originalTextLo = originalText.toLowerCase();
+			
+		//validate the arguments
+				//check size
+				if(tokenStartIndex<0 || tokenStartIndex>=originalTextLo.length()) {
+					return "";
+				}
+				
+				//if the token and tokenStartIndex dont match return empty string
+				String rest = originalTextLo.substring(tokenStartIndex) ;
+				if(!rest.startsWith(token)) {
+					return "";
+				}
+				
+				StringBuffer sb = new StringBuffer("");
+				int index = tokenStartIndex;
+				index++;
+				
+				//pass the token
+				while(index<originalText.length()) {
+					char ch = originalText.charAt(index);	
+					String chStr = Character.toString(ch);
+					if(!chStr.matches("[A-Za-z0-9\\-]")) {
+						break;
+					}
+					index++;	
+				}
+				
+				for(int i=0; i<numberOfNextTerms; i++){
+					//pass the delimiter after token
+					while(index<originalText.length()) {
+						char ch = originalText.charAt(index);	
+						String chStr = Character.toString(ch);
+						if(chStr.matches("[A-Za-z0-9\\-]")) {
+							break;
+						}
+						sb.append(chStr);
+						index++;	
+					}
+					
+					//pass the next term to token
+					while(index<originalText.length()) {
+						char ch = originalText.charAt(index);	
+						String chStr = Character.toString(ch);
+						if(!chStr.matches("[A-Za-z0-9\\-]")) {
+							break;
+						}
+						sb.append(chStr);
+						index++;	
+					}
+				}
+				
+				
+				return sb.toString();	
+	}
+	
+	private String getMinKey(Map<String, Integer> map) {
+		int min = Integer.MAX_VALUE;
+		String minStr = null;
+		for(String str: map.keySet()) {
+			if(map.get(str)<min) {
+				min = map.get(str);
+				minStr = str;
+			}
+		}
+		
+		return minStr;
+	}
+	
+	private String getMaxKey(Map<String, Integer> map) {
+		int max = Integer.MIN_VALUE;
+		String maxStr = null;
+		for(String str: map.keySet()) {
+			if(map.get(str)>max) {
+				max = map.get(str);
+				maxStr = str;
+			}
+		}
+		
+		return maxStr;
+	}
+	
+	
+	public List<Integer> getAllIndex(String token, String sentence) {
+		
+		List<Integer> indexList = new ArrayList<Integer>();
+		int index = 0;
+		while(index<sentence.length() && index!=-1) {
+			index = sentence.indexOf(token, index);
+			if(index!=-1) {
+				indexList.add(index);
+				index = index + token.length();				
+			}
+		}
+		
+		return indexList;
 	}
 	
 	public List<ScoredTranscriptWord> pruneResults(List<ScoredTranscriptWord> transcriptWordList) {
@@ -160,7 +414,7 @@ public class SpeechFind {
 			return scoredList;
 		}
 		
-		List<String> searchTerms = tokenize(searchQ.value);
+		List<String> searchTerms = Helper.tokenize(searchQ.value, true, false);
 		
 		for(int i=0; i<scoredList.size(); i++) {
 			List<String> containingTerms = getContainingTerms(scoredList.get(i).transcriptWord.getValue(TranscriptWordProp.WORD), searchTerms);
@@ -230,33 +484,6 @@ public class SpeechFind {
 	}
 	
 	
-	/**
-	 * returns an array of keywords, representing analyzed and tokenized words.
-	 * @param keywords
-	 * @return
-	 * @throws IOException 
-	 * @throws IndexerException 
-	 */
-	public List<String> tokenize(String keywords) throws IOException {
-		
-			List<String> list = new ArrayList<String>();
-			if(keywords==null) {
-				return list;
-			}	
-			
-			Analyzer analyzer = Helper.getStandardAnalyzer();
-			TokenStream tokenStream = analyzer.tokenStream("", new StringReader(keywords));
-			
-			do {
-				String term = tokenStream.getAttribute(CharTermAttribute.class).toString();
-				if(term.equals("")) {
-					continue;
-				}
-				list.add(term);
-				System.out.println(term);
-			}while(tokenStream.incrementToken());	
-			
-			return list;			
-	}
+	
 	
 }

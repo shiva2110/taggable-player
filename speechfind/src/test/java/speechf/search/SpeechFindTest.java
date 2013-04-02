@@ -13,6 +13,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import speechf.main.Helper;
 import speechf.main.TranscriptWord;
 import speechf.main.TranscriptWordProp;
 import speechf.search.SpeechFind.ScoredTranscriptWord;
@@ -20,42 +21,6 @@ import speechf.search.SpeechFind.ScoredTranscriptWord;
 public class SpeechFindTest {
 	
 	SpeechFind speechFind = new SpeechFind();
-		
-	@Test
-	public void tokenize_nullReq_emptyResp() throws Exception{		
-		List<String> arr = speechFind.tokenize(null);
-		assertNotNull("tokenize() response must not be null", arr);
-		assertEquals("For a null input tokenize must return empty", 0, arr.size());
-	}
-	
-	@Test
-	public void tokenize_onlyStopWordReq_emptyResp() throws Exception{		
-		List<String> arr = speechFind.tokenize("is was a");
-		assertNotNull("tokenize() response must not be null", arr);
-		assertEquals("For only stop words input tokenize must return empty", 0, arr.size());
-	}
-	
-	@Test
-	public void tokenize_validReq_validResp() throws Exception{		
-		List<String> arr = speechFind.tokenize("is java project was a");
-		assertNotNull("tokenize() response must not be null", arr);
-		assertTrue("For a valid input tokenize must return array of valid size", (arr.size()>0));
-		
-		int found = 0;
-		for(String str: arr) {
-			if(str.equals("java")) {
-				found++;
-			} else if(str.equals("project")) {
-				found++;
-			} else {
-				fail("tokenize() has returned array with invalid keyword:" + str);
-			}
-		}
-		
-		if(found!=2){
-			fail("tokenize() has returned array with less keywords");
-		}
-	}
 	
 	@Test
 	public void scoreResults_emptyReq_emptyResp() throws Exception {
@@ -274,6 +239,12 @@ public class SpeechFindTest {
 		word = new TranscriptWord();
 		word.addProp(TranscriptWordProp.START_TIME, "0.11");
 		word.addProp(TranscriptWordProp.WORD, "coffee bean");
+		scoredWord = new SpeechFind().new ScoredTranscriptWord(word, 0.73);
+		reqList.add(scoredWord);
+		
+		word = new TranscriptWord();
+		word.addProp(TranscriptWordProp.START_TIME, "0.11");
+		word.addProp(TranscriptWordProp.WORD, "coffee bean");
 		scoredWord = new SpeechFind().new ScoredTranscriptWord(word, 0.72);
 		reqList.add(scoredWord);
 		
@@ -376,30 +347,29 @@ public class SpeechFindTest {
 		
 	}
 	
-	@Test
-	public void getSnippet_noSearchTermReq_validResp() {
+	@Test(expected=SearchException.class)
+	public void getSnippet_noSearchTermReq_validResp() throws Exception{
 		SpeechFind speechFind = new SpeechFind();
 		SearchTerm searchQ = new SearchTerm();
 		searchQ.fieldName = TranscriptWordProp.WORD;
 		searchQ.value = "dance project";
 		
 		String result = "jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.";
-		String snippet = speechFind.getSnippet(searchQ, result, 50, 30);
+		String snippet = speechFind.getSnippet(searchQ, result);
 		
 		assertNotNull("getSnippet() response must not be null", snippet);
-		assertTrue("getSnippet() response must be less than 50 chars", (snippet.length()<50));
 		
 	}
 	
 	@Test
-	public void getSnippet_validReq_allSearchTermsResp() {
+	public void getSnippet_validReq_allSearchTermsResp() throws Exception{
 		SpeechFind speechFind = new SpeechFind();
 		SearchTerm searchQ = new SearchTerm();
 		searchQ.fieldName = TranscriptWordProp.WORD;
 		searchQ.value = "jquery javascript";
 		
 		String result = "jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.";
-		String snippet = speechFind.getSnippet(searchQ, result, 50, 30);
+		String snippet = speechFind.getSnippet(searchQ, result);
 		
 		assertNotNull("getSnippet() response must not be null", snippet);
 		
@@ -415,7 +385,7 @@ public class SpeechFindTest {
 		searchQ.fieldName = TranscriptWordProp.WORD;
 		searchQ.value = "jquery javascript HTML";
 		
-		snippet = speechFind.getSnippet(searchQ, result, 50, 30);
+		snippet = speechFind.getSnippet(searchQ, result);
 		
 		snippet = snippet.toLowerCase();
 		
@@ -427,50 +397,14 @@ public class SpeechFindTest {
 	
 	
 	@Test
-	public void getSnippet_validReq_maxCharsResp() {
+	public void getSnippet_validReq_closeWordsResp() throws Exception {
 		SpeechFind speechFind = new SpeechFind();
 		SearchTerm searchQ = new SearchTerm();
 		searchQ.fieldName = TranscriptWordProp.WORD;
 		searchQ.value = "jquery javascript";
 		
 		String result = "jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.";
-		String snippet = speechFind.getSnippet(searchQ, result, 50, 30);
-		
-		assertNotNull("getSnippet() response must not be null", snippet);
-		
-		snippet = snippet.toLowerCase();
-		
-		//check if max chars is met
-		String temp = snippet.replaceAll("jquery", "");
-		temp = temp.replaceAll("javascript", "");
-		temp = temp.replaceAll("\\.\\.", "");
-		assertTrue("getSnippet() response must be less than 50 chars", (temp.length()<=50));
-		
-		
-		searchQ = new SearchTerm();
-		searchQ.fieldName = TranscriptWordProp.WORD;
-		searchQ.value = "jquery javascript HTML";		
-		snippet = speechFind.getSnippet(searchQ, result, 50, 30);		
-		snippet = snippet.toLowerCase();
-		
-		temp = snippet.replaceAll("jquery", "");
-		temp = temp.replaceAll("javascript", "");
-		temp = temp.replaceAll("html", "");
-		temp = temp.replaceAll("\\.\\.", "");
-		assertTrue("getSnippet() response must be less than 50 chars", (temp.length()<=50));
-	
-	}
-	
-	
-	@Test
-	public void getSnippet_validReq_closeWordsResp() {
-		SpeechFind speechFind = new SpeechFind();
-		SearchTerm searchQ = new SearchTerm();
-		searchQ.fieldName = TranscriptWordProp.WORD;
-		searchQ.value = "jquery javascript";
-		
-		String result = "jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.";
-		String snippet = speechFind.getSnippet(searchQ, result, 50, 30);
+		String snippet = speechFind.getSnippet(searchQ, result);
 		
 		assertNotNull("getSnippet() response must not be null", snippet);
 		
@@ -478,43 +412,66 @@ public class SpeechFindTest {
 		
 		//check if snippet contains shortest connection
 		if(!snippet.contains("jquery is") || !snippet.contains("feature-rich javascript library") ) {
-			fail("snippet does not contain the shortest connection");
+			fail("snippet does not contain the shortest connection: " + snippet);
 		}
 		
-		// check if the shortest connection is separated by not more than 30 chars
-		int stIndex = snippet.indexOf("jquery");
-		int enIndex = snippet.indexOf("javascript");		
-		while(stIndex!=snippet.length() && snippet.charAt(stIndex)!=' ') {
-			stIndex++;
-		}		
-		enIndex =  enIndex-1;		
-		String betweenString = snippet.substring(stIndex, enIndex);
-		betweenString.replaceAll("\\.\\.", "");		
-		assertTrue("The shortest connection should not be separated by more than 30 chars", (betweenString.length()<=30));
 		
 		
 		searchQ = new SearchTerm();
 		searchQ.fieldName = TranscriptWordProp.WORD;
 		searchQ.value = "jquery javascript HTML";		
-		snippet = speechFind.getSnippet(searchQ, result, 50, 30);		
+		snippet = speechFind.getSnippet(searchQ, result);		
 		snippet = snippet.toLowerCase();
 		
 		//check if snippet contains shortest connection
-		if(!snippet.contains("jquery is") || !snippet.contains("feature-rich javascript library") || !(snippet.contains("like html document")) ) {
-				fail("snippet does not contain the shortest connection");
+		if(!snippet.contains("jquery is") || !snippet.contains("feature-rich javascript library.") || !(snippet.contains("like html document")) ) {
+				fail("snippet does not contain the shortest connection: " + snippet);
 		}
 		
-		stIndex = snippet.indexOf("jquery");
-		enIndex = snippet.indexOf("html");		
-		while(stIndex!=snippet.length() && snippet.charAt(stIndex)!=' ') {
-			stIndex++;
-		}		
-		enIndex =  enIndex-1;		
-		betweenString = snippet.substring(stIndex, enIndex);
-		betweenString.replaceAll("\\.\\.", "");		
-		assertTrue("The shortest connection should not be separated by more than 30 chars", (betweenString.length()<=30));
-	
+		
+		searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = "Good Bad Ugly";		
+		result = "Good _ Bad _ _ _ _ Ugly Bad";		
+		snippet = speechFind.getSnippet(searchQ, result);		
+		//check if snippet contains shortest connection
+		if(!snippet.contains("Good _ Bad _ _ _ _ Ugly Bad")) {			
+				fail("snippet does not contain the shortest connection: " + snippet);
+		}
+		
+		searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = "Green Yellow Red";		
+		result = "Yellow _ Yellow Yellow Yellow Yellow _ Yellow _ Red Red Yellow _ _ Green Green Red _ _ _ Yellow _ Green _ Yellow Red";		
+		snippet = speechFind.getSnippet(searchQ, result);		
+		//check if snippet contains shortest connection
+		if(!snippet.contains("_ Green _ Yellow Red")) {			
+				fail("snippet does not contain the shortest connection: " + snippet);
+		}
+		
+		searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = "versatility";
+		result = "With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.";
+		snippet = speechFind.getSnippet(searchQ, result);
+		//check if snippet contains shortest connection
+		if(!snippet.contains("combination of versatility and extensibility")) {			
+				fail("snippet does not contain the shortest connection: " + snippet);
+		}
+		
+		searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = "versatility";
+		result = "versatility and extensibility of jQuery";
+		snippet = speechFind.getSnippet(searchQ, result);
+		//check if snippet contains shortest connection
+		if(!snippet.contains("versatility and extensibility")) {			
+				fail("snippet does not contain the shortest connection: " + snippet);
+		}
+		
 	}
+	
+	
 	
 	private boolean isClose(TranscriptWord word1, TranscriptWord word2, double closenessWindow) {
 		double startTime1 = new Double(word1.getValue(TranscriptWordProp.START_TIME));
@@ -525,6 +482,197 @@ public class SpeechFindTest {
 		}
 		return false;
 	}
+	
+	@Test
+	public void getAllIndex_validReq_validResp() {
+		String result = "Y _ Y Y Y Y _ Y _ R R Y _ _ G G R _ _ _ Y _ G _ Y R";	
+		SpeechFind find = new SpeechFind();
+		List<Integer> list = find.getAllIndex("Y", result);
+		assertEquals("the index returned are not correct" , "[0, 4, 6, 8, 10, 14, 22, 40, 48]", list.toString());
+		
+		list = find.getAllIndex("R", result);
+		assertEquals("the index returned are not correct" , "[18, 20, 32, 50]", list.toString());
+		
+		list = find.getAllIndex("Z", result);
+		assertTrue("the index list should be empty", list.size()==0);
+
+	}
+	
+	@Test
+	public void getPrevTo_validReq_validResp() throws Exception{
+		SpeechFind speechFind = new SpeechFind();
+		String prev = speechFind.getPrevTo("small", 17, "Query is a fast, small, and feature-rich JavaScript library", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals("fast, "));
+		
+		
+		prev = speechFind.getPrevTo("feature-rich", 28, "Query is a fast, small, and feature-rich JavaScript library", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals("and "));
+		
+		prev = speechFind.getPrevTo("API", 53, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals("easy-to-use "));
+		
+		prev = speechFind.getPrevTo("animation", 0, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+		
+		prev = speechFind.getPrevTo("animation", 0, "animation, and Ajax much simpler with an easy-to-use API that works", 2);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+		
+		prev = speechFind.getPrevTo("API", 53, "animation, and Ajax much simpler with an easy-to-use API that works", 2);
+		assertTrue("previous string is incorrect: " + prev, prev.equals("an easy-to-use "));
+		
+		prev = speechFind.getPrevTo("feature-rich", 28, "Query is a fast, small, and feature-rich JavaScript library", 2);
+		assertTrue("previous string is incorrect: " + prev, prev.equals("small, and "));
+		
+		prev = speechFind.getPrevTo("Ajax", 15, "animation, and Ajax much simpler with an easy-to-use API that works", 3);
+		assertTrue("previous string is incorrect: " + prev, prev.equals("animation, and "));
+		
+		prev = speechFind.getPrevTo("much", 20, "animation, and Ajax much simpler with an easy-to-use API that works", 3);
+		assertTrue("previous string is incorrect: " + prev, prev.equals("animation, and Ajax "));
+		
+		
+	}
+	
+	@Test
+	public void getPrevTo_invalidReq_validResp() throws Exception{
+		
+		String prev = speechFind.getPrevTo("animation", 2, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+		
+		prev = speechFind.getPrevTo("animation", 700, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+		
+		prev = speechFind.getPrevTo("animation", -1, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+	}
+	
+
+	@Test
+	public void getNextTo_validReq_validResp() throws Exception{
+		SpeechFind speechFind = new SpeechFind();
+		String prev = speechFind.getNextTo("small", 17, "Query is a fast, small, and feature-rich JavaScript library", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(", and"));
+		
+		
+		prev = speechFind.getNextTo("feature-rich", 28, "Query is a fast, small, and feature-rich JavaScript library", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(" JavaScript"));
+		
+		prev = speechFind.getNextTo("an", 38, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(" easy-to-use"));
+		
+		prev = speechFind.getNextTo("works", 62, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+		
+		
+		 prev = speechFind.getNextTo("small", 17, "Query is a fast, small, and feature-rich JavaScript library", 2);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(", and feature-rich"));
+		
+		
+		prev = speechFind.getNextTo("feature-rich", 28, "Query is a fast, small, and feature-rich JavaScript library", 2);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(" JavaScript library"));
+		
+		prev = speechFind.getNextTo("feature-rich", 28, "Query is a fast, small, and feature-rich JavaScript library", 3);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(" JavaScript library"));
+		
+		prev = speechFind.getNextTo("an", 38, "animation, and Ajax much simpler with an easy-to-use API that works", 3);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(" easy-to-use API that"));
+		
+		prev = speechFind.getNextTo("works", 62, "animation, and Ajax much simpler with an easy-to-use API that works", 3);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+		
+		
+	}
+	
+	
+	@Test
+	public void getNextTo_invalidReq_validResp() throws Exception{
+		
+		String prev = speechFind.getPrevTo("animation", 2, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+		
+		prev = speechFind.getPrevTo("animation", 700, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+		
+		prev = speechFind.getPrevTo("animation", -1, "animation, and Ajax much simpler with an easy-to-use API that works", 1);
+		assertTrue("previous string is incorrect: " + prev, prev.equals(""));
+	}
+	
+	
+	@Test
+	public void find_validReq_validResp() throws Exception{
+		SpeechFind speechFind = new SpeechFind();
+		SearchTerm searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = "jQuery Javascript";
+		
+		SearchTerm filterQ = new SearchTerm();
+		filterQ.fieldName = TranscriptWordProp.MEDIA_ID;
+		filterQ.value = "domain=youtube.com&mediaId=video about jquery";
+		
+		System.out.println("Result for query: " + searchQ.value);
+		List<ScoredTranscriptWord> list = speechFind.find(searchQ, filterQ);
+		for(ScoredTranscriptWord result: list) {
+			System.out.println(result.getSnippet());
+		}
+		System.out.println("-----------------");
+		
+		searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = "versatility";		
+		filterQ = new SearchTerm();
+		filterQ.fieldName = TranscriptWordProp.MEDIA_ID;
+		filterQ.value = "domain=youtube.com&mediaId=video about jquery";		
+		System.out.println("Result for query: " + searchQ.value);
+		list = speechFind.find(searchQ, filterQ);
+		for(ScoredTranscriptWord result: list) {
+			System.out.println(result.getSnippet());
+		}
+		System.out.println("-----------------");
+		
+		
+		searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = "HTML";		
+		filterQ = new SearchTerm();
+		filterQ.fieldName = TranscriptWordProp.MEDIA_ID;
+		filterQ.value = "domain=youtube.com&mediaId=video about jquery";		
+		System.out.println("Result for query: " + searchQ.value);
+		list = speechFind.find(searchQ, filterQ);
+		for(ScoredTranscriptWord result: list) {
+			System.out.println(result.getSnippet());
+		}
+		System.out.println("-----------------");
+		
+		searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = "jQuery";		
+		filterQ = new SearchTerm();
+		filterQ.fieldName = TranscriptWordProp.MEDIA_ID;
+		filterQ.value = "domain=youtube.com&mediaId=video about jquery";		
+		System.out.println("Result for query: " + searchQ.value);
+		list = speechFind.find(searchQ, filterQ);
+		for(ScoredTranscriptWord result: list) {
+			System.out.println(result.getSnippet());
+		}
+		System.out.println("-----------------");		
+		
+		searchQ = new SearchTerm();
+		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.value = "API";		
+		filterQ = new SearchTerm();
+		filterQ.fieldName = TranscriptWordProp.MEDIA_ID;
+		filterQ.value = "domain=youtube.com&mediaId=video about jquery";		
+		System.out.println("Result for query: " + searchQ.value);
+		list = speechFind.find(searchQ, filterQ);
+		for(ScoredTranscriptWord result: list) {
+			System.out.println(result.getSnippet());
+		}
+		System.out.println("-----------------");	
+		
+		
+		
+	}
+	
+	
 	
 	
 }

@@ -32,7 +32,7 @@ public class IndexerFacade {
 			if (FSIndexWriter == null) {			
 				FSIndexWriter = new IndexWriter(
 						FSDirectory.open(new File(FSdir)),
-								Helper.getStandardAnalyzer(),
+								Helper.getStandardAnalyzer(true, false),
 								IndexWriter.MaxFieldLength.UNLIMITED);
 			}
 		} catch (Exception e) {

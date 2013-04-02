@@ -17,64 +17,120 @@ public class IndexerTest {
 	
 	@Test
 	public void testIndex() throws CorruptIndexException, IOException, ParseException, IndexerException {
-		IndexerFacade indexer = new IndexerFacade();
+	/*	IndexerFacade indexer = new IndexerFacade();
 		TranscriptWord transcriptWord = new TranscriptWord();
-		transcriptWord.addProp(TranscriptWordProp.WORD, "hello");
+		transcriptWord.addProp(TranscriptWordProp.WORD, "jQuery is a fast, small, and feature-rich JavaScript library.");
 		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.00");
-		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.05");
-		transcriptWord.addProp(TranscriptWordProp.AUDIO_HASH, "333");
-		
-		indexer.index(transcriptWord);
-		
-		transcriptWord = new TranscriptWord();
-		transcriptWord.addProp(TranscriptWordProp.WORD, "world");
-		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.06");
 		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.10");
-		transcriptWord.addProp(TranscriptWordProp.AUDIO_HASH, "333");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
 		
 		indexer.index(transcriptWord);
 		
 		transcriptWord = new TranscriptWord();
-		transcriptWord.addProp(TranscriptWordProp.WORD, "I can");
+		transcriptWord.addProp(TranscriptWordProp.WORD, "jQuery is a JavaScript library");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.00");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.10");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
+		
+		indexer.index(transcriptWord);
+		
+		transcriptWord = new TranscriptWord();
+		transcriptWord.addProp(TranscriptWordProp.WORD, "jQuery is small rich JavaScript library");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.00");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.10");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
+		
+		indexer.index(transcriptWord);
+		
+		transcriptWord = new TranscriptWord();
+		transcriptWord.addProp(TranscriptWordProp.WORD, "It makes things like HTML document traversal and manipulation simple");
 		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.11");
-		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.14");
-		transcriptWord.addProp(TranscriptWordProp.AUDIO_HASH, "333");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.16");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
 		
 		indexer.index(transcriptWord);
 		
 		transcriptWord = new TranscriptWord();
-		transcriptWord.addProp(TranscriptWordProp.WORD, "find what you said");
-		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.15");
-		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.19");
-		transcriptWord.addProp(TranscriptWordProp.AUDIO_HASH, "333");
+		transcriptWord.addProp(TranscriptWordProp.WORD, "HTML document traversal");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.11");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.16");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
 		
 		indexer.index(transcriptWord);
 		
 		transcriptWord = new TranscriptWord();
-		transcriptWord.addProp(TranscriptWordProp.WORD, "not what");
-		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.20");
-		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.21");
-		transcriptWord.addProp(TranscriptWordProp.AUDIO_HASH, "333");
+		transcriptWord.addProp(TranscriptWordProp.WORD, "HTML document traversal, event handling, animation and Ajax");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.11");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.16");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
 		
 		indexer.index(transcriptWord);
 		
 		transcriptWord = new TranscriptWord();
-		transcriptWord.addProp(TranscriptWordProp.WORD, "you sang");
-		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.22");
-		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.27");
-		transcriptWord.addProp(TranscriptWordProp.AUDIO_HASH, "333");
+		transcriptWord.addProp(TranscriptWordProp.WORD, "It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.11");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.16");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
 		
 		indexer.index(transcriptWord);
 		
 		transcriptWord = new TranscriptWord();
-		transcriptWord.addProp(TranscriptWordProp.WORD, "Please speek");
-		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.31");
-		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.34");
-		transcriptWord.addProp(TranscriptWordProp.AUDIO_HASH, "333");
+		transcriptWord.addProp(TranscriptWordProp.WORD, "easy-to-use API that works across a multitude of browsers.");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.17");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.23");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
 		
 		indexer.index(transcriptWord);
 		
-		indexer.close();
+		transcriptWord = new TranscriptWord();
+		transcriptWord.addProp(TranscriptWordProp.WORD, "easy-to-use API that works across browsers.");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.17");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.23");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
+		
+		indexer.index(transcriptWord);
+		
+		transcriptWord = new TranscriptWord();
+		transcriptWord.addProp(TranscriptWordProp.WORD, "easy-to-use API for all browsers.");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.17");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.23");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
+		
+		indexer.index(transcriptWord);
+		
+		transcriptWord = new TranscriptWord();
+		transcriptWord.addProp(TranscriptWordProp.WORD, "combination of versatility and extensibility");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.19");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.23");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
+		
+		indexer.index(transcriptWord);
+		
+		transcriptWord = new TranscriptWord();
+		transcriptWord.addProp(TranscriptWordProp.WORD, "With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.24");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.30");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
+		
+		indexer.index(transcriptWord);
+		
+		transcriptWord = new TranscriptWord();
+		transcriptWord.addProp(TranscriptWordProp.WORD, "versatility and extensibility of jQuery");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.24");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.30");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
+		
+		indexer.index(transcriptWord);
+		
+		transcriptWord = new TranscriptWord();
+		transcriptWord.addProp(TranscriptWordProp.WORD, "versatility and extensibility of jQuery changed millions of people writing JavaScript");
+		transcriptWord.addProp(TranscriptWordProp.START_TIME, "0.24");
+		transcriptWord.addProp(TranscriptWordProp.END_TIME, "0.30");
+		transcriptWord.addProp(TranscriptWordProp.MEDIA_ID, "domain=youtube.com&mediaId=video about jquery");
+		
+		indexer.index(transcriptWord);
+		
+		indexer.close();*/
 		
 		
 	}
