@@ -271,7 +271,7 @@ public class SpeechFindTest {
 		List<SpeechFind.ScoredTranscriptWord> prunedList = speechFind.pruneResults(reqList);
 		
 		assertNotNull("pruneResults() response must not be null", prunedList);
-		assertEquals("pruneResults() should return correct sized response", 2, prunedList.size());
+		assertEquals("pruneResults() should return correct sized response", 3, prunedList.size());
 		
 		//test whether the order remains intact.
 		SpeechFind.ScoredTranscriptWord prevWord = prunedList.get(0);

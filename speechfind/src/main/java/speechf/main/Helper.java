@@ -3,6 +3,8 @@ package speechf.main;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,7 +48,9 @@ public class Helper {
 	
 	private static Set<String> readStopWords() throws IOException {
 		
-			BufferedReader br = new BufferedReader(new FileReader(Helper.class.getResource(stopWordFile).getPath()));
+			InputStream in = Helper.class.getResourceAsStream(stopWordFile);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			
 			String line;
 			Set<String> stopWordsSet = new HashSet<String>();
 			while((line=br.readLine()) != null) {

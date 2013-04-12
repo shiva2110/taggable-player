@@ -434,13 +434,14 @@ public class SpeechFind {
 						}
 					}
 				}
-				
+
 				scoredList.get(i).score = scoredList.get(i).score + (similarResultsWithSameWindow/similarResults);
 			}			
 		}
 		
-		
+	
 		Collections.sort(scoredList, new ScoredTranscriptWord(null, 0));
+		
 		return scoredList;
 	}
 	
@@ -459,8 +460,10 @@ public class SpeechFind {
 	
 	private List<String> getContainingTerms(String str, List<String> terms) {
 		
+		str = str.toLowerCase();
 		List<String> containingTerms = new ArrayList<String>();
 		for(String s: terms) {
+			s=s.toLowerCase();
 			if(str.contains(s)) {
 				containingTerms.add(s);
 			}

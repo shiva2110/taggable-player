@@ -11,5 +11,6 @@ bin/
 bld/
 logs/
 data/
+classes/
 sampledata/
 target/
