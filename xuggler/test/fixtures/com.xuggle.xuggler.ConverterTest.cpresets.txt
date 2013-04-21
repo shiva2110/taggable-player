@@ -1,2 +1,0 @@
-probesize: 250000
-indexmem: 2048572
