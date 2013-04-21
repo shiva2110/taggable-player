@@ -3,6 +3,7 @@ package com.speechf.find;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -47,16 +48,10 @@ public class SpeechfService {
 		
 		try {
 			indexer.index(transcriptWord);
-			indexer.close();
-		} catch(IndexerException e){
+			indexer.commit();
+		} catch(Exception e) {
 			e.printStackTrace();
-		} catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		}
 		
 		return Response.ok().build();
 	}
@@ -67,7 +62,7 @@ public class SpeechfService {
 	@Produces({"application/xml", "application/json"})
 	public Response search(@QueryParam("keywords") String keywords,
 			@QueryParam("domain") String domain,
-			@QueryParam("mediaId") String mediaId) {
+			@QueryParam("mediaId") String mediaId){
 		
 		System.out.println("keywords:" + keywords + "; domain:" + domain + "; mediaId:"+ mediaId);
 		SpeechFind speechFind = new SpeechFind();
@@ -91,7 +86,7 @@ public class SpeechfService {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		return Response.ok(searchOutputs).header("Access-Control-Allow-Origin", "*").build();
+		return Response.ok(searchOutputs).build();
+		//return Response.ok(searchOutputs).header("Access-Control-Allow-Origin", "*").build();
 	}
 }
