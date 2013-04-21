@@ -18,14 +18,14 @@ public class SearcherFacadeTest {
 
 	SearcherFacade searcherFacade = new SearcherFacade();
 	
-	@Test
+	
 	public void booleanSearch_nullReq_emptyResp() throws Exception{
 		List<TranscriptWord> list = searcherFacade.booleanSearch(null, null);
 		assertNotNull("booleanSearch() response must not be null", list);
 		assertEquals("booleanSearch() must return empty if input search is null", 0, list.size());
 	}
 	
-	@Test
+	
 	public void booleanSearch_validReqNullFilter_validResp() throws Exception{
 		SearchTerm searchTerm = new SearchTerm();
 		searchTerm.fieldName = TranscriptWordProp.WORD;
@@ -45,7 +45,7 @@ public class SearcherFacadeTest {
 		}
 	}
 	
-	@Test
+	
 	public void booleanSearch_validReq_validResp() throws Exception{
 		SearchTerm searchTerm = new SearchTerm();
 		searchTerm.fieldName = TranscriptWordProp.WORD;
@@ -103,7 +103,7 @@ public class SearcherFacadeTest {
 	}
 	
 	
-	@Test
+	
 	public void vectorSearch_validReq_validResp() throws Exception {
 		SearchTerm searchTerm = new SearchTerm();
 		searchTerm.fieldName = TranscriptWordProp.WORD;
@@ -133,14 +133,14 @@ public class SearcherFacadeTest {
 		}
 	}
 	
-	@Test
+	
 	public void vectorSearch_nullReq_emptyResp() throws Exception{
 		List<TranscriptWord> list = searcherFacade.vectorSearch(null, null);
 		assertNotNull("vectorSearch() response must not be null", list);
 		assertEquals("vectorSearch() must return empty if input search is null", 0, list.size());
 	}
 	
-	@Test
+	
 	public void vectorSearch_validReqNullFilter_validResp() throws Exception{
 		SearchTerm searchTerm = new SearchTerm();
 		searchTerm.fieldName = TranscriptWordProp.WORD;
@@ -160,7 +160,7 @@ public class SearcherFacadeTest {
 		}
 	}
 	
-	@Test
+	
 	public void vectorSearch_unavailableFilter_emptyResp() throws Exception {
 		SearchTerm searchTerm = new SearchTerm();
 		searchTerm.fieldName = TranscriptWordProp.WORD;
