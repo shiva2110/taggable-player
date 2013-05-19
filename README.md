@@ -4,4 +4,4 @@ Taggable is a HTML5 media player that allows you to search and tag media content
 
 Project Page
 ------
-http://shiva2110.github.io/speech-F
+http://shiva2110.github.io/taggable-player
