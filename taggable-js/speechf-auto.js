@@ -1,12 +1,11 @@
 
-var speechfErr  = "The speechf-controls class not following expected syntax. " +
-"Example syntax: class='mediasrc:<source of media file> indexsrc:<http link to index>";
+var speechfErr  = "The taggable-container class not following expected syntax.";
 
 
 
 var progressBarHeight = 13;
 var progressSliderWidth = 17;
-var defaultMediaWidth = 300;
+var defaultMediaWidth = "300";
 var currentSearchQuery = "";
 var currentIndexTime = "";
 var indexSpan =  15; //15 sec
@@ -24,88 +23,52 @@ resultColorMap[7] = "#FF9999";
 resultColorMap[8] = "#FFB2B2";
 resultColorMap[9] = "#FFCCCC";
 
+var mediaIndexKey = 0;
+
 $(window).load(function() {
 
-	$(".speechf-controls").each(function() {
-		var titleText = $(this).attr("data-props");
-		//$(this).attr("title", "");
-		var props = titleText.split(" ");
-		if(!props.length>=3) {
-			throw speechfErr;
-		}
-
+	$("[data-player='taggable']").each(function() {
 		var propsMap = new Object();
-
-		for(i=0; i<props.length;i++) {
-			if(props[i].indexOf("mediasrc:")>=0){
-				var src = props[i].split("mediasrc:");
-				if(src.length==2 && (src[1]!="" || src[1].length!=0)){
-					propsMap["mediasrc"] = src[1];
-				} else {
-					throw speechfErr;
-				}
-			} else if(props[i].indexOf("mediaId:")>=0) {
-				var src = props[i].split("mediaId:");
-				if(src.length==2 && (src[1]!="" || src[1].length!=0)){
-					propsMap["mediaId"] = src[1];
-				} else {
-					throw speechfErr;
-				}
-			} else if(props[i].indexOf("domain:")>=0) {
-				var src = props[i].split("domain:");
-				if(src.length==2 && (src[1]!="" || src[1].length!=0)){
-					propsMap["domain"] = src[1];
-				} else {
-					throw speechfErr;
-				}
-			} else if(props[i].indexOf("mediatype:")>=0) {
-				var mediaType = props[i].split("mediatype:");
-				if(mediaType.length==2 && (mediaType[1]!="" || mediaType[1].length!=0)){
-					propsMap["mediatype"] = mediaType[1];
-				} else {
-					throw speechfErr;
-				}				
-			} else if(props[i].indexOf("width:")>=0) {
-				var width = props[i].split("width:");
-				if(width.length==2 && (width[1]!="" || width[1].length!=0)){
-					propsMap["width"] = width[1];
-				} else {
-					throw speechfErr;
-				}				
-			} else if(props[i].indexOf("height:")>=0) {
-				var height = props[i].split("height:");
-				if(height.length==2 && (height[1]!="" || height[1].length!=0)){
-					propsMap["height"] = height[1];
-				} else {
-					throw speechfErr;
-				}				
-			}
-
+		
+		//check if this element is either audio or video
+		if(this.tagName!="VIDEO" && this.tagName!="AUDIO") {
+			return;
 		}
-
-		if(propsMap["mediasrc"].length==0 || propsMap["domain"].length==0 || propsMap["mediaId"].length==0 || propsMap["mediatype"].length==0) {
-			throw speechfErr;
+		
+		var sourceElement = $(this).find("source");
+		if(sourceElement.length==0) {
+			return;
 		}
+		
+		propsMap["mediasrc"] = $(sourceElement[0]).attr("src");
+		propsMap["domain"] = document.domain;
+		propsMap["width"] = $(this).attr("width");
+		propsMap["height"] = $(this).attr("height");
+		propsMap["mediaIndex"] = mediaIndexKey;
+		
 
-
-
-
-		var mediaElm = createMediaElement(this, propsMap);
-
-		var progressBar = createProgressBar(this, propsMap);
-		var controlsBase = createControlsBase(this, propsMap);	
+		var superParent = $("<div class='taggable-container' id=" + mediaIndexKey + "/>");
+		
+		//adjust super parent's position
+		superParent.css("left", $(this).css("left"));
+		superParent.css("top", $(this).css("top"));
+		superParent.css("position", $(this).css("position"));
+		propsMap["left"] = $(this).css("left");
+		propsMap["top"] = $(this).css("top");
+		propsMap["position"] = $(this).css("position");
+		
+		var mediaObj = $(this).clone();
+		var mediaElm = createMediaElement(superParent, mediaObj, propsMap);
+		var progressBar = createProgressBar(superParent, propsMap);
+		var controlsBase = createControlsBase(superParent, propsMap);	
 		createPlayButton(controlsBase);
-		createProgressSlider(progressBar, propsMap);	
 		createSearchBox(controlsBase, propsMap);
-		if(propsMap["mediatype"]=="video"){
+		if(this.tagName=="VIDEO"){
 			createScreenAdjust(controlsBase);
 		}
 
-		propsMap["left"] = $(this).css("left");
-		propsMap["top"] = $(this).css("top");
-
-		globalPropsMap[titleText] = propsMap;
-
+		globalPropsMap[mediaIndexKey] = propsMap;
+		mediaIndexKey++;
 		// In case the media element is broken, disable all controls.
 		if(mediaElm==undefined) {
 			var disablerLeft = progressBar.css("left");
@@ -115,6 +78,8 @@ $(window).load(function() {
 			var disabler = $("<div style='background-color:grey; left:"+ disablerLeft + "; top:" + disablerTop + "; width:" + disablerWidth + "; height:" + disablerHeight +"; position:absolute; z-index:3; opacity:0.5'></div>");
 			disabler.appendTo(controlsBase);
 		}
+		
+		$(this).replaceWith(superParent);
 
 	});
 
@@ -183,7 +148,7 @@ $(window).load(function() {
 	$(".progress-bar").click(function(e){
 		var mouseX = e.pageX;		
 		var progressSlider = getNearbyElement(".speechf-progressSlider", $(this));
-		var superParent = $(this).parents(".speechf-controls");
+		var superParent = $(this).parents(".taggable-container");
 		var initPos = $(this).offset().left;
 		var newPos = (mouseX-initPos);		
 		var progressBarWidth = superParent.css("width");
@@ -294,7 +259,7 @@ $(window).load(function() {
 
 		//show write index time bar
 		var percentage = currentTime/$(mediaElement)[0].duration;
-		var superParent = $(this).parents(".speechf-controls");
+		var superParent = $(this).parents(".taggable-container");
 		//var propsMap = globalPropsMap[superParent.attr("data-props")];
 		var progressBarWidth = superParent.css("width");
 		progressBarWidth = progressBarWidth.replace("px", "");
@@ -363,12 +328,12 @@ $(window).load(function() {
 		}
 	});
 
-	$(".speechf-audio").each(function(){
+	$(".taggable-audio").each(function(){
 		addMediaEvents(this);
 	});
 
 
-	$(".speechf-video").each(function(){
+	$(".taggable-video").each(function(){
 		addMediaEvents(this);
 	});
 
@@ -400,13 +365,13 @@ $(window).load(function() {
 					return;
 				}
 
-				var superParent = $(this).parents(".speechf-controls");
-				var propsMap = globalPropsMap[superParent.attr("data-props")];
+				var superParent = $(this).parents(".taggable-container");
+				var propsMap = globalPropsMap[superParent.attr("id")];
 
 				$.support.cors = true;
 				var textBox = $(this);
 				var searchCall = $.ajax({
-					url: formSearchURL(indexURI, propsMap["domain"], propsMap["mediaId"], keywords),
+					url: formSearchURL(indexURI, propsMap["domain"], propsMap["mediasrc"], keywords),
 					type: "GET", 
 					headers : {
 						"Accept" : "application/json"
@@ -435,10 +400,10 @@ $(window).load(function() {
 					return;
 				}
 
-				var superParent = $(this).parents(".speechf-controls");
-				var propsMap = globalPropsMap[superParent.attr("data-props")];
+				var superParent = $(this).parents(".taggable-container");
+				var propsMap = globalPropsMap[superParent.attr("id")];
 				var posting = $.ajax({
-					url: formIndexURL(indexURI, propsMap["domain"], propsMap["mediaId"]),
+					url: formIndexURL(indexURI, propsMap["domain"], propsMap["mediasrc"]),
 					data: "{\"keywords\":\"" + keywords +"\", \"startTime\":\"" +currentIndexTime + "\", \"endTime\":\"" + endTime + "\"}",
 					type: "POST", 
 					headers : {
@@ -460,7 +425,7 @@ $(window).load(function() {
 	$(document).bind("webkitfullscreenchange", function(e) {
 		if(document.webkitIsFullScreen==false) {
 			var superParent = $(e.srcElement);
-			if(superParent==undefined || superParent[0].className.indexOf("speechf-controls")==-1) {
+			if(superParent==undefined || superParent[0].className.indexOf("taggable-container")==-1) {
 				return;
 			}
 			
@@ -478,7 +443,7 @@ $(window).load(function() {
 
 function fullscreen(fullscreenButton) {
 	var mediaElement = getNearbyMediaElement(fullscreenButton);	
-	if(mediaElement.attr("class")!="speechf-video") {
+	if(mediaElement.attr("class")!="taggable-video") {
 		return;
 	}	
 
@@ -489,7 +454,7 @@ function fullscreen(fullscreenButton) {
 			var screenW = screen.width;
 
 			//adjust super parent
-			var superParent = fullscreenButton.parents(".speechf-controls");				
+			var superParent = fullscreenButton.parents(".taggable-container");				
 			superParent.css("width", screenW);
 			superParent.css("height", screenH-50);
 			superParent.css("left", 0);
@@ -509,7 +474,7 @@ function fullscreen(fullscreenButton) {
 			var progressBar = getNearbyElement(".progress-bar", fullscreenButton);
 			var borderWidth = progressBar.css("border-left-width");
 			borderWidth = borderWidth.replace("px", "");
-			var propsMap = globalPropsMap[superParent.attr("data-props")];
+			var propsMap = globalPropsMap[superParent.attr("id")];
 			var width = propsMap["width"].replace("px", "");
 			var percentage = borderWidth/width;
 			var adjustedBorderWidth = percentage * (screenW);
@@ -532,14 +497,14 @@ function fullscreen(fullscreenButton) {
 
 function minscreen(minscreenButton) {
 	var mediaElement = getNearbyMediaElement(minscreenButton);	
-	if(mediaElement.attr("class")!="speechf-video") {
+	if(mediaElement.attr("class")!="taggable-video") {
 		return;
 	}
 
 	if(minscreenButton.attr("src")=="minscreen.png") {
 		if($.isFunction(mediaElement[0].webkitEnterFullscreen)){
-			var superParent = minscreenButton.parents(".speechf-controls");
-			var propsMap = globalPropsMap[superParent.attr("data-props")];
+			var superParent = minscreenButton.parents(".taggable-container");
+			var propsMap = globalPropsMap[superParent.attr("id")];
 
 			//adjust controlsBase
 			var controlsBase = getNearbyElement(".controls-base", minscreenButton);
@@ -657,7 +622,7 @@ function adjustWriteBar(superParent, fullscreenMode) {
 	}
 
 	//initialize required vars
-	var propsMap = globalPropsMap[superParent.attr("data-props")];
+	var propsMap = globalPropsMap[superParent.attr("id")];
 	var currentleftPos = writeBar.css("left");
 	currentleftPos = currentleftPos.replace("px", "");
 	var mediaElement = findMediaElement(superParent);
@@ -697,7 +662,7 @@ function adjustSearchResults(superParent, fullscreenMode) {
 	var results = superParent.find("[class|='speechfresult']");
 	var snippets = superParent.find("[class|='speechfsnippet']");
 	var progressBar = superParent.find(".progress-bar");
-	var propsMap = globalPropsMap[superParent.attr("data-props")];
+	var propsMap = globalPropsMap[superParent.attr("id")];
 
 	for(i=0; i<results.length; i++) {
 		var jObj = $(results[i]);
@@ -802,8 +767,8 @@ function searchSuccessCallback(json, textBox) {
 function buildSearchResult(progressBar, searchOutput, resultIndex, mediaElm) {
 	var resultSnippet = searchOutput.snippet;
 	var percentage = (searchOutput.time)/($(mediaElm)[0].duration);
-	var superParent = progressBar.parents(".speechf-controls");
-	var propsMap = globalPropsMap[superParent.attr("data-props")];
+	var superParent = progressBar.parents(".taggable-container");
+	var propsMap = globalPropsMap[superParent.attr("id")];
 	var progressBarWidth =  superParent.css("width"); //progress-bar css width is not reliable cuz of border width changes during media play
 	progressBarWidth = progressBarWidth.replace("px", "");
 	var resultLeftPos = percentage * (progressBarWidth);
@@ -820,7 +785,10 @@ function buildSearchResult(progressBar, searchOutput, resultIndex, mediaElm) {
 	var snippetWidth = 90;
 	var snippetHeight = 30;
 
-	var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background: url(snippet.png) no-repeat top left; border:none; position:absolute; " +
+	//var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background: url(snippet.png) no-repeat top left; border:none; position:absolute; " +
+		//	"height:" + snippetHeight + "; font-size:x-small; font-family:Arial, Helvetica, sans-serif; z-index:2; width:" + snippetWidth + "; display:none;'>" + resultSnippet + "</div>");
+	
+	var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background-color:#66FF66; border:none; position:absolute; " +
 			"height:" + snippetHeight + "; font-size:x-small; font-family:Arial, Helvetica, sans-serif; z-index:2; width:" + snippetWidth + "; display:none;'>" + resultSnippet + "</div>");
 
 
@@ -851,8 +819,8 @@ function indexSuccessCallback(textBox, progressBar) {
 			"height:" + snippetHeight + "; font-size:x-small; font-family:Arial, Helvetica, sans-serif; z-index:2; width:" + snippetWidth + "'>Indexed!</div>");
 	var top = progressBar.position().top - 10;
 	var left = $(writeBars[0]).position().left + 10;
-	var superParent = progressBar.parents(".speechf-controls");
-	var propsMap = globalPropsMap[superParent.attr("data-props")];
+	var superParent = progressBar.parents(".taggable-container");
+	var propsMap = globalPropsMap[superParent.attr("id")];
 	var progressBarWidth =  superParent.css("width"); //progress-bar css width is not reliable cuz of border width changes during media play
 	progressBarWidth = progressBarWidth.replace("px", "");
 	if((left + snippetWidth)>progressBarWidth) {
@@ -917,7 +885,7 @@ function addMediaEvents(elm) {
 }
 
 function getNearbyElement(className, elm) {
-	var superparent = elm.parents(".speechf-controls");
+	var superparent = elm.parents(".taggable-container");
 	return superparent.find(className);
 }
 
@@ -949,7 +917,7 @@ function findMediaElement(parent) {
 
 function isSpeechfComponent(elm) {
 
-	var superparent = elm.parents(".speechf-controls");
+	var superparent = elm.parents(".taggable-container");
 	if(typeof(superparent)=='undefined' || superparent.length==0) {
 		return false;
 	}
@@ -1005,32 +973,29 @@ function createSnippetBubble() {
 	$("<div ></div>")
 }
 
-function createMediaElement(baseElm, propsMap) {
-	var src = propsMap["mediasrc"];
+function createMediaElement(superParent, mediaObj, propsMap) {
 
-	var mediaObj;
-	if(propsMap["mediatype"]=="audio") {
-		mediaObj = $("<audio class='speechf-audio'>" +
-				"<source src='" + src + "'></source>" +
-		"</audio>");
-	} else if(propsMap["mediatype"]=="video") {
-		mediaObj =  $("<video class='speechf-video'>" +
-				"<source src='" + src + "'></source>" +
-		"</video>");
-	} else {
-		throw speechfErr;
-	}
-
-	if(propsMap.hasOwnProperty("width")) {
+	if(propsMap.hasOwnProperty("width") && propsMap["width"]!=undefined) {
 		mediaObj.attr('width', propsMap["width"]);
 	} else {
 		propsMap["width"] = defaultMediaWidth;
 		mediaObj.attr('width', defaultMediaWidth);
-	}	
-	mediaObj.appendTo(baseElm);
+	}
+	
+	mediaObj.css("left", "");
+	mediaObj.css("top", "");
+	mediaObj.css("position", "");
+	if(mediaObj[0].tagName=="AUDIO") {
+		mediaObj.attr("class", "taggable-audio");
+	} else {
+		mediaObj.attr("class", "taggable-video");
+	}
+	
+	
+	mediaObj.appendTo(superParent);
 	propsMap["mediaHeight"] = mediaObj.css("height");
 
-	if(!supportedFormat(src) || !supportedBrowser()) {
+	if(!supportedFormat(propsMap["mediasrc"]) || !supportedBrowser()) {
 		
 		var brokenVideo;
 		if(!supportedBrowser()) {
@@ -1044,7 +1009,7 @@ function createMediaElement(baseElm, propsMap) {
 		brokenVideo.css("width", propsMap["width"]);
 		brokenVideo.css("height", propsMap["mediaHeight"]);
 		mediaObj.remove();
-		brokenVideo.appendTo(baseElm);
+		brokenVideo.appendTo(superParent);
 
 		var height = propsMap["mediaHeight"].replace("px", "");
 		var brokenMesTop = brokenVideo.offset().top + (height/2);		
