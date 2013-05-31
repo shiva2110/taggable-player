@@ -289,7 +289,6 @@ $(window).load(function() {
 	});
 
 	$(".speechf-searchButton").click(function() {	
-		if($(this).css("background").indexOf("searchButton")!=-1) {
 			//change to search clicked
 			$(this).css("background", "url(searchClicked.png) no-repeat top left");
 
@@ -325,7 +324,6 @@ $(window).load(function() {
 				var jObj = $(results[i]);
 				jObj.show();
 			}
-		}
 	});
 
 	$(".taggable-audio").each(function(){
@@ -788,8 +786,9 @@ function buildSearchResult(progressBar, searchOutput, resultIndex, mediaElm) {
 	//var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background: url(snippet.png) no-repeat top left; border:none; position:absolute; " +
 		//	"height:" + snippetHeight + "; font-size:x-small; font-family:Arial, Helvetica, sans-serif; z-index:2; width:" + snippetWidth + "; display:none;'>" + resultSnippet + "</div>");
 	
-	var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background-color:#66FF66; border:none; position:absolute; " +
-			"height:" + snippetHeight + "; font-size:x-small; font-family:Arial, Helvetica, sans-serif; z-index:2; width:" + snippetWidth + "; display:none;'>" + resultSnippet + "</div>");
+	var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background-color:#FFFF85; border:none; position:absolute; " +
+			"height:" + snippetHeight + "; font-size:x-small; font-family:Arial, Helvetica, sans-serif; z-index:2; width:" + snippetWidth + "; text-align:center; display:none;'>" +
+					"<div style='top:10%; left:5%; position:absolute; text-align:center;'>" + resultSnippet + "</div></div>");
 
 
 	var top = progressBar.position().top -32;
