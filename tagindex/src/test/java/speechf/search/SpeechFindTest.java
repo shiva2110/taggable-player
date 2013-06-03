@@ -48,7 +48,7 @@ public class SpeechFindTest {
 	}
 	
 	
-	@Test
+
 	public void scoreResults_validReq_validResp() throws Exception{		
 		TranscriptWord t1 = new TranscriptWord();
 		t1.addProp(TranscriptWordProp.WORD, "java project");
@@ -123,7 +123,7 @@ public class SpeechFindTest {
 	}
 	
 	
-	@Test
+
 	public void scoreResults_validMultiTermSearch_validResp() throws Exception {		
 		TranscriptWord t1 = new TranscriptWord();
 		t1.addProp(TranscriptWordProp.WORD, "java project");
@@ -597,7 +597,7 @@ public class SpeechFindTest {
 	}
 	
 	
-	@Test
+
 	public void find_validReq_validResp() throws Exception{
 		SpeechFind speechFind = new SpeechFind();
 		SearchTerm searchQ = new SearchTerm();

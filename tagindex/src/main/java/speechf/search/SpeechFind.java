@@ -19,6 +19,8 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.util.Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import speechf.index.IndexerException;
 import speechf.index.IndexerFacade;
@@ -35,6 +37,7 @@ import speechf.main.TranscriptWordProp;
 public class SpeechFind {
 	
 	private static final double closenessWindow = 0.04;
+	private static final Logger logger = LoggerFactory.getLogger(SearcherFacade.class);
 	
 	public double getClosenessWindow() {
 		return closenessWindow;
@@ -91,18 +94,27 @@ public class SpeechFind {
 		try {
 			//Call SearcherFacade.search to get results.
 			SearcherFacade searcherFacade = new SearcherFacade();
-			List<TranscriptWord> transcriptWordList = searcherFacade.vectorSearch(searchQ, filterQ);
+			String fmtKeyword = Helper.stemKeywords(searchQ.value);
+			
+			SearchTerm FmtSearchQ = new SearchTerm();
+			FmtSearchQ.value = fmtKeyword;
+			FmtSearchQ.fieldName = TranscriptWordProp.FMTWORD; //formatted
+			logger.debug("formatted search keyword: " + FmtSearchQ.value);
+			
+			List<TranscriptWord> transcriptWordList = searcherFacade.vectorSearch(FmtSearchQ, filterQ);
+			logger.debug("after vector search: " + transcriptWordList.size());
 			
 			// Call scoreResults() to score results.
-			List<ScoredTranscriptWord> scoredTranscriptList = scoreResults(searchQ, transcriptWordList);
+			List<ScoredTranscriptWord> scoredTranscriptList = scoreResults(FmtSearchQ, transcriptWordList);
+			logger.debug("after score results: " + scoredTranscriptList.size());
 			
 			// Call pruneResults()
 			scoredTranscriptList = pruneResults(scoredTranscriptList);
+			logger.debug("after prune results: " + scoredTranscriptList.size());
 			
 			// get snippet
 			for(ScoredTranscriptWord resultObj: scoredTranscriptList) {
-				String snippet = getSnippet(searchQ, 
-						resultObj.transcriptWord.getValue(TranscriptWordProp.WORD));
+				String snippet = getSnippet(searchQ, resultObj.transcriptWord.getValue(TranscriptWordProp.WORD));
 				resultObj.setSnippet(snippet);
 			}			
 			
@@ -417,7 +429,7 @@ public class SpeechFind {
 		List<String> searchTerms = Helper.tokenize(searchQ.value, true, false);
 		
 		for(int i=0; i<scoredList.size(); i++) {
-			List<String> containingTerms = getContainingTerms(scoredList.get(i).transcriptWord.getValue(TranscriptWordProp.WORD), searchTerms);
+			List<String> containingTerms = getContainingTerms(scoredList.get(i).transcriptWord.getValue(TranscriptWordProp.FMTWORD), searchTerms);
 			
 			for(String containingTerm: containingTerms) {
 				double similarResults = 1; //
@@ -425,7 +437,7 @@ public class SpeechFind {
 				
 				for(int j=0; j<scoredList.size(); j++) {
 					if(i!=j) {
-						if(scoredList.get(j).transcriptWord.getValue(TranscriptWordProp.WORD).contains(containingTerm)) {
+						if(scoredList.get(j).transcriptWord.getValue(TranscriptWordProp.FMTWORD).contains(containingTerm)) {
 							similarResults++;
 							
 							if(sameWindow(scoredList.get(i), scoredList.get(j))) {

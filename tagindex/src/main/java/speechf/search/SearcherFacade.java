@@ -40,7 +40,7 @@ import speechf.main.TranscriptWordProp;
 public class SearcherFacade {
 	
 	
-	private static final String FSdir = "/projects/workrepo/speech-F/data/index/";
+	private static final String FSdir = "/projects/workrepo/taggable-player/data/index/";
 	private static final Logger logger = LoggerFactory.getLogger(SearcherFacade.class);
 	
 
@@ -95,6 +95,8 @@ public class SearcherFacade {
 		IndexSearcher searcher = new IndexSearcher(reader);
 		QueryParser queryParser = new QueryParser(Version.LUCENE_36, searchTerm.fieldName.toString(), Helper.getStandardAnalyzer(true, false));
 		
+		logger.debug("Search field name: " + searchTerm.fieldName.toString());
+		logger.debug("Search field value: " + searchTerm.value);
 		Query q = queryParser.parse(searchTerm.value);
 		
 		Filter filter = null;
@@ -108,6 +110,7 @@ public class SearcherFacade {
 		directory.close();
 		
 		ScoreDoc[] scoreDocs = docs.scoreDocs;
+		logger.debug("score docs length: " + scoreDocs.length);
 		transcriptWords = convertToTranscriptWordList(reader, scoreDocs);
 		reader.close();
 		return transcriptWords;

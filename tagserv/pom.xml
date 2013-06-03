@@ -41,9 +41,9 @@
     	<version>1.15</version>
     </dependency>
     <dependency>
-    	<groupId>com.speechf</groupId>
-    	<artifactId>speechfind</artifactId>
-    	<version>0.0.8-SNAPSHOT</version>
+    	<groupId>com.taggable-player</groupId>
+    	<artifactId>tagindex</artifactId>
+    	<version>0.1.7-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>com.thetransactioncompany</groupId>

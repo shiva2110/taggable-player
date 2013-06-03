@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -16,15 +17,19 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import speechf.main.Helper;
 import speechf.main.TranscriptWord;
 import speechf.main.TranscriptWordProp;
+import speechf.search.SearcherFacade;
 
 public class IndexerFacade {
 
 	private static IndexWriter FSIndexWriter;
-	private static final String FSdir = "/projects/workrepo/speech-F/data/index/";
+	private static final String FSdir = "/projects/workrepo/taggable-player/data/index/";
+	private static final Logger logger = LoggerFactory.getLogger(SearcherFacade.class);
 
 	@SuppressWarnings("deprecation")
 	private static synchronized IndexWriter getFSIndexWriter() throws IndexerException {
@@ -44,11 +49,22 @@ public class IndexerFacade {
 
 	public void index(TranscriptWord word) throws IndexerException {
 		
+		String keyword = word.getValue(TranscriptWordProp.WORD);
+		String fmtKeyword = Helper.stemKeywords(keyword);
+		
+		word.addProp(TranscriptWordProp.FMTWORD, fmtKeyword);
+		
 		try {
 			Document doc = new Document();
 
+			if(word.getValue(TranscriptWordProp.FMTWORD)!=null) {
+				logger.debug("FMTWORD index :" + fmtKeyword);
+				doc.add(new Field(TranscriptWordProp.FMTWORD.toString(), fmtKeyword, Field.Store.YES, Field.Index.ANALYZED_NO_NORMS));
+			}
+			
 			if(word.getValue(TranscriptWordProp.WORD)!=null) {
-				doc.add(new Field(TranscriptWordProp.WORD.toString(), word.getValue(TranscriptWordProp.WORD), Field.Store.YES, Field.Index.ANALYZED_NO_NORMS));
+				logger.debug(TranscriptWordProp.WORD.toString() + " index :" + word.getValue(TranscriptWordProp.WORD));
+				doc.add(new Field(TranscriptWordProp.WORD.toString(), word.getValue(TranscriptWordProp.WORD), Field.Store.YES, Field.Index.NO));
 			}
 
 			if(word.getValue(TranscriptWordProp.START_TIME)!=null) {
@@ -86,5 +102,9 @@ public class IndexerFacade {
 	public void close() throws CorruptIndexException, IOException, IndexerException {
 		IndexerFacade.getFSIndexWriter().commit();
 		IndexerFacade.getFSIndexWriter().close();
+	}
+	
+	public void commit() throws CorruptIndexException, IOException, IndexerException {
+		IndexerFacade.getFSIndexWriter().commit();
 	}
 }
