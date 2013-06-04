@@ -351,7 +351,7 @@ public class SpeechFindTest {
 	public void getSnippet_noSearchTermReq_validResp() throws Exception{
 		SpeechFind speechFind = new SpeechFind();
 		SearchTerm searchQ = new SearchTerm();
-		searchQ.fieldName = TranscriptWordProp.WORD;
+		searchQ.fieldName = TranscriptWordProp.FMTWORD;
 		searchQ.value = "dance project";
 		
 		String result = "jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.";
@@ -365,8 +365,8 @@ public class SpeechFindTest {
 	public void getSnippet_validReq_allSearchTermsResp() throws Exception{
 		SpeechFind speechFind = new SpeechFind();
 		SearchTerm searchQ = new SearchTerm();
-		searchQ.fieldName = TranscriptWordProp.WORD;
-		searchQ.value = "jquery javascript";
+		searchQ.fieldName = TranscriptWordProp.FMTWORD;
+		searchQ.value = "jqueri javascript";
 		
 		String result = "jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.";
 		String snippet = speechFind.getSnippet(searchQ, result);
@@ -382,8 +382,8 @@ public class SpeechFindTest {
 		
 		
 		searchQ = new SearchTerm();
-		searchQ.fieldName = TranscriptWordProp.WORD;
-		searchQ.value = "jquery javascript HTML";
+		searchQ.fieldName = TranscriptWordProp.FMTWORD;
+		searchQ.value = "jqueri javascript HTML";
 		
 		snippet = speechFind.getSnippet(searchQ, result);
 		
@@ -400,8 +400,8 @@ public class SpeechFindTest {
 	public void getSnippet_validReq_closeWordsResp() throws Exception {
 		SpeechFind speechFind = new SpeechFind();
 		SearchTerm searchQ = new SearchTerm();
-		searchQ.fieldName = TranscriptWordProp.WORD;
-		searchQ.value = "jquery javascript";
+		searchQ.fieldName = TranscriptWordProp.FMTWORD;
+		searchQ.value = "jqueri javascript";
 		
 		String result = "jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.";
 		String snippet = speechFind.getSnippet(searchQ, result);
@@ -418,8 +418,8 @@ public class SpeechFindTest {
 		
 		
 		searchQ = new SearchTerm();
-		searchQ.fieldName = TranscriptWordProp.WORD;
-		searchQ.value = "jquery javascript HTML";		
+		searchQ.fieldName = TranscriptWordProp.FMTWORD;
+		searchQ.value = "jqueri javascript HTML";		
 		snippet = speechFind.getSnippet(searchQ, result);		
 		snippet = snippet.toLowerCase();
 		
@@ -431,7 +431,7 @@ public class SpeechFindTest {
 		
 		searchQ = new SearchTerm();
 		searchQ.fieldName = TranscriptWordProp.WORD;
-		searchQ.value = "Good Bad Ugly";		
+		searchQ.value = "Good Bad Ugli";		
 		result = "Good _ Bad _ _ _ _ Ugly Bad";		
 		snippet = speechFind.getSnippet(searchQ, result);		
 		//check if snippet contains shortest connection
@@ -451,7 +451,7 @@ public class SpeechFindTest {
 		
 		searchQ = new SearchTerm();
 		searchQ.fieldName = TranscriptWordProp.WORD;
-		searchQ.value = "versatility";
+		searchQ.value = "versatil";
 		result = "With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.";
 		snippet = speechFind.getSnippet(searchQ, result);
 		//check if snippet contains shortest connection
@@ -461,7 +461,7 @@ public class SpeechFindTest {
 		
 		searchQ = new SearchTerm();
 		searchQ.fieldName = TranscriptWordProp.WORD;
-		searchQ.value = "versatility";
+		searchQ.value = "versatil";
 		result = "versatility and extensibility of jQuery";
 		snippet = speechFind.getSnippet(searchQ, result);
 		//check if snippet contains shortest connection

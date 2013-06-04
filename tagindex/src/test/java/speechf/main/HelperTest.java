@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
@@ -53,6 +55,32 @@ public class HelperTest {
 		if(found!=2){
 			fail("tokenize() has returned array with less keywords");
 		}
+	}
+	
+	@Test
+	public void stemKeywordList_validReq_validResp() {
+		List<String> list = new ArrayList<String>();
+		list.add("added");
+		list.add("adding");
+		list.add("browsers");
+		list.add("browser");
+		
+		HashMap<String, List<String>> map = Helper.stemKeywordList(list);
+		for(String key: map.keySet()) {
+			System.out.print(key + "-->");
+			System.out.println(map.get(key));
+		}
+		assertTrue("does not contain key add", map.containsKey("ad"));
+		List<String> list1 = map.get("ad");
+		assertEquals("size of list mapping to 'add' is not 2", 2, list1.size());
+		assertTrue("does not contain 'added'", list1.contains("added"));
+		assertTrue("does not contain 'adding'", list1.contains("adding"));
+		
+		assertTrue("does not contain key browser", map.containsKey("browser"));
+		List<String> list2 = map.get("browser");
+		assertEquals("size of list mapping to 'browser' is not 2", 2, list2.size());
+		assertTrue("does not contain 'browser'", list2.contains("browser"));
+		assertTrue("does not contain 'browsers'", list2.contains("browsers"));
 	}
 	
 }

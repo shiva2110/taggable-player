@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.taggable-player</groupId>
 	<artifactId>tagindex</artifactId>
-	<version>0.1.8-SNAPSHOT</version>
+	<version>0.1.9-SNAPSHOT</version>
 	<name>speechfind</name>
 	<description>Maven project for speechfind project</description>
 

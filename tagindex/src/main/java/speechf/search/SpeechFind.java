@@ -114,7 +114,7 @@ public class SpeechFind {
 			
 			// get snippet
 			for(ScoredTranscriptWord resultObj: scoredTranscriptList) {
-				String snippet = getSnippet(searchQ, resultObj.transcriptWord.getValue(TranscriptWordProp.WORD));
+				String snippet = getSnippet(FmtSearchQ, resultObj.transcriptWord.getValue(TranscriptWordProp.WORD));
 				resultObj.setSnippet(snippet);
 			}			
 			
@@ -125,17 +125,36 @@ public class SpeechFind {
 	
 	}
 	
+	/**
+	 * Takes a formatted (stemmed) search query 'searchQ', and actual result as indexed 'result' as input.
+	 * Returns snippet extracted from 'result'
+	 * 
+	 * @param searchQ
+	 * @param result
+	 * @return
+	 * @throws IOException
+	 * @throws SearchException
+	 */
 	public String getSnippet(SearchTerm searchQ, String result) throws IOException, SearchException {
 		
+			if(result==null || searchQ==null || searchQ.value==null) {
+				return null;
+			}
+			
+			searchQ.value = searchQ.value.toLowerCase();
 			String resultLow = result.toLowerCase();
 			List<String> searchTermsQ = Helper.tokenize(searchQ.value, true, false);
 			
+			List<String> resultTerms = Helper.tokenize(resultLow, true, false);
+			HashMap<String, List<String>> stemmedWordMap = Helper.stemKeywordList(resultTerms);
 			
+			System.out.println(stemmedWordMap.toString());
 			List<String> searchTerms = new ArrayList<String>();
 			for(String term: searchTermsQ) {
 				term = term.toLowerCase();
-				if(resultLow.contains(term)) {
-					searchTerms.add(term);
+				if(stemmedWordMap.containsKey(term)) {
+					List<String> list = stemmedWordMap.get(term);
+					searchTerms.addAll(list);
 				}
 			}
 			

@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -27,7 +29,6 @@ public class Helper {
 
 	private static StandardAnalyzer standardAnalyzer = null ;
 	private static final String stopWordFile = "/stop-words-english4.txt";
-	private static Stemmer stemmer;
 	private static final Logger logger = LoggerFactory.getLogger(Helper.class);
 	
 	public static synchronized StandardAnalyzer getStandardAnalyzerWithStopWords() throws IOException {
@@ -66,19 +67,34 @@ public class Helper {
 			
 	}
 	
-	private static synchronized void initializeStemmer() {
-		if(stemmer==null) {
-			stemmer = new Stemmer();
-		}
-	}
 	
 	public static String stem(String word) {
-		if(stemmer==null) {
-			initializeStemmer();
-		}
+		Stemmer stemmer = new Stemmer();
 		stemmer.add(word.toCharArray(), word.length());
 		stemmer.stem();
 		return stemmer.toString();		
+	}
+	
+	/**
+	 * Takes a list of words as input.
+	 * Returns a map of stemmedword->List of original words stemmed to same stemmedword
+	 * @param words
+	 * @return
+	 */
+	public static HashMap<String, List<String>> stemKeywordList(List<String> words){
+		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+		for(String word: words) {
+			String stemmedWord = Helper.stem(word);
+			if(map.containsKey(stemmedWord)) {
+				List<String> list = map.get(stemmedWord);
+				list.add(word); //add actual word to the list
+			} else {
+				List<String> list = new ArrayList<String>();
+				list.add(word);
+				map.put(stemmedWord, list);
+			}
+		}
+		return map;
 	}
 	
 	public static String stemKeywords(String words) {
