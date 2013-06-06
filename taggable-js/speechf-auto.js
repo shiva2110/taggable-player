@@ -9,7 +9,7 @@ var defaultMediaWidth = "300";
 var currentSearchQuery = "";
 var currentIndexTime = "";
 var indexSpan =  15; //15 sec
-var indexURI = "http://localhost:8080/speechf-web";
+var indexURI = "http://ec2-54-235-225-226.compute-1.amazonaws.com/speechf-web";
 var globalPropsMap = new Object();
 var resultColorMap = new Array();
 resultColorMap[0] = "#FF0000";
@@ -167,11 +167,6 @@ $(window).load(function() {
 
 	});	
 
-	$(".progress-bar").dblclick(function() {
-		var writeButton =  getNearbyElement(".speechf-writeButton", $(this));
-		writeButton.click();
-	});
-
 	$(".speechf-playbutton").click(function() {	
 
 		//if this component is not speechf component, then return back.
@@ -218,10 +213,8 @@ $(window).load(function() {
 		var textBox =  getNearbyElement(".speechf-searchText", $(this));
 
 		//capture searchQuery if any
-		if(textBox[0].value.length!=0 && textBox[0].value.indexOf("Type what is going on")==-1) {
+		if(textBox[0].value.length!=0 && textBox[0].value.indexOf("Tag at")==-1) {
 			currentSearchQuery = textBox[0].value;
-		} else {
-			currentSearchQuery = "";
 		}
 
 		//display default text
@@ -311,7 +304,7 @@ $(window).load(function() {
 
 			//display default text
 			var textBox =  getNearbyElement(".speechf-searchText", $(this));
-			if(currentSearchQuery.length!=0) {
+			if(currentSearchQuery.length!=0 && currentSearchQuery.indexOf("Tag at")==-1) {
 				textBox[0].value = currentSearchQuery;
 			} else {
 				displayTextForSearch(textBox);	
@@ -841,7 +834,7 @@ function displayTextForSearch(textBox) {
 }
 
 function displayTextForWrite(currentTime, textBox) {	
-	textBox[0].value = "Type what is going on at " + currentTime + "m";
+	textBox[0].value = "Tag at " + currentTime + "m";
 	textBox.focus();
 	textBox.select();
 }
@@ -878,8 +871,16 @@ function addMediaEvents(elm) {
 		progressBar.css("border-left-width" , borderWidth);
 		progressBar.css("border-left-style", "solid");
 		progressBar.css("border-left-color", "#FCFCFC");
-
 		progressBar.css("width" , (progressBarOrigWidth-borderWidth));	
+		
+		//move write bar if required
+		var writeButton =  getNearbyElement(".speechf-writeButton", $(elm));
+		if(writeButton.css("background").indexOf("writeClicked")!=-1) {
+			if(Math.abs(currentTime-currentIndexTime)>=indexSpan){
+				writeButton.click();
+			}
+		}
+		
 	});
 }
 
