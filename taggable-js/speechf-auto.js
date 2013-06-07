@@ -406,7 +406,7 @@ $(window).load(function() {
 						"Accept-Language" :	"en-US,en;q=0.8",
 						"Accept-Charset" :	"ISO-8859-1,utf-8;q=0.7,*;q=0.3"
 					},
-					success: indexSuccessCallback($(this), progressBar)
+					success: indexSuccessCallback($(this), progressBar, keywords)
 				});
 			}	
 		} else { //escape
@@ -680,7 +680,7 @@ function adjustSearchResults(superParent, fullscreenMode) {
 		if(snippet==undefined || snippet==null) {
 			continue;
 		}
-		var snippetTop = progressBar.position().top -32;
+		var snippetTop = progressBar.position().top -65;
 		var snippetLeft = jObj.position().left - 30;
 		var snippetWidth = 90;
 
@@ -773,18 +773,15 @@ function buildSearchResult(progressBar, searchOutput, resultIndex, mediaElm) {
 
 	result.appendTo(progressBar);
 
-	var snippetWidth = 90;
-	var snippetHeight = 30;
+	var snippetWidth = 105;
+	var snippetHeight = 60;
 
-	//var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background: url(snippet.png) no-repeat top left; border:none; position:absolute; " +
-		//	"height:" + snippetHeight + "; font-size:x-small; font-family:Arial, Helvetica, sans-serif; z-index:2; width:" + snippetWidth + "; display:none;'>" + resultSnippet + "</div>");
-	
-	var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background-color:#FFFF85; border:none; position:absolute; " +
-			"height:" + snippetHeight + "; font-size:x-small; font-family:Arial, Helvetica, sans-serif; z-index:2; width:" + snippetWidth + "; text-align:center; display:none;'>" +
+	var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background-image:url(snippetbg.png); border:none; position:absolute;" +
+			"height:" + snippetHeight + "; font-size:11; font-weight:500; color:white; font-family:Lucida Console, Monaco5, monospace; z-index:2; width:" + snippetWidth + "; text-align:center; display:none;'>" +
 					"<div style='top:10%; left:5%; position:absolute; text-align:center;'>" + resultSnippet + "</div></div>");
 
 
-	var top = progressBar.position().top -32;
+	var top = progressBar.position().top -65;
 	var left = result.position().left - 30;
 
 	if((left + snippetWidth)>progressBarWidth) {
@@ -798,19 +795,21 @@ function buildSearchResult(progressBar, searchOutput, resultIndex, mediaElm) {
 }
 
 
-function indexSuccessCallback(textBox, progressBar) {
+function indexSuccessCallback(textBox, progressBar, keywords) {
 	//after indexing, remove the text
 	var currentTimeMin = getMinutes(currentIndexTime);	
 	displayTextForWrite(currentTimeMin, textBox);	
 
 	//after indexing, show successful indexed message
 	var writeBars = getNearbyElement(".speechf-writebar", textBox);
-	var snippetWidth = 50;
-	var snippetHeight = 10;
-	var snippet = $("<div class='speechf-indexedMes' style='background: url(snippet.png) no-repeat top left; border:none; position:absolute; " +
-			"height:" + snippetHeight + "; font-size:x-small; font-family:Arial, Helvetica, sans-serif; z-index:2; width:" + snippetWidth + "'>Indexed!</div>");
-	var top = progressBar.position().top - 10;
-	var left = $(writeBars[0]).position().left + 10;
+	var snippetWidth = 90;
+	var snippetHeight = 50;
+	keywords = keywords.substring(0,10) + "...";
+	var snippet = $("<div class='speechf-indexedMes' style='background: url(Tagged.png) no-repeat top left; border:none; position:absolute; " +
+			"height:" + snippetHeight + "; color:white; font-size:10; font-family:Lucida Console, Monaco5, monospace; z-index:2; width:" + snippetWidth + "'> " +
+			"<div style='top:5; left:5; position:absolute'>Indexed '" + keywords + "'!</div></div>");
+	var top = progressBar.position().top - 50;
+	var left = $(writeBars[0]).position().left - 20;
 	var superParent = progressBar.parents(".taggable-container");
 	var propsMap = globalPropsMap[superParent.attr("id")];
 	var progressBarWidth =  superParent.css("width"); //progress-bar css width is not reliable cuz of border width changes during media play
@@ -824,7 +823,7 @@ function indexSuccessCallback(textBox, progressBar) {
 	snippet.css("left", left);				
 	progressBar.before(snippet);	
 	snippet.fadeIn(2000);
-	snippet.fadeOut(2000);		
+	snippet.fadeOut(7000, "swing");		
 }
 
 function displayTextForSearch(textBox) {
@@ -934,7 +933,7 @@ function createSearchBox(controlsBase, propsMap) {
 	var width = progressBarWidth-170;
 	controlsBase.append("<div class='speechf-searchBox' style='margin-left:10px; margin-top:4px; margin-left:10px; float:left; background:#fff; '>" +
 			"<input class='speechf-searchText' type='text' style='width:" + width + "; height:27px;" +
-			"outline:none; font-size:x-small;border:none;background:#fff; float:left; '></input>" +
+			"outline:none; font-family:Lucida Console, Monaco5, monospace; font-size:small;border:none;background:#fff; float:left; '></input>" +
 			"<img src='searchboxDivider.png' style='float:left; border:none;  height:15; margin-top:7px'></img>" +
 			"<input class='speechf-searchButton' type='submit' style='background: url(search2.png) no-repeat center left; border:none; width:25; height:27; margin-left:3px; float:left;'  value=''></input>" +
 			"<input class='speechf-writeButton' type='submit' style='background: url(write3.png) no-repeat top left; border:none; width:35; height:27; margin-left:6px;'  value=''></input>" +
