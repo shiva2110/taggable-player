@@ -164,6 +164,12 @@ $(window).load(function() {
 		$(mediaElement)[0].currentTime = (percentage*mediaDuration);
 
 		$(".speechf-searchBox").show("slow");
+		
+		//move write bar when progress bar is clicked explicitly
+		var writeButton =  getNearbyElement(".speechf-writeButton", $(this));
+		if(writeButton.css("background").indexOf("writeClicked")!=-1) {
+			writeButton.click();
+		}
 
 	});	
 
@@ -802,13 +808,13 @@ function indexSuccessCallback(textBox, progressBar, keywords) {
 
 	//after indexing, show successful indexed message
 	var writeBars = getNearbyElement(".speechf-writebar", textBox);
-	var snippetWidth = 90;
-	var snippetHeight = 50;
+	var snippetWidth = 105;
+	var snippetHeight = 60;
 	keywords = keywords.substring(0,10) + "...";
-	var snippet = $("<div class='speechf-indexedMes' style='background: url(Tagged.png) no-repeat top left; border:none; position:absolute; " +
-			"height:" + snippetHeight + "; color:white; font-size:10; font-family:Lucida Console, Monaco5, monospace; z-index:2; width:" + snippetWidth + "'> " +
-			"<div style='top:5; left:5; position:absolute'>Indexed '" + keywords + "'!</div></div>");
-	var top = progressBar.position().top - 50;
+	var snippet = $("<div class='speechf-indexedMes' style='background: url(snippetbg.png) no-repeat top left; border:none; position:absolute; " +
+			"height:" + snippetHeight + "; color:white; font-size:11; font-family:Lucida Console, Monaco5, monospace; z-index:2; width:" + snippetWidth + "'> " +
+			"<div style='top:5; left:5; position:absolute'>Indexed <br />'" + keywords + "'!</div></div>");
+	var top = progressBar.position().top - 65;
 	var left = $(writeBars[0]).position().left - 20;
 	var superParent = progressBar.parents(".taggable-container");
 	var propsMap = globalPropsMap[superParent.attr("id")];
