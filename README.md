@@ -8,8 +8,8 @@ http://shiva2110.github.io/taggable-player
 
 Features
 ------
-#Tagging
+### Tagging
 ![ScreenShot](https://raw.github.com/shiva2110/taggable-player/master/readme-files/features-tag.png)
 
-#Search
+### Search
 ![ScreenShot](https://raw.github.com/shiva2110/taggable-player/master/readme-files/features-search.png)
