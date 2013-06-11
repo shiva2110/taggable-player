@@ -16,9 +16,12 @@ Features
 
 How to setup
 ------
-Your video can be embedded into taggable-player using simple HTML5 snippet like below:
-
+Your video can be embedded into taggable-player using simple HTML5 snippet as shown below:
+```
 <video data-player="taggable">
 	<source src="html5lecture.webm"></source>	
 </video>
+```
+
+Note the custom HTML attribute <b>data-player="taggable"</b> that enables embedding your video into taggable-player, instead of the default HTML5 video player.
 
