@@ -21,13 +21,14 @@ Download <b>distrib/tagplyr-0.1.min.js</b> and <b>distrib/jquery-1.8.3.min.js</b
 
 #### HTML syntax
 Your video can be embedded into taggable-player using simple HTML5 snippet as shown below:
-<b><u>In the head:</u></b>
+<br />
+<b>In the head:</b>
 ```
 <script src="jquery-1.8.3.min.js"></script>
 <script src="tagplyr-0.1.min.js"></script>
 ```
 	
-<b><u>In the body:</u></b>
+<b>In the body:</b>
 ```
 <video data-player="taggable">
 	<source src="html5lecture.webm"></source>	
