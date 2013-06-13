@@ -38,4 +38,8 @@ Your video can be embedded into taggable-player using simple HTML5 snippet as sh
 </video>
 ```
 
-Note the custom HTML attribute <b>data-player="taggable"</b> that enables embedding your video into taggable-player, instead of the default HTML5 video player. 
+Note the custom HTML attribute <b>data-player="taggable"</b> that enables embedding your video into taggable-player, instead of the default HTML5 video player.
+
+Browser Support
+------
+Taggable-player is currently tested and supported only in Chrome. 
