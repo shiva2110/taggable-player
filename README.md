@@ -42,4 +42,4 @@ Note the custom HTML attribute <b>data-player="taggable"</b> that enables embedd
 
 Browser Support
 ------
-Taggable-player is currently tested and supported only in Chrome. 
+Taggable-player is currently tested and supported only in <b>Chrome</b>. 
