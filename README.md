@@ -18,8 +18,8 @@ How to setup
 ------
 #### Downloads
 Download following js files from git repo:
-1. <b>distrib/tagplyr-0.1.min.js</b>
-2. <b>distrib/jquery-1.8.3.min.js</b>
+* <b>distrib/tagplyr-0.1.min.js</b>
+* <b>distrib/jquery-1.8.3.min.js</b>
 
 #### HTML syntax
 Your video can be embedded into taggable-player using simple HTML5 snippet as shown below:
