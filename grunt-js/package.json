@@ -1,0 +1,30 @@
+{
+  "name": "taggable-player",
+  "version": "0.0.0",
+  "description": "An HTML5 media player for tagging and searching media content ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shiva2110/taggable-player"
+  },
+  "keywords": [
+    "html5",
+    "taggable",
+    "tag",
+    "video",
+    "audio",
+    "media",
+    "player",
+    "search"
+  ],
+  "author": "Siva Natarajan",
+  "license": "Copyright 2013 shiva2110/taggable-player https://github.com/shiva2110/taggable-player/blob/master/LICENSE",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-jshint": "~0.6.0"
+  }
+}

@@ -64,7 +64,7 @@ $(window).load(function() {
 		//adjust super parent's position
 		superParent.css("left", $(this).css("left"));
 		superParent.css("top", $(this).css("top"));
-		superParent.css("position", $(this).css("position"));
+		superParent.css("position", "absolute");
 		propsMap["left"] = $(this).css("left");
 		propsMap["top"] = $(this).css("top");
 		propsMap["position"] = $(this).css("position");

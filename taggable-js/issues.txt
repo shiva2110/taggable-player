@@ -1,0 +1,15 @@
+open Issues:
+
+1. tag gable player created without "position:absolute" not displaying search results properly.
+1. Results located at the same place is more cluttered as it shows all the results that are similar
+2. Need to write unit tests, look at what others have done, for example: video.js
+3. Videojs, angular.js etc. uses grunt and node.js for build and automation. Need to check on that.
+
+---
+4. Need an easier way to deploy contents to ec2 server.
+5. Add grunt js for testing
+6. Improve search algo
+7. Make it workable for audio
+8. Improve UI if possible
+9. It would be useful to add tagging inside the video content, like selecting elements within the video (imagine a equation or object) and adding tags.
+10. It would be very useful if personal tags can be shown. For example: People can take notes on the video, and the very same notes need to be retrieved.
