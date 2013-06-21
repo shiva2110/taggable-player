@@ -13,5 +13,6 @@ logs/
 data/
 classes/
 sampledata/
+node_modules/
 **/target/
 **/.settings/
