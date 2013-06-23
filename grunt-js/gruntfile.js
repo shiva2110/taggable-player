@@ -13,15 +13,26 @@ grunt.initConfig({
         '../distrib/tagplyr.min.js': ['../taggable-js/taggable-player.js']
       }
     }
-  }//end of uglify
+  },//end of uglify
+  jshint: {
+	default: {
+		options: {
+			"eqeqeq":false,
+		},
+		src:['../taggable-js/taggable-player.js']
+	}
+  }//end of jshint
   
 });
 
 
 
 grunt.loadNpmTasks('grunt-contrib-uglify');
+grunt.loadNpmTasks('grunt-contrib-jshint');
+
 grunt.registerTask('default', 'running default grunt tasks', function(){
 		grunt.task.run(['uglify']);
+//		grunt.task.run(['jshint:default']);
 		//add custom tasks or function calls here:
 		var done = this.async();
 		replace_js_in_file("../distrib/htmllecture.html", /tagplyr((?!\.min\.js).)*\.min\.js/g , "tagplyr.min.js", done);

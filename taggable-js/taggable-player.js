@@ -55,7 +55,13 @@ $(window).load(function() {
 		propsMap["mediasrc"] = $(sourceElement[0]).attr("src");
 		propsMap["domain"] = document.domain;
 		propsMap["width"] = $(this).attr("width");
+		if(propsMap["width"]==undefined) {
+			propsMap["width"] = $(this).css("width");
+		}
 		propsMap["height"] = $(this).attr("height");
+		if(propsMap["height"]==undefined) {
+			propsMap["height"] = $(this).css("height");
+		}
 		propsMap["mediaIndex"] = mediaIndexKey;
 		
 
@@ -958,6 +964,7 @@ function isSpeechfComponent(elm) {
 
 function createSearchBox(controlsBase, propsMap) {
 	var progressBarWidth = propsMap["width"];
+	progressBarWidth = progressBarWidth.replace("px", "");
 	var width = progressBarWidth-170;
 	controlsBase.append("<div class='speechf-searchBox' style='margin-left:10px; margin-top:4px; margin-left:10px; float:left; background:#fff; '>" +
 			"<input class='speechf-searchText' type='text' style='width:" + width + "; height:27px;" +
