@@ -57,10 +57,16 @@ $(window).load(function() {
 		propsMap["width"] = $(this).attr("width");
 		if(propsMap["width"]==undefined) {
 			propsMap["width"] = $(this).css("width");
+			if(propsMap["width"]==undefined) {
+				propsMap["width"] = defaultMediaWidth;
+			}
 		}
 		propsMap["height"] = $(this).attr("height");
 		if(propsMap["height"]==undefined) {
 			propsMap["height"] = $(this).css("height");
+			if(propsMap["height"]==undefined) {
+				propsMap["height"]="auto";
+			}
 		}
 		propsMap["mediaIndex"] = mediaIndexKey;
 		
@@ -550,11 +556,11 @@ function minscreen(minscreenButton) {
 
 			//adjust mediaElement
 			mediaElement.css("width", propsMap["width"]);
-			mediaElement.css("height", "auto");
+			mediaElement.css("height", propsMap["height"]);
 
 			//adjust super parent
 			superParent.css("width", propsMap["width"]);
-			superParent.css("height", "auto");
+			superParent.css("height",propsMap["height"] );
 			superParent.css("left", propsMap["left"]);
 			superParent.css("top", propsMap["top"]); 
 
@@ -1011,13 +1017,8 @@ function createSnippetBubble() {
 
 function createMediaElement(superParent, mediaObj, propsMap) {
 
-	if(propsMap.hasOwnProperty("width") && propsMap["width"]!=undefined) {
-		mediaObj.attr('width', propsMap["width"]);
-	} else {
-		propsMap["width"] = defaultMediaWidth;
-		mediaObj.attr('width', defaultMediaWidth);
-	}
-	
+	mediaObj.attr('width', propsMap["width"]);
+        mediaObj.attr('height', propsMap["height"]);	
 	mediaObj.css("left", "");
 	mediaObj.css("top", "");
 	mediaObj.css("position", "");
