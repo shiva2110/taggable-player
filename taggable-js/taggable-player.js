@@ -77,6 +77,7 @@ $(window).load(function() {
 		superParent.css("left", $(this).css("left"));
 		superParent.css("top", $(this).css("top"));
 		superParent.css("position", "absolute");
+		superParent.css("box-shadow", "2px 2px 5px #888888");
 		propsMap["left"] = $(this).css("left");
 		propsMap["top"] = $(this).css("top");
 		propsMap["position"] = $(this).css("position");
@@ -248,18 +249,21 @@ $(window).load(function() {
 
 		var textBox =  getNearbyElement(".speechf-searchText", $(this));
 
-		//capture searchQuery if any
-		if(textBox[0].value.length!=0 && textBox[0].value.indexOf("Tag at")==-1) {
-			currentSearchQuery = textBox[0].value;
-		}
+		
 
 		//display default text
 		var mediaElement = getNearbyMediaElement($(this));	
 		var currentTime = $(mediaElement)[0].currentTime;
 		currentIndexTime = currentTime;
 		var currentTimeMin = getMinutes(currentTime);	
-		displayTextForWrite(currentTimeMin, textBox);	
+		//capture searchQuery if any
+		if(textBox[0].value.length==0 || textBox[0].value.indexOf("Tag at")!=-1 || textBox[0].value.indexOf("Enter your search terms")!=-1) {
+			displayTextForWrite(currentTimeMin, textBox);
+		} else {
+			currentSearchQuery = textBox[0].value;	
+		}
 
+		
 		//hide search results and snippets
 		var results = getNearbyElement("[class|='speechfresult']", $(this));
 		var snippets = getNearbyElement("[class|='speechfsnippet']", $(this));
@@ -485,9 +489,7 @@ function fullscreen(fullscreenButton) {
 			var screenW = screen.width;
 
 			//adjust super parent
-			var superParent = fullscreenButton.parents(".taggable-container");				
-			superParent.css("width", screenW);
-			superParent.css("height", screenH-50);
+			var superParent = fullscreenButton.parents(".taggable-container");
 			superParent.css("left", 0);
 			superParent.css("top", 50);
 			superParent.css("background-color", "black");
@@ -541,7 +543,7 @@ function minscreen(minscreenButton) {
 
 			//adjust controlsBase
 			var controlsBase = getNearbyElement(".controls-base", minscreenButton);
-			controlsBase.css("width", propsMap["width"]);				
+			controlsBase.css("width", propsMap["width"]);		
 			arrangeControlsBase(controlsBase, false);
 
 			//adjust border-width and widh of progressBar
@@ -560,7 +562,6 @@ function minscreen(minscreenButton) {
 
 			//adjust super parent
 			superParent.css("width", propsMap["width"]);
-			superParent.css("height",propsMap["height"] );
 			superParent.css("left", propsMap["left"]);
 			superParent.css("top", propsMap["top"]); 
 
