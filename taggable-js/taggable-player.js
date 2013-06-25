@@ -590,17 +590,17 @@ function arrangeControlsBase(controlsBase, fullscreenMode) {
 	var maxWidth;
 	var searchTextWidth;
 	var controls;
+	var searchBoxElems;
 	if(fullscreenMode) {
 		maxWidth = controlsBase.css("width");
 		maxWidth = maxWidth.replace("px", "");
 		var center = (maxWidth/2);
 		searchTextWidth = 0.30 * (maxWidth);
 		controls = controlsBase.children();
-
 		var adjustedSearchBoxWidth; 
 		for(i=0; i<controls.length; i++) {
 			if(controls[i].className=="speechf-searchBox"){
-				var searchBoxElems = $(controls[i]).children();
+				searchBoxElems = $(controls[i]).children();
 				for(j=0; j<searchBoxElems.length; j++) {
 					if(searchBoxElems[j].className == "speechf-searchText"){
 						$(searchBoxElems[j]).css("width", searchTextWidth);
@@ -625,7 +625,7 @@ function arrangeControlsBase(controlsBase, fullscreenMode) {
 
 		for(i=0; i<controls.length; i++) {
 			if(controls[i].className=="speechf-searchBox"){
-				var searchBoxElems = $(controls[i]).children();
+				searchBoxElems = $(controls[i]).children();
 				for(j=0; j<searchBoxElems.length; j++) {
 					if(searchBoxElems[j].className == "speechf-searchText"){
 						$(searchBoxElems[j]).css("width", searchTextWidth);
@@ -651,16 +651,16 @@ function adjustWriteBar(superParent, fullscreenMode) {
 	var writeBar;
 
 	// find the one write bar to operate on
-	if(writeBars==undefined) {
+	if(writeBars===undefined) {
 		return;
 	}	
-	if(writeBars.length==undefined) {
+	if(writeBars.length===undefined) {
 		writeBar = writeBars;
 	} else if(writeBars.length >= 1) {
 		writeBar = $(writeBars[0]);
 	}
 
-	if(writeBar == undefined) {
+	if(writeBar === undefined) {
 		return;
 	}
 
@@ -675,13 +675,13 @@ function adjustWriteBar(superParent, fullscreenMode) {
 	var currentPercentage;
 	// calculate adjusted pos and width
 	if(fullscreenMode) {
-		var width = propsMap["width"];
+		var width = propsMap.width;
 		width = width.replace("px", "");
 		currentPercentage = currentleftPos/width;
 		adjustedMaxWidth = screen.width;
 	} else {
 		currentPercentage = currentleftPos/(screen.width);
-		adjustedMaxWidth = propsMap["width"];
+		adjustedMaxWidth = propsMap.width;
 		adjustedMaxWidth = adjustedMaxWidth.replace("px", "");
 	}	
 
@@ -713,15 +713,16 @@ function adjustSearchResults(superParent, fullscreenMode) {
 		left = left.replace("px", "");
 		var adjustedLeftPos;
 		var maxWidth;
+		var percentage;
 		if(fullscreenMode) {
-			var curWidth = propsMap["width"];
+			var curWidth = propsMap.width;
 			curWidth = curWidth.replace("px", "");
-			var percentage = left/curWidth;
+			percentage = left/curWidth;
 			maxWidth = screen.width;
 			adjustedLeftPos = percentage * (maxWidth);
 		} else {
-			var percentage = left/(screen.width);
-			maxWidth = propsMap["width"];
+			percentage = left/(screen.width);
+			maxWidth = propsMap.width;
 			maxWidth = maxWidth.replace("px", "");
 			adjustedLeftPos = percentage * (maxWidth);
 		}
@@ -729,14 +730,14 @@ function adjustSearchResults(superParent, fullscreenMode) {
 
 		//adjust snippet pos
 		var snippet = snippetSelector(jObj);
-		if(snippet==undefined || snippet==null) {
+		if(snippet===undefined || snippet===null) {
 			continue;
 		}
 		var snippetTop = progressBar.position().top -65;
 		var snippetLeft = jObj.position().left - 30;
 		var snippetWidth = 90;
 
-		maxWidth = parseInt(maxWidth);
+		maxWidth = parseInt(maxWidth,10);
 		if((snippetLeft + snippetWidth)>maxWidth) {
 			snippetLeft = snippetLeft - (snippetLeft + snippetWidth - maxWidth) - 2;
 		} else if (snippetLeft<0) {
@@ -752,13 +753,13 @@ function snippetSelector(resultObj) {
 	var index = className.charAt(className.length-1);
 	var numPattern = /[0-9]/g;
 	var match = numPattern.exec(className);
-	if(match==null){
+	if(match===null){
 		return null;
 	}
 
 	var snippetClassName = ".speechfsnippet-" + match;
 	var snippet = getNearbyElement(snippetClassName, resultObj);
-	if(snippet==undefined){
+	if(snippet===undefined){
 		return null;
 	}
 
@@ -770,7 +771,7 @@ function snippetClassNameSelector(resultClassName){
 	var index = resultClassName.charAt(resultClassName.length-1);
 	var numPattern = /[0-9]/g;
 	var match = numPattern.exec(resultClassName);
-	if(match==null){
+	if(match===null){
 		return null;
 	}
 
@@ -794,7 +795,7 @@ function searchSuccessCallback(json, textBox) {
 	var progressBar = getNearbyElement(".progress-bar", textBox);
 	var mediaElm = getNearbyMediaElement(textBox);	
 
-	if(searchOutput.length==undefined) {
+	if(searchOutput.length===undefined) {
 		buildSearchResult(progressBar, searchOutput, 0, mediaElm);
 	} else {
 		var max = 10;
@@ -906,7 +907,7 @@ function getSearchIconBg() {
 
 function addMediaEvents(elm) {
 	$(elm)[0].addEventListener("ended", function(){
-		var playButton = getNearbyElement(".speechf-playbutton", $(elm))
+		var playButton = getNearbyElement(".speechf-playbutton", $(elm));
 		playButton.prop("src",  playimg);
 		playButton.prop("title", "play");
 	});
@@ -943,11 +944,11 @@ function getNearbyElement(className, elm) {
 
 function getNearbyMediaElement(elm) {
 	var mediaElement = getNearbyElement("audio", elm);	
-	if(mediaElement.length==0) {
+	if(mediaElement.length===0) {
 		mediaElement = getNearbyElement("video", elm);	
 	}
 
-	if(mediaElement.length==0) {
+	if(mediaElement.length===0) {
 		return;
 	}
 
@@ -956,10 +957,10 @@ function getNearbyMediaElement(elm) {
 
 function findMediaElement(parent) {
 	var mediaElement = parent.find("audio");	
-	if(mediaElement.length==0) {
+	if(mediaElement.length===0) {
 		mediaElement = parent.find("video");
 	}
-	if(mediaElement.length==0) {
+	if(mediaElement.length===0) {
 		return;
 	}
 
@@ -970,7 +971,7 @@ function findMediaElement(parent) {
 function isSpeechfComponent(elm) {
 
 	var superparent = elm.parents(".taggable-container");
-	if(typeof(superparent)=='undefined' || superparent.length==0) {
+	if(typeof(superparent)==='undefined' || superparent.length===0) {
 		return false;
 	}
 	return true;
@@ -978,7 +979,7 @@ function isSpeechfComponent(elm) {
 
 
 function createSearchBox(controlsBase, propsMap) {
-	var progressBarWidth = propsMap["width"];
+	var progressBarWidth = propsMap.width;
 	progressBarWidth = progressBarWidth.replace("px", "");
 	var width = progressBarWidth-170;
 	controlsBase.append("<div class='speechf-searchBox' style='margin-left:10px; margin-top:4px; margin-left:10px; float:left; background:#fff; '>" +
@@ -1014,20 +1015,17 @@ function createPlayButton(controlsBase) {
 function createProgressSlider(progressBar, propsMap) {
 
 	var progressSlider = 
-		$("<div class='speechf-progressSlider' style='height:14px; border-style:solid; border-width:1px; border-color:#002E3D; position:absolute; float:left;'></div>")
+		$("<div class='speechf-progressSlider' style='height:14px; border-style:solid; border-width:1px; border-color:#002E3D; position:absolute; float:left;'></div>");
 		progressBar.append(progressSlider);
 	var pos = progressSlider.offset().left;
-	propsMap["progressSliderPos"] = pos;
+	propsMap.progressSliderPos = pos;
 }
 
-function createSnippetBubble() {
-	$("<div ></div>")
-}
 
 function createMediaElement(superParent, mediaObj, propsMap) {
 
-	mediaObj.attr('width', propsMap["width"]);
-        mediaObj.attr('height', propsMap["height"]);	
+	mediaObj.attr('width', propsMap.width);
+        mediaObj.attr('height', propsMap.height);	
 	mediaObj.css("left", "");
 	mediaObj.css("top", "");
 	mediaObj.css("position", "");
@@ -1039,9 +1037,9 @@ function createMediaElement(superParent, mediaObj, propsMap) {
 	
 	
 	mediaObj.appendTo(superParent);
-	propsMap["mediaHeight"] = mediaObj.css("height");
+	propsMap.mediaHeight = mediaObj.css("height");
 
-	if(!supportedFormat(propsMap["mediasrc"]) || !supportedBrowser()) {
+	if(!supportedFormat(propsMap.mediasrc) || !supportedBrowser()) {
 		
 		var brokenVideo;
 		if(!supportedBrowser()) {
@@ -1052,17 +1050,17 @@ function createMediaElement(superParent, mediaObj, propsMap) {
 			"Sorry :( , This HTML5 media player does not supports your media file. <br/> The supported media formats are ogg, mp4 and webm.</div>");
 		}
 		
-		brokenVideo.css("width", propsMap["width"]);
-		brokenVideo.css("height", propsMap["mediaHeight"]);
+		brokenVideo.css("width", propsMap.width);
+		brokenVideo.css("height", propsMap.mediaHeight);
 		mediaObj.remove();
 		brokenVideo.appendTo(superParent);
 
-		var height = propsMap["mediaHeight"].replace("px", "");
+		var height = propsMap.mediaHeight.replace("px", "");
 		var brokenMesTop = brokenVideo.offset().top + (height/2);		
-		var width = propsMap["width"].replace("px", "");
+		var width = propsMap.width.replace("px", "");
 		var brokenMesLeft = brokenVideo.offset().left + (width/2);		
-		var brokenMes = $("<div style='font-size:x-small; font-family:Arial, Helvetica, sans-serif; left:" + brokenMesLeft + "; top:" + brokenMesTop + " color:grey;'>Sorry :\ , This HTML5 media player does not supports this media file.</div>");
-		brokenVideo.innerHTML = "<div style='background-color:black; color:grey;'>hello</div>"
+		var brokenMes = $("<div style='font-size:x-small; font-family:Arial, Helvetica, sans-serif; left:" + brokenMesLeft + "; top:" + brokenMesTop + " color:grey;'>Sorry :( , This HTML5 media player does not supports this media file.</div>");
+		brokenVideo.innerHTML = "<div style='background-color:black; color:grey;'>hello</div>";
 			return;
 	}
 
@@ -1077,9 +1075,9 @@ function supportedBrowser() {
 }
 
 function supportedFormat(src) {
-	if(src.indexOf(".mp4")!=-1 || src.indexOf(".m4a")!=-1 || src.indexOf(".m4b")!=-1 || src.indexOf(".m4v")!=-1
-			|| src.indexOf(".ogg")!=-1 || src.indexOf(".oga")!=-1 || src.indexOf(".ogv")!=-1 || src.indexOf(".ogx")!=-1
-			|| src.indexOf(".webm")!=-1) {
+	if(src.indexOf(".mp4")!=-1 || src.indexOf(".m4a")!=-1 || src.indexOf(".m4b")!=-1 || src.indexOf(".m4v")!=-1 ||
+		src.indexOf(".ogg")!=-1 || src.indexOf(".oga")!=-1 || src.indexOf(".ogv")!=-1 || src.indexOf(".ogx")!=-1 || 
+		src.indexOf(".webm")!=-1) {
 		return true;
 	}
 
@@ -1092,7 +1090,7 @@ function createControlsBase(divElm, propsMap) {
 	var controlsBase = $("<div class='controls-base' style='height:35px; background-color:#646060; '>"  +
 	"</div>");
 	if(propsMap.hasOwnProperty("width")) {
-		controlsBase.css("width", propsMap["width"]);
+		controlsBase.css("width", propsMap.width);
 	} else {
 		controlsBase.css("width", defaultMediaWidth);
 	}
@@ -1104,7 +1102,7 @@ function createProgressBar(baseElm,propsMap) {
 	var progressBar = $("<div class='progress-bar' style='height:" + progressBarHeight + "; background-color:#B8B8B8;'>" +
 	"</div>");
 	if(propsMap.hasOwnProperty("width")) {
-		progressBar.css("width", propsMap["width"]);
+		progressBar.css("width", propsMap.width);
 	} else {
 		progressBar.css("width", defaultMediaWidth);
 	}
