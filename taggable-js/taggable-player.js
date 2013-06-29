@@ -37,75 +37,67 @@ var snippetImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGkAAAA9CAYAAACu
 var taggedImg = "data:image/png;base64,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";
 var searchBoxDividerImg = "data:image/png;base64,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";
 
+var replaceWithSuperParent = function(userObj, superParent){
+	$(userObj).replaceWith(superParent);
+};
+
 $(window).load(function() {
 
 	$("[data-player='taggable']").each(function() {
-		var propsMap = {};
-		
+
 		//check if this element is either audio or video
 		if(this.tagName!="VIDEO" && this.tagName!="AUDIO") {
 			return;
 		}
-		
-		var sourceElement = $(this).find("source");
-		if(sourceElement.length===0) {
+
+		var propsMap = deriveProperties(this);
+		if(propsMap==null) {
 			return;
 		}
-		
-		propsMap.mediasrc = $(sourceElement[0]).attr("src");
-		propsMap.domain = document.domain;
-		propsMap.width = $(this).attr("width");
-		if(propsMap.width===undefined) {
-			propsMap.width = $(this).css("width");
-			if(propsMap.width===undefined) {
-				propsMap.width = defaultMediaWidth;
-			}
-		}
-		propsMap.height = $(this).attr("height");
-		if(propsMap.height===undefined) {
-			propsMap.height = $(this).css("height");
-			if(propsMap.height===undefined) {
-				propsMap.height="auto";
-			}
-		}
-		propsMap.mediaIndex = mediaIndexKey;
-		
-
-		var superParent = $("<div class='taggable-container' id=" + mediaIndexKey + "/>");
-		
-		//adjust super parent's position
-		superParent.css("left", $(this).css("left"));
-		superParent.css("top", $(this).css("top"));
-		superParent.css("position", "absolute");
-		superParent.css("box-shadow", "2px 2px 5px #888888");
-		propsMap.left = $(this).css("left");
-		propsMap.top = $(this).css("top");
-		propsMap.position = $(this).css("position");
-		
-		var mediaObj = $(this).clone();
-		var mediaElm = createMediaElement(superParent, mediaObj, propsMap);
-		var progressBar = createProgressBar(superParent, propsMap);
-		var controlsBase = createControlsBase(superParent, propsMap);	
-		createPlayButton(controlsBase);
-		createSearchBox(controlsBase, propsMap);
-		if(this.tagName=="VIDEO"){
-			createScreenAdjust(controlsBase);
-		}
-
 		globalPropsMap[mediaIndexKey] = propsMap;
 		mediaIndexKey++;
-		// In case the media element is broken, disable all controls.
-		if(mediaElm===undefined) {
-			var disablerLeft = progressBar.css("left");
-			var disablerTop = progressBar.css("top");
-			var disablerWidth = controlsBase.css("width");
-			var disablerHeight = controlsBase.css("height");
-			var disabler = $("<div style='background-color:grey; left:"+ disablerLeft + "; top:" + disablerTop + "; width:" + disablerWidth + "; height:" + disablerHeight +"; position:absolute; z-index:3; opacity:0.5'></div>");
-			disabler.appendTo(controlsBase);
-		}
 		
-		$(this).replaceWith(superParent);
+		createSuperParent(this, propsMap, replaceWithSuperParent);
+	});
 
+	var leftButtonDown = false;
+	var cornerA={'x':null,'y':null};
+	var prevRect = {'cornerA': cornerA, 'width':null, 'height':null};
+	$(".tagabl-canvas")[0].addEventListener('mousedown', function(e) {
+		if(e.which==1) { //if leftButton
+			leftButtonDown = true;
+			cornerA.x = e.pageX;	
+			cornerA.y = e.pageY;
+		}		
+	});
+
+	$(".tagabl-canvas")[0].addEventListener('mouseup', function(e) {
+		if(e.which==1) { //if leftButton
+			leftButtonDown = false;
+		}		
+	});
+
+	$(".tagabl-canvas")[0].addEventListener('mousemove', function(e) {
+		if(leftButtonDown){
+			if(cornerA.x!=null && cornerA.y!=null){
+				var context = this.getContext('2d');	
+				context.fillStyle = "rgba(0,0,0,0.2)";
+
+				//if prevRect exists, clear it
+				if(prevRect.width!=null && prevRect.height!=null){
+					context.clearRect(cornerA.x, cornerA.y, prevRect.width, prevRect.height);
+				}
+
+				//create new rect
+				var width = e.pageX-cornerA.x;
+				var height = e.pageY-cornerA.y;
+				context.fillRect(cornerA.x, cornerA.y, width, height);
+
+				//fill prevRect
+				prevRect.width = width;
+				prevRect.height = height;				
+			}
+		}		
 	});
 
 	$(".speechf-fullscreen").click(function() {
@@ -189,7 +181,7 @@ $(window).load(function() {
 		$(mediaElement)[0].currentTime = (percentage*mediaDuration);
 
 		$(".speechf-searchBox").show("slow");
-		
+
 		//move write bar when progress bar is clicked explicitly
 		var writeButton =  getNearbyElement(".speechf-writeButton", $(this));
 		if(writeButton.attr("title").indexOf("writeClicked")!=-1) {
@@ -249,7 +241,7 @@ $(window).load(function() {
 
 		var textBox =  getNearbyElement(".speechf-searchText", $(this));
 
-		
+
 
 		//display default text
 		var mediaElement = getNearbyMediaElement($(this));	
@@ -263,7 +255,7 @@ $(window).load(function() {
 			currentSearchQuery = textBox[0].value;	
 		}
 
-		
+
 		//hide search results and snippets
 		var results = getNearbyElement("[class|='speechfresult']", $(this));
 		var snippets = getNearbyElement("[class|='speechfsnippet']", $(this));
@@ -325,44 +317,44 @@ $(window).load(function() {
 	});
 
 	$(".speechf-searchButton").click(function() {	
-			//change to search clicked
-			$(this).css("background", "url(" + searchClickedImg + ") no-repeat top left");
-			$(this).attr("title", "searchClicked");
+		//change to search clicked
+		$(this).css("background", "url(" + searchClickedImg + ") no-repeat top left");
+		$(this).attr("title", "searchClicked");
 
-			//enable write toggle
-			var writeButton =  getNearbyElement(".speechf-writeButton", $(this));
-			writeButton.css("background", "url(" + writeButtonImg +") no-repeat top left");
-			writeButton.attr("title", "writeButton");
+		//enable write toggle
+		var writeButton =  getNearbyElement(".speechf-writeButton", $(this));
+		writeButton.css("background", "url(" + writeButtonImg +") no-repeat top left");
+		writeButton.attr("title", "writeButton");
 
-			//remove write bars if any
-			var writeBars = getNearbyElement(".speechf-writebar", $(this));
-			var jObj;
-			for(i=0; i<writeBars.length; i++) {
-				jObj = $(writeBars[i]);
-				jObj.remove();
-			}		
+		//remove write bars if any
+		var writeBars = getNearbyElement(".speechf-writebar", $(this));
+		var jObj;
+		for(i=0; i<writeBars.length; i++) {
+			jObj = $(writeBars[i]);
+			jObj.remove();
+		}		
 
-			var indexedMes = getNearbyElement(".speechf-indexedMes", $(this));
-			for(i=0; i<indexedMes.length; i++) {
-				jObj = $(indexedMes[i]);
-				jObj.remove();
-			}
+		var indexedMes = getNearbyElement(".speechf-indexedMes", $(this));
+		for(i=0; i<indexedMes.length; i++) {
+			jObj = $(indexedMes[i]);
+			jObj.remove();
+		}
 
-			//display default text
-			var textBox =  getNearbyElement(".speechf-searchText", $(this));
-			if(currentSearchQuery.length!==0 && currentSearchQuery.indexOf("Tag at")==-1) {
-				textBox[0].value = currentSearchQuery;
-			} else {
-				displayTextForSearch(textBox);	
-			}
+		//display default text
+		var textBox =  getNearbyElement(".speechf-searchText", $(this));
+		if(currentSearchQuery.length!==0 && currentSearchQuery.indexOf("Tag at")==-1) {
+			textBox[0].value = currentSearchQuery;
+		} else {
+			displayTextForSearch(textBox);	
+		}
 
-			//show earlier search results and snippets
-			var results = getNearbyElement("[class|='speechfresult']", $(this));
+		//show earlier search results and snippets
+		var results = getNearbyElement("[class|='speechfresult']", $(this));
 
-			for(i=0; i<results.length; i++) {
-				jObj = $(results[i]);
-				jObj.show();
-			}
+		for(i=0; i<results.length; i++) {
+			jObj = $(results[i]);
+			jObj.show();
+		}
 	});
 
 	$(".taggable-audio").each(function(){
@@ -372,7 +364,7 @@ $(window).load(function() {
 
 	$(".taggable-video").each(function(){
 		addMediaEvents(this);
-	});
+	}); 
 
 
 	$(".speechf-searchText").keypress(function(e) {
@@ -468,7 +460,7 @@ $(window).load(function() {
 			if(superParent===undefined || superParent[0].className.indexOf("taggable-container")==-1) {
 				return;
 			}
-			
+
 			var minscreenButton  = superParent.find(".speechf-fullscreen");
 			minscreen(minscreenButton);
 		}
@@ -479,6 +471,73 @@ $(window).load(function() {
 	// have search button clicked as default
 	$(".speechf-searchButton").click(); 
 });
+
+function createSuperParent(userObj, propsMap, replaceWithSuperParent) {
+	var superParent = $("<div class='taggable-container' id=" + mediaIndexKey + "/>");
+
+	//adjust super parent's position
+	superParent.css("left", $(userObj).css("left"));
+	superParent.css("top", $(userObj).css("top"));
+	superParent.css("position", "absolute");
+	superParent.css("box-shadow", "2px 2px 5px #888888");
+
+
+	var mediaObj = $(userObj).clone();
+	var mediaElm = createMediaElement(mediaObj, propsMap);
+	mediaElm.appendTo(superParent);
+
+	var progressBar = createProgressBar(propsMap);
+	progressBar.appendTo(superParent);
+
+	var controlsBase = createControlsBase(propsMap);	
+	controlsBase.appendTo(superParent);
+	
+	var canvas = createMediaCanvas({'top':mediaElm.position().top,
+		'left':mediaElm.position().left,
+		'height':propsMap.height,
+		'width':propsMap.width});
+	progressBar.before(canvas);
+	
+	replaceWithSuperParent(userObj, superParent);
+}
+
+//This function derives properties from user's video/audio object into an associative array
+//returns null in case if it finds problem in deriving properites out of the user object
+function deriveProperties(userObj) {
+	var sourceElement = $(userObj).find("source");
+	if(sourceElement.length===0) {
+		return null;
+	}
+
+	var propsMap = {};
+	propsMap.tagName = userObj.tagName;
+	propsMap.mediasrc = $(sourceElement[0]).attr("src");
+	propsMap.domain = document.domain;
+	propsMap.width = $(userObj).attr("width");
+	if(propsMap.width===undefined) {
+		propsMap.width = $(userObj).css("width");
+		if(propsMap.width===undefined) {
+			propsMap.width = defaultMediaWidth;
+		}
+	}
+	propsMap.height = $(userObj).attr("height");
+	if(propsMap.height===undefined) {
+		propsMap.height = $(userObj).css("height");
+		if(propsMap.height===undefined) {
+			propsMap.height="auto";
+		}
+	}
+	propsMap.mediaIndex = mediaIndexKey;
+	propsMap.left = $(userObj).css("left");
+	propsMap.top = $(userObj).css("top");
+	propsMap.position = $(userObj).css("position");
+	return propsMap;
+}
+
+
+function createMediaCanvas(props) {
+	return $("<div></div><canvas class='tagabl-canvas' width=" +  props.width + " height=" + props.height +" style='position:absolute;z:index:3;top:" + props.top + "; left:" + props.left + "'></canvas>");
+}
 
 
 function fullscreen(fullscreenButton) {
@@ -530,7 +589,7 @@ function fullscreen(fullscreenButton) {
 			superParent[0].webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
 			fullscreenButton.attr("src" , minscreenimg);
 			fullscreenButton.attr("title" , "minscreen");
-			
+
 		}
 	}
 }
@@ -831,7 +890,7 @@ function buildSearchResult(progressBar, searchOutput, resultIndex, mediaElm) {
 
 	var snippet = $("<div class='speechfsnippet-" + resultIndex +"' style='background-image:url(" + snippetImg + "); border:none; position:absolute;" +
 			"height:" + snippetHeight + "; font-size:11; font-weight:500; color:white; font-family:Lucida Console, Monaco5, monospace; z-index:2; width:" + snippetWidth + "; text-align:center; display:none;'>" +
-					"<div style='top:10%; left:5%; position:absolute; text-align:center;'>" + resultSnippet + "</div></div>");
+			"<div style='top:10%; left:5%; position:absolute; text-align:center;'>" + resultSnippet + "</div></div>");
 
 
 	var top = progressBar.position().top -65;
@@ -925,7 +984,7 @@ function addMediaEvents(elm) {
 		progressBar.css("border-left-style", "solid");
 		progressBar.css("border-left-color", "#FCFCFC");
 		progressBar.css("width" , (progressBarOrigWidth-borderWidth));	
-		
+
 		//move write bar if required
 		var writeButton =  getNearbyElement(".speechf-writeButton", $(elm));
 		if(writeButton.attr("title").indexOf("writeClicked")!=-1) {
@@ -933,7 +992,7 @@ function addMediaEvents(elm) {
 				writeButton.click();
 			}
 		}
-		
+
 	});
 }
 
@@ -978,11 +1037,11 @@ function isSpeechfComponent(elm) {
 }
 
 
-function createSearchBox(controlsBase, propsMap) {
+function createSearchBox(propsMap) {
 	var progressBarWidth = propsMap.width;
 	progressBarWidth = progressBarWidth.replace("px", "");
 	var width = progressBarWidth-170;
-	controlsBase.append("<div class='speechf-searchBox' style='margin-left:10px; margin-top:4px; margin-left:10px; float:left; background:#fff; '>" +
+	return $("<div class='speechf-searchBox' style='margin-left:10px; margin-top:4px; margin-left:10px; float:left; background:#fff; '>" +
 			"<input class='speechf-searchText' type='text' style='width:" + width + "; height:27px;" +
 			"outline:none; font-family:Lucida Console, Monaco5, monospace; font-size:small;border:none;background:#fff; float:left; '></input>" +
 			"<img src=" + searchBoxDividerImg + " style='float:left; border:none;  height:15; margin-top:7px'></img>" +
@@ -992,9 +1051,9 @@ function createSearchBox(controlsBase, propsMap) {
 	"</div>");
 }
 
-function createScreenAdjust(controlsBase) {
+function createScreenAdjust() {
 
-	controlsBase.append("<input type='image' " +
+	return $("<input type='image' " +
 			"src=" + fullscreenimg + " " +
 			"title=fullscreen " +
 			"class='speechf-fullscreen'" +
@@ -1004,7 +1063,7 @@ function createScreenAdjust(controlsBase) {
 
 function createPlayButton(controlsBase) {
 
-	controlsBase.append("<input type='image' " +
+	return $("<input type='image' " +
 			"title=play " +
 			"src=" + playimg + " " +
 			"class='speechf-playbutton'" +
@@ -1016,16 +1075,16 @@ function createProgressSlider(progressBar, propsMap) {
 
 	var progressSlider = 
 		$("<div class='speechf-progressSlider' style='height:14px; border-style:solid; border-width:1px; border-color:#002E3D; position:absolute; float:left;'></div>");
-		progressBar.append(progressSlider);
+	progressBar.append(progressSlider);
 	var pos = progressSlider.offset().left;
 	propsMap.progressSliderPos = pos;
 }
 
 
-function createMediaElement(superParent, mediaObj, propsMap) {
+function createMediaElement(mediaObj, propsMap) {
 
 	mediaObj.attr('width', propsMap.width);
-        mediaObj.attr('height', propsMap.height);	
+	mediaObj.attr('height', propsMap.height);	
 	mediaObj.css("left", "");
 	mediaObj.css("top", "");
 	mediaObj.css("position", "");
@@ -1034,13 +1093,12 @@ function createMediaElement(superParent, mediaObj, propsMap) {
 	} else {
 		mediaObj.attr("class", "taggable-video");
 	}
-	
-	
-	mediaObj.appendTo(superParent);
-	propsMap.mediaHeight = mediaObj.css("height");
+	return mediaObj;
+}
 
+function createBrokenMedia(propsMap) {
 	if(!supportedFormat(propsMap.mediasrc) || !supportedBrowser()) {
-		
+
 		var brokenVideo;
 		if(!supportedBrowser()) {
 			brokenVideo = $("<div style='background-color:black; color:grey; text-align:center; font-size:x-small; font-family:Arial, Helvetica, sans-serif;'>" +
@@ -1049,7 +1107,7 @@ function createMediaElement(superParent, mediaObj, propsMap) {
 			brokenVideo = $("<div style='background-color:black; color:grey; text-align:center; font-size:x-small; font-family:Arial, Helvetica, sans-serif;'>" +
 			"Sorry :( , This HTML5 media player does not supports your media file. <br/> The supported media formats are ogg, mp4 and webm.</div>");
 		}
-		
+
 		brokenVideo.css("width", propsMap.width);
 		brokenVideo.css("height", propsMap.mediaHeight);
 		mediaObj.remove();
@@ -1061,10 +1119,8 @@ function createMediaElement(superParent, mediaObj, propsMap) {
 		var brokenMesLeft = brokenVideo.offset().left + (width/2);		
 		var brokenMes = $("<div style='font-size:x-small; font-family:Arial, Helvetica, sans-serif; left:" + brokenMesLeft + "; top:" + brokenMesTop + " color:grey;'>Sorry :( , This HTML5 media player does not supports this media file.</div>");
 		brokenVideo.innerHTML = "<div style='background-color:black; color:grey;'>hello</div>";
-			return;
+		return;
 	}
-
-	return mediaObj;
 }
 
 function supportedBrowser() {
@@ -1076,8 +1132,8 @@ function supportedBrowser() {
 
 function supportedFormat(src) {
 	if(src.indexOf(".mp4")!=-1 || src.indexOf(".m4a")!=-1 || src.indexOf(".m4b")!=-1 || src.indexOf(".m4v")!=-1 ||
-		src.indexOf(".ogg")!=-1 || src.indexOf(".oga")!=-1 || src.indexOf(".ogv")!=-1 || src.indexOf(".ogx")!=-1 || 
-		src.indexOf(".webm")!=-1) {
+			src.indexOf(".ogg")!=-1 || src.indexOf(".oga")!=-1 || src.indexOf(".ogv")!=-1 || src.indexOf(".ogx")!=-1 || 
+			src.indexOf(".webm")!=-1) {
 		return true;
 	}
 
@@ -1086,7 +1142,7 @@ function supportedFormat(src) {
 
 
 
-function createControlsBase(divElm, propsMap) {
+function createControlsBase(propsMap) {
 	var controlsBase = $("<div class='controls-base' style='height:35px; background-color:#646060; '>"  +
 	"</div>");
 	if(propsMap.hasOwnProperty("width")) {
@@ -1095,10 +1151,21 @@ function createControlsBase(divElm, propsMap) {
 		controlsBase.css("width", defaultMediaWidth);
 	}
 
-	return controlsBase.appendTo(divElm);
+	var playButton = createPlayButton();
+	controlsBase.append(playButton);
+
+	var searchBox = createSearchBox(propsMap);
+	controlsBase.append(searchBox);
+
+	if(propsMap.tagName=="VIDEO"){
+		var screenAdjust = createScreenAdjust();
+		controlsBase.append(screenAdjust);
+	}
+
+	return controlsBase;
 }
 
-function createProgressBar(baseElm,propsMap) {
+function createProgressBar(propsMap) {
 	var progressBar = $("<div class='progress-bar' style='height:" + progressBarHeight + "; background-color:#B8B8B8;'>" +
 	"</div>");
 	if(propsMap.hasOwnProperty("width")) {
@@ -1106,10 +1173,7 @@ function createProgressBar(baseElm,propsMap) {
 	} else {
 		progressBar.css("width", defaultMediaWidth);
 	}
-
-
-
-	return progressBar.appendTo(baseElm);
+	return progressBar;
 }
 
 
