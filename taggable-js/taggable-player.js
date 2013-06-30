@@ -41,6 +41,10 @@ var replaceWithSuperParent = function(userObj, superParent){
 	$(userObj).replaceWith(superParent);
 };
 
+var leftButtonDown = false;
+var cornerA={'x':null,'y':null};
+var prevRect = {'cornerA': cornerA, 'width':null, 'height':null};
+
 $(window).load(function() {
 
 	$("[data-player='taggable']").each(function() {
@@ -59,44 +63,12 @@ $(window).load(function() {
 		
 		createSuperParent(this, propsMap, replaceWithSuperParent);
 	});
+	
+	$(".tagabl-canvas").bind("mousedown", canvasMouseDown);
 
-	var leftButtonDown = false;
-	var cornerA={'x':null,'y':null};
-	var prevRect = {'cornerA': cornerA, 'width':null, 'height':null};
-	$(".tagabl-canvas")[0].addEventListener('mousedown', function(e) {
-		if(e.which==1) { //if leftButton
-			leftButtonDown = true;
-			cornerA.x = e.pageX;	
-			cornerA.y = e.pageY;
-		}		
-	});
-
-	$(".tagabl-canvas")[0].addEventListener('mouseup', function(e) {
+	$(".tagabl-canvas").mouseup(function(e) {
 		if(e.which==1) { //if leftButton
 			leftButtonDown = false;
-		}		
-	});
-
-	$(".tagabl-canvas")[0].addEventListener('mousemove', function(e) {
-		if(leftButtonDown){
-			if(cornerA.x!=null && cornerA.y!=null){
-				var context = this.getContext('2d');	
-				context.fillStyle = "rgba(0,0,0,0.2)";
-
-				//if prevRect exists, clear it
-				if(prevRect.width!=null && prevRect.height!=null){
-					context.clearRect(cornerA.x, cornerA.y, prevRect.width, prevRect.height);
-				}
-
-				//create new rect
-				var width = e.pageX-cornerA.x;
-				var height = e.pageY-cornerA.y;
-				context.fillRect(cornerA.x, cornerA.y, width, height);
-
-				//fill prevRect
-				prevRect.width = width;
-				prevRect.height = height;				
-			}
 		}		
 	});
 
@@ -107,15 +79,6 @@ $(window).load(function() {
 		} else if($(this).attr("title")=="minscreen") {
 			minscreen($(this));
 		}
-
-	});
-
-	$(".progress-bar").mousemove(function(e){
-		var mouseX = e.pageX;		
-		var progressSlider = getNearbyElement(".speechf-progressSlider", $(this));
-		var initPos = $(this).offset().left;
-		progressSlider.css("left", (mouseX-initPos));
-		progressSlider.show();
 
 	});
 
@@ -472,6 +435,45 @@ $(window).load(function() {
 	$(".speechf-searchButton").click(); 
 });
 
+function canvasMouseDown(e){
+	if(e.which==1) { //if leftButton
+		$(this).bind("mousemove", canvasMouseMove);
+		leftButtonDown = true;
+		cornerA.x = e.pageX;	
+		cornerA.y = e.pageY;
+	}
+}
+
+function canvasMouseMove(e) {
+	if(leftButtonDown){
+		if(cornerA.x!=null && cornerA.y!=null){
+			var context = this.getContext('2d');	
+			context.fillStyle = "rgba(0,0,0,0.2)";
+
+			//if prevRect exists, clear it
+			if(prevRect.width!=null && prevRect.height!=null){
+				context.clearRect(cornerA.x, cornerA.y, prevRect.width, prevRect.height);
+			}
+
+			//create new rect
+			var width = e.pageX-cornerA.x;
+			var height = e.pageY-cornerA.y;
+			context.fillRect(cornerA.x, cornerA.y, width, height);
+
+			//fill prevRect
+			prevRect.width = width;
+			prevRect.height = height;				
+		}
+	}
+}
+
+function canvasMouseUp(e) {
+	if(e.which==1) { //if leftButton
+		$(this).unbind('mousemove');
+		leftButtonDown = false;
+	}	
+}
+
 function createSuperParent(userObj, propsMap, replaceWithSuperParent) {
 	var superParent = $("<div class='taggable-container' id=" + mediaIndexKey + "/>");
 
@@ -498,6 +500,7 @@ function createSuperParent(userObj, propsMap, replaceWithSuperParent) {
 		'width':propsMap.width});
 	progressBar.before(canvas);
 	
+	//callback
 	replaceWithSuperParent(userObj, superParent);
 }
 
