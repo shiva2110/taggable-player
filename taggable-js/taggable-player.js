@@ -9,8 +9,9 @@ var defaultMediaWidth = "300";
 var currentSearchQuery = "";
 var currentIndexTime = "";
 var indexSpan =  15; //15 sec
-var indexURI = "http://ec2-54-235-225-226.compute-1.amazonaws.com/speechf-web";
-var globalPropsMap = {};
+//var indexURI = "http://ec2-54-235-225-226.compute-1.amazonaws.com/speechf-web";
+var indexURI = "http://localhost:8080/speechf-web";
+var globalPropsMap = [];
 var resultColorMap = [];
 resultColorMap[0] = "#FF0000";
 resultColorMap[1] = "#FF1919";
@@ -37,13 +38,11 @@ var snippetImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGkAAAA9CAYAAACu
 var taggedImg = "data:image/png;base64,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";
 var searchBoxDividerImg = "data:image/png;base64,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";
 
+
 var replaceWithSuperParent = function(userObj, superParent){
 	$(userObj).replaceWith(superParent);
 };
 
-var leftButtonDown = false;
-var cornerA={'x':null,'y':null};
-var prevRect = {'cornerA': cornerA, 'width':null, 'height':null};
 
 $(window).load(function() {
 
@@ -57,19 +56,18 @@ $(window).load(function() {
 		var propsMap = deriveProperties(this);
 		if(propsMap==null) {
 			return;
-		}
+		}		
+		createSuperParent(this, propsMap, replaceWithSuperParent);
 		globalPropsMap[mediaIndexKey] = propsMap;
 		mediaIndexKey++;
-		
-		createSuperParent(this, propsMap, replaceWithSuperParent);
 	});
 	
 	$(".tagabl-canvas").bind("mousedown", canvasMouseDown);
 
-	$(".tagabl-canvas").mouseup(function(e) {
-		if(e.which==1) { //if leftButton
-			leftButtonDown = false;
-		}		
+	$(".tagabl-canvas").bind("mouseup", canvasMouseUp);
+	
+	$(".tagabl-canvas").mouseover(function(e) {
+		$(this).css("cursor", "crosshair");		
 	});
 
 	$(".speechf-fullscreen").click(function() {
@@ -126,14 +124,12 @@ $(window).load(function() {
 	});
 
 	$(".progress-bar").click(function(e){
-		var mouseX = e.pageX;		
+		var mouseX = e.offsetX;		
 		var progressSlider = getNearbyElement(".speechf-progressSlider", $(this));
-		var superParent = $(this).parents(".taggable-container");
-		var initPos = $(this).offset().left;
-		var newPos = (mouseX-initPos);		
+		var superParent = $(this).parents(".taggable-container");	
 		var progressBarWidth = superParent.css("width");
 		progressBarWidth = progressBarWidth.replace("px", "");
-		var percentage = newPos/progressBarWidth;
+		var percentage = mouseX/progressBarWidth;
 		var mediaElement = getNearbyMediaElement($(this));	
 
 		if(!mediaElement) {
@@ -142,7 +138,7 @@ $(window).load(function() {
 
 		var mediaDuration =  $(mediaElement)[0].duration;
 		$(mediaElement)[0].currentTime = (percentage*mediaDuration);
-
+	
 		$(".speechf-searchBox").show("slow");
 
 		//move write bar when progress bar is clicked explicitly
@@ -174,7 +170,7 @@ $(window).load(function() {
 		} else {
 			$(this).prop("src",  playimg);
 			$(this).prop("title", "play");
-			mediaElement[0].pause();
+			mediaElement[0].pause();			
 		}		
 	});
 
@@ -433,36 +429,158 @@ $(window).load(function() {
 
 	// have search button clicked as default
 	$(".speechf-searchButton").click(); 
+	
+	$(".taggable-container").click(function(e){
+		
+		if(e.target.className=="tagabl-notes" || $(e.target).parent(".tagabl-notes").length!=0){ //if the click was propogated from notes, ignore
+			return;
+		}
+		
+		//index notes if any
+		var canvas = $(this).find(".tagabl-canvas");
+		indexContentNotes(canvas);
+		
+		//remove canvas
+		 if(e.target.className=="tagabl-canvas" || $(e.target).parent(".tagabl-canvas").length!=0) { 
+			var propsMap = globalPropsMap[$(this).attr("id")];
+			if(!propsMap.contentSelect.contentSelect){ // if click was propogated from canvas, then be careful about it. Remove the notes only if content is NOT selected
+				removeCanvasNotes(canvas);	
+			}
+		} else { //if click was propogated from anywhere else, remove the notes
+			removeCanvasNotes(canvas);	
+		}
+		
+	});
+	
 });
 
+/**
+ * Takes any obj withing taggable data player and changes the stroke color of content select by setting the property propsMap.contentStroke
+ * @param obj
+ */
+function changeStrokeColor(obj, propsMap){
+	var rgb = getAvgColor(obj);
+	if(rgb==undefined || rgb.length==0){
+		return;
+	}
+	rgb = getComplementColor(rgb);
+	propsMap.contentSelect.contentStroke = "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+}
+
+/**
+ * Takes any obj withing taggable data player and gets the average RGB values of the current video frame
+ * @param obj
+ */
+function getAvgColor(obj){
+	var mediaElement = getNearbyMediaElement(obj);	
+	//if not video return
+	if(mediaElement.attr("class")!="taggable-video") {
+		return;
+	}
+	
+	var canvas = getNearbyElement(".tagabl-canvas", obj);
+	var context = canvas[0].getContext('2d');
+	context.drawImage(mediaElement[0], 0, 0, canvas[0].width, canvas[0].height);
+	var data = context.getImageData(0,0,canvas[0].width, canvas[0].height).data;
+	var rgb = new Array(0, 0, 0, 0);
+	for(var i = 0; i < data.length; i+=4)
+    {
+		rgb[0] = rgb[0] + data[i]; //red
+		rgb[1] = rgb[1] + data[i+1]; //green
+		rgb[2] = rgb[2] + data[i+2]; //blue
+		rgb[3] = rgb[3] + data[i+3]; //alpha
+    }
+	var len = data.length/4;
+	rgb[0] = Math.floor(rgb[0]/(len));
+	rgb[1] = Math.floor(rgb[1]/(len));
+	rgb[2] = Math.floor(rgb[2]/(len));
+	rgb[3] = Math.floor(rgb[3]/(len));
+	
+	context.clearRect(0, 0, canvas[0].width, canvas[0].height);
+	return rgb;
+}
+
+function getComplementColor(rgb){
+	for(var i=0; i<rgb.length; i++){
+		rgb[i] = 255-rgb[i];
+	}
+	return rgb;
+}
+
+function indexContentNotes(canvas){
+	var notes = getNearbyElement(".tagabl-notes", canvas);
+	if(notes!=undefined && notes.length!=0){
+		var textElm = notes.find("textarea");
+		var text = textElm[0].value;
+		if(text.length==0 || text==""){
+			return;
+		}
+		
+		$.support.cors = true;
+		
+		superParent = canvas.parents(".taggable-container");
+		propsMap = globalPropsMap[superParent.attr("id")];
+		var posting = $.ajax({
+			url: formContentIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
+			data: "{\"keywords\":\"" + text +"\", \"startTime\":\"0.00\", \"endTime\":\"0.10\",\"frames\":[{\"pixels\":null}],\"position\":{\"x\":0,\"y\":0,\"height\":50,\"width\":50}}",
+			type: "POST", 
+			headers : {
+				"Accept" : "*",
+				"Content-Type" : "application/json"
+			}
+		});
+		
+	}
+}
+
+
 function canvasMouseDown(e){
-	if(e.which==1) { //if leftButton
+	var playButton = getNearbyElement(".speechf-playbutton", $(this));
+	if(playButton.prop("title")=="play" && e.which==1) { //if leftButton
+		var superParent = $(this).parents(".taggable-container");
+		var propsMap = globalPropsMap[superParent.attr("id")];
+		changeStrokeColor(playButton, propsMap);			
+		//clear any content select
+		propsMap.contentSelect.contentSelect = false;
+		propsMap.contentSelect.leftButtonDown = true;
+		propsMap.contentSelect.cornerA.x = e.offsetX;	
+		propsMap.contentSelect.cornerA.y = e.offsetY;
 		$(this).bind("mousemove", canvasMouseMove);
-		leftButtonDown = true;
-		cornerA.x = e.pageX;	
-		cornerA.y = e.pageY;
 	}
 }
 
 function canvasMouseMove(e) {
-	if(leftButtonDown){
-		if(cornerA.x!=null && cornerA.y!=null){
-			var context = this.getContext('2d');	
-			context.fillStyle = "rgba(0,0,0,0.2)";
+	var superParent = $(this).parents(".taggable-container");
+	var propsMap = globalPropsMap[superParent.attr("id")];
+	if(propsMap.contentSelect.leftButtonDown){
+		if(propsMap.contentSelect.cornerA.x!=null && propsMap.contentSelect.cornerA.y!=null){
+			var canvas = e.currentTarget;
+			if(canvas.className!="tagabl-canvas"){
+				return;
+			}
+			
+			var context = canvas.getContext('2d');
+			context.strokeStyle = propsMap.contentSelect.contentStroke;
+			context.lineWidth=1;
+			context.setLineDash([10,2]);
 
 			//if prevRect exists, clear it
-			if(prevRect.width!=null && prevRect.height!=null){
-				context.clearRect(cornerA.x, cornerA.y, prevRect.width, prevRect.height);
+			if(propsMap.contentSelect.prevRect.width!=null && propsMap.contentSelect.prevRect.height!=null){
+				context.clearRect(0, 0, canvas.width, canvas.height);
 			}
 
 			//create new rect
-			var width = e.pageX-cornerA.x;
-			var height = e.pageY-cornerA.y;
-			context.fillRect(cornerA.x, cornerA.y, width, height);
-
+			var width = e.offsetX-propsMap.contentSelect.cornerA.x;
+			var height = e.offsetY-propsMap.contentSelect.cornerA.y;		
+			if(width==0 && height==0) { 
+				return;
+			}
+			context.strokeRect(propsMap.contentSelect.cornerA.x, propsMap.contentSelect.cornerA.y, width, height);
+			propsMap.contentSelect.contentSelect = true;
+			
 			//fill prevRect
-			prevRect.width = width;
-			prevRect.height = height;				
+			propsMap.contentSelect.prevRect.width = width;
+			propsMap.contentSelect.prevRect.height = height;				
 		}
 	}
 }
@@ -470,8 +588,37 @@ function canvasMouseMove(e) {
 function canvasMouseUp(e) {
 	if(e.which==1) { //if leftButton
 		$(this).unbind('mousemove');
-		leftButtonDown = false;
+		
+		var superParent = $(this).parents(".taggable-container");
+		var propsMap = globalPropsMap[superParent.attr("id")];
+		propsMap.contentSelect.leftButtonDown = false;
+		if(propsMap.contentSelect.contentSelect){
+			var contentText = createContentText({"x":e.offsetX, "y":e.offsetY});
+			var progressBar = getNearbyElement(".progress-bar", $(this));
+			progressBar.before(contentText);
+			contentText.show();
+		}
 	}	
+}
+
+function removeCanvasNotes(canvas){
+		var context = canvas[0].getContext('2d');		
+		context.clearRect(0, 0, canvas[0].width, canvas[0].height);		
+		var contentNotes = getNearbyElement(".tagabl-notes", $(canvas));
+		for(i=0;i<contentNotes.length;i++){
+			var obj = $(contentNotes[i]);
+			obj.remove();
+		}
+}
+
+
+function createContentText(position){
+	return $("<div class='tagabl-notes' style='position:absolute; z-index:4; left:" + position.x + "; top:" + position.y + "; " +
+			"box-shadow:3px 3px 5px #888888; opacity:1;'>" +
+				"<div style='background-color:FFFF99; color:black; " +
+					"font-family:calibri; font-size:small; height:20'>Notes</div>" +
+				"<textarea style='width:140; height:60; border:none; text-align:left; vertical-align:top;'></textarea>" +
+			"</div>");
 }
 
 function createSuperParent(userObj, propsMap, replaceWithSuperParent) {
@@ -534,7 +681,17 @@ function deriveProperties(userObj) {
 	propsMap.left = $(userObj).css("left");
 	propsMap.top = $(userObj).css("top");
 	propsMap.position = $(userObj).css("position");
+	initContentSelectProps(propsMap);
 	return propsMap;
+}
+
+function initContentSelectProps(propsMap){
+	propsMap.contentSelect = new Object();
+	propsMap.contentSelect.leftButtonDown = false;
+	propsMap.contentSelect.cornerA={'x':null,'y':null};
+	propsMap.contentSelect.prevRect = {'cornerA': propsMap.contentSelect.cornerA, 'width':null, 'height':null};
+	propsMap.contentSelect.contentSelect = false;
+	propsMap.contentSelect.contentStroke = "rgb(0,0,0)";
 }
 
 
@@ -592,6 +749,13 @@ function fullscreen(fullscreenButton) {
 			superParent[0].webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
 			fullscreenButton.attr("src" , minscreenimg);
 			fullscreenButton.attr("title" , "minscreen");
+			
+			//adjust canvas
+			var canvas = getNearbyElement(".tagabl-canvas", fullscreenButton);
+			canvas.css("top", mediaElement.position().top);
+			canvas.css("left", mediaElement.position().left);
+			canvas.attr("width", screenW);
+			canvas.attr("height", screenH-100);
 
 		}
 	}
@@ -626,6 +790,9 @@ function minscreen(minscreenButton) {
 			//adjust mediaElement
 			mediaElement.css("width", propsMap.width);
 			mediaElement.css("height", propsMap.height);
+			var canvas = getNearbyElement(".tagabl-canvas", minscreenButton);
+			canvas.attr("width", propsMap.width);
+			canvas.attr("height", propsMap.height);
 
 			//adjust super parent
 			superParent.css("width", propsMap.width);
@@ -841,6 +1008,10 @@ function snippetClassNameSelector(resultClassName){
 	return snippetClassName;
 }
 
+function formContentIndexURL(indexURI, domain, mediaId) {
+	return indexURI + "/tagContent?domain=" + domain + "&mediaId=" + mediaId;
+}
+
 function formIndexURL(indexURI, domain, mediaId) {
 	return indexURI + "/tag?domain=" + domain + "&mediaId=" + mediaId;
 }
@@ -995,7 +1166,6 @@ function addMediaEvents(elm) {
 				writeButton.click();
 			}
 		}
-
 	});
 }
 
