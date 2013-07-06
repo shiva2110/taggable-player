@@ -520,9 +520,27 @@ function indexContentNotes(canvas){
 		
 		superParent = canvas.parents(".taggable-container");
 		propsMap = globalPropsMap[superParent.attr("id")];
+		var mediaElement = superParent.find("video");
+		if(mediaElement == undefined || mediaElement.length==0){
+			return;
+		}
+		var startTime = mediaElement[0].currentTime;
+		var endTime = mediaElement[0].currentTime + indexSpan;
+		var adjustedX = (propsMap.contentSelect.cornerA.x) / (canvas[0].width);
+		var adjustedY = (propsMap.contentSelect.cornerA.y) / (canvas[0].height);
+		var adjustedWi = (propsMap.contentSelect.prevRect.width) / (canvas[0].width);
+		var adjustedHi = (propsMap.contentSelect.prevRect.height) / (canvas[0].height);
+		
 		var posting = $.ajax({
 			url: formContentIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
-			data: "{\"keywords\":\"" + text +"\", \"startTime\":\"0.00\", \"endTime\":\"0.10\",\"frames\":[{\"pixels\":null}],\"position\":{\"x\":0,\"y\":0,\"height\":50,\"width\":50}}",
+			data: "{\"keywords\":\"" + text +"\", " +
+					"\"startTime\":\"" + startTime + "\", " +
+					"\"endTime\":\"" + endTime + "\"," +
+					"\"frames\":[{\"pixels\":null}]," +
+					"\"position\":{\"x\":" + adjustedX + "," +
+					"\"y\":" + adjustedY + "," +
+					"\"height\":" + adjustedWi +"," +
+					"\"width\":" + adjustedHi + "}}",
 			type: "POST", 
 			headers : {
 				"Accept" : "*",
