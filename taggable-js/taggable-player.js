@@ -37,7 +37,8 @@ var searchClickedImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAaCA
 var snippetImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGkAAAA9CAYAAACunUfbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAJdSURBVHhe7dw9a1phGMZxx36Ejh07djOzg4uLkxQXP4IZHDppcVEEqbh0UAwuBsFFQRGXCiKIFg++pi7tEEgyJCSQkL7T5pYapNxpDvGknMtzDb8MDznPA88/Od6TrsVi8YvsqV6vv43FYq5lpG63+zWZTB6RPeTz+VPp0mw2924jVavVS7fb/Z7sIRQKfWAkm2MkAIwEgJEAMBIARgLASAAYCQAjAWAkAIwEgJEAMBIARgLASAAYCQAjAWAkAIwEgJEAMBIARgLASAAYCQAjAWAkAIwEgJEAMBIARgLASAAYCQAjAWAkAIwEgJEAMBIARgLASAAYCQAjAWAkAIwEgJEAqJGs+JauQCAw0w60is/nG2vnbiP1W7qsMJ1Of0YikU/aBW8qHA5/NAzju3buNrv9vrtCofCyUqm83oRstto4m82eaBf9ULLfam/5y9LO31apVOrZMpL8sILEns/nn+UyS6XSucfjMbRLN8vr9Y4ajcaV7DeZTM5zuZxfO9cJ1MWHymQyL0aj0bFcbKvVupbPES3AfYLB4EG/3/8m+wwGg4N0Ov1cO88p1MVNJBKJp71ez5ALHg6HP+TCtRB3iUajh/Lsn9D78Xj8iXaOk6iLm5KLlQuWizY7UMjrsVgsnskzs9nsy80rc1fb24nURavIh9/qv+JfA4Xf75+22+3l55m8Lm9+d0fbz6nURSvdN1Csj9edTuedvC61fZxMXbTaXQPF+nhdq9XeaM/Sf4ok/h4oVuP1eDy+cPJ4bYa6+FjWBwrB8docdfGxlcvlV/J643htjrpIdhJz/QYoc7fwWmnlWAAAAABJRU5ErkJggg==";
 var taggedImg = "data:image/png;base64,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";
 var searchBoxDividerImg = "data:image/png;base64,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";
-
+var timerImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAAjCAYAAAA9guKMAAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGFVd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWaGVWIlquunc8klZOnFpSeTYrSs9RLA9Sr6U4tkcvNEi7BFffO6+EdigjL7ZHu/k72I796i9zRiSJPwG4VHX0Z+AxRzNRrtksUvwf7+Gm3BtzzHPDTNgQCqwKXfZwSeNHHJz1OIT8JjtAq6xWtCLwGPLzYZi+3YV8DGMiT4VVuG7oiZpGzrZJhcs/hL49xtzH/Dy6bdfTsXYNY+5yluWO4D4neK/ZUvok/17X0HPBLsF+vuUlhfwX4j/rSfAJ4H1H0qZJ9dN7nR19frRTeBt4Fe9FwpwtN+2p1MXscGLHR9SXrmMgjONd1ZxKzpBeA71b4tNhj6JGoyFNp4GHgwUp9qplfmnFW5oTdy7NamcwCI49kv6fN5IAHgD+0rbyoBc3SOjczohbyS1drbq6pQdqumllRC/0ymTtej8gpbbuVwpQfyw66dqEZyxZKxtHpJn+tZnpnEdrYBbueF9qQn93S7HQGGHnYP7w6L+YGHNtd1FJitqPAR+hERCNOFi1i1alKO6RQnjKUxL1GNjwlMsiEhcPLYTEiT9ISbN15OY/jx4SMshe9LaJRpTvHr3C/ybFYP1PZAfwfYrPsMBtnE6SwN9ib7AhLwTrBDgUKcm06FSrTfSj187xPdVQWOk5Q8vxAfSiIUc7Z7xr6zY/+hpqwSyv0I0/QMTRb7RMgBxNodTfSPqdraz/sDjzKBrv4zu2+a2t0/HHzjd2Lbcc2sG7GtsL42K+xLfxtUgI7YHqKlqHK8HbCCXgjHT1cAdMlDetv4FnQ2lLasaOl6vmB0CMmwT/IPszSueHQqv6i/qluqF+oF9TfO2qEGTumJH0qfSv9KH0nfS/9TIp0Wboi/SRdlb6RLgU5u++9nyXYe69fYRPdil1o1WufNSdTTsp75BfllPy8/LI8G7AUuV8ek6fkvfDsCfbNDP0dvRh0CrNqTbV7LfEEGDQPJQadBtfGVMWEq3QWWdufk6ZSNsjG2PQjp3ZcnOWWing6noonSInvi0/Ex+IzAreevPhe+CawpgP1/pMTMDo64G0sTCXIM+KdOnFWRfQKdJvQzV1+Bt8OokmrdtY2yhVX2a+qrykJfMq4Ml3VR4cVzTQVz+UoNne4vcKLoyS+gyKO6EHe+75Fdt0Mbe5bRIf/wjvrVmhbqBN97RD1vxrahvBOfOYzoosH9bq94uejSOQGkVM6sN/7HelL4t10t9F4gPdVzydEOx83Gv+uNxo7XyL/FtFl8z9ZAHF4bBsrEwAAAAlwSFlzAAAXEgAAFxIBZ5/SUgAAAU1JREFUWAntlLFug0AMhnv0VCSWThnoGgkhxIQyZMuSN6j6AhnzPunIC1R9iGyZmBDiCTKkUxekRARqRzorYgmUi6xIvuV85mz/9geoIAjapwderutOnQfWT9KlCRoFsyEkmAFQeSFBo2A2hAQzACovJGgUzIaQYAZA5YUEjYLZEBLMAKi8kKBRMBtCghkAlRcSNApmQ0gwA6DyQoJGwWxoqH/4pwbdtu2rUup5aDzEnSHuF+LqobHd+3VdnxUk7Pp7n5MkmVRV9QU5Fn2DQPzW87yPLMt++sbcujfqm0Ahvu8vHcfZ3CqEz/Ee3rfZAOYdRQITmBWG4QqIfMLZNb6r/QgE1mVZplc+a6a1JlBRFEXzpmm+oZk3oxDE74HAe1EUO+OzvY96nbpiUCgInoHfCL6c79kAarBKwjQVx/EL/DVWWus0z/OT8d9r/wN7vlZS37DkFQAAAABJRU5ErkJggg==";
+var imgData;
 
 var replaceWithSuperParent = function(userObj, superParent){
 	$(userObj).replaceWith(superParent);
@@ -106,9 +107,6 @@ $(window).load(function() {
 	});
 
 	$(".progress-bar").mouseout(function(e){
-		var progressSlider = getNearbyElement(".speechf-progressSlider", $(this));
-		progressSlider.hide();
-
 		// hide all other snippets
 		var snippetArr  = getNearbyElement("[class|='speechfsnippet']", $(this));
 		if(snippetArr!==undefined){
@@ -120,12 +118,51 @@ $(window).load(function() {
 				}
 			}
 		}
+		
+		var timers = getNearbyElement(".tagable-timer", $(this));
+		for(var i=0; i<timers.length; i++){
+			timers[i].remove();
+		}
 
 	});
+	
+	$(".progress-bar").mousemove(function(e){
+		var timers = getNearbyElement(".tagable-timer", $(this));
+		for(var i=0; i<timers.length; i++){
+			timers[i].remove();
+		}
 
+		var mouseX = e.offsetX;
+		var superParent = $(this).parents(".taggable-container");
+		var progressBarWidth =  superParent.css("width").replace("px", ""); //progress-bar css width is not reliable cuz of border width changes during media play
+		var percentage = mouseX/progressBarWidth;
+		var mediaElement = getNearbyMediaElement($(this));	
+		var mediaDuration =  $(mediaElement)[0].duration;
+		var time = getMinutes(percentage*mediaDuration);
+		
+		var width=40;
+		var height=35;
+		var snippet = $("<div class='tagable-timer' style='background-image:url(" + timerImg + "); border:none; position:absolute;" +
+				"height:" + height + "; width:" + width + ";font-size:11; font-weight:500; color:white; font-family:Lucida Console, Monaco5, monospace; z-index:2; text-align:center; opacity:0.8'>" +
+				"<div style='top:10%; left:5%; position:absolute; text-align:center;'>" + time + "</div></div>");
+
+		
+		var top = $(this).position().top -35;
+		var left = mouseX - 20;
+		
+		
+		if((left + width)>progressBarWidth) {
+			left = left - (left + width - progressBarWidth) - 2;
+		} else if (left<0) {
+			left = 2;
+		}
+		snippet.css("top", top);
+		snippet.css("left", left);				
+		$(this).before(snippet);
+	});
+	
 	$(".progress-bar").click(function(e){
-		var mouseX = e.offsetX;		
-		var progressSlider = getNearbyElement(".speechf-progressSlider", $(this));
+		var mouseX = e.offsetX;
 		var superParent = $(this).parents(".taggable-container");	
 		var progressBarWidth = superParent.css("width");
 		progressBarWidth = progressBarWidth.replace("px", "");
@@ -478,10 +515,13 @@ function getAvgColor(obj){
 		return;
 	}
 	
-	var canvas = getNearbyElement(".tagabl-canvas", obj);
-	var context = canvas[0].getContext('2d');
-	context.drawImage(mediaElement[0], 0, 0, canvas[0].width, canvas[0].height);
-	var data = context.getImageData(0,0,canvas[0].width, canvas[0].height).data;
+	var canvas = $('<canvas />').attr({
+        width: mediaElement.attr("width"),
+        height: mediaElement.attr("height")
+    })[0];
+	var context = canvas.getContext('2d');
+	context.drawImage(mediaElement[0], 0, 0, canvas.width, canvas.height);
+	var data = context.getImageData(0,0,canvas.width, canvas.height).data;
 	var rgb = new Array(0, 0, 0, 0);
 	for(var i = 0; i < data.length; i+=4)
     {
@@ -496,7 +536,7 @@ function getAvgColor(obj){
 	rgb[2] = Math.floor(rgb[2]/(len));
 	rgb[3] = Math.floor(rgb[3]/(len));
 	
-	context.clearRect(0, 0, canvas[0].width, canvas[0].height);
+	context.clearRect(0, 0, canvas.width, canvas.height);
 	return rgb;
 }
 
@@ -518,14 +558,14 @@ function indexContentNotes(canvas){
 		
 		$.support.cors = true;
 		
-		superParent = canvas.parents(".taggable-container");
-		propsMap = globalPropsMap[superParent.attr("id")];
+		var superParent = canvas.parents(".taggable-container");
+		var propsMap = globalPropsMap[superParent.attr("id")];
 		var mediaElement = superParent.find("video");
 		if(mediaElement == undefined || mediaElement.length==0){
 			return;
 		}
 		var startTime = mediaElement[0].currentTime;
-		var endTime = mediaElement[0].currentTime + indexSpan;
+		var endTime = mediaElement[0].currentTime;
 		var adjustedX = (propsMap.contentSelect.cornerA.x) / (canvas[0].width);
 		var adjustedY = (propsMap.contentSelect.cornerA.y) / (canvas[0].height);
 		var adjustedWi = (propsMap.contentSelect.prevRect.width) / (canvas[0].width);
@@ -536,7 +576,6 @@ function indexContentNotes(canvas){
 			data: "{\"keywords\":\"" + text +"\", " +
 					"\"startTime\":\"" + startTime + "\", " +
 					"\"endTime\":\"" + endTime + "\"," +
-					"\"frames\":[{\"pixels\":null}]," +
 					"\"position\":{\"x\":" + adjustedX + "," +
 					"\"y\":" + adjustedY + "," +
 					"\"height\":" + adjustedWi +"," +
@@ -546,11 +585,155 @@ function indexContentNotes(canvas){
 				"Accept" : "*",
 				"Content-Type" : "application/json"
 			}
+		}).done(function(){
+			if(propsMap.contentSelect["list"]==undefined){
+				propsMap.contentSelect["list"] = [];
+			}
+			var contentSelect = {
+								"origTime":mediaElement[0].currentTime,
+								"startTime":mediaElement[0].currentTime,
+								"endTime":mediaElement[0].currentTime,
+								"contentPos": {"x":adjustedX, "y":adjustedY, "wi":adjustedWi, "hi":adjustedHi},
+								"markedForDel": false
+						};
+			capturePixels(mediaElement, contentSelect);
+			propsMap.contentSelect["list"].push(contentSelect);
 		});
 		
 	}
 }
 
+
+function capturePixels(mediaElement, contentSelect){
+	var canvas = $('<canvas />').attr({
+		width: mediaElement.width,
+		height: mediaElement.height
+	})[0];
+	var context = canvas.getContext('2d');
+	context.drawImage(mediaElement[0], 0, 0, canvas.width, canvas.height);
+	var x = contentSelect.contentPos.x * (canvas.width);
+	var y = contentSelect.contentPos.y * (canvas.height);
+	var wi = contentSelect.contentPos.wi * (canvas.width);
+	var hi = contentSelect.contentPos.hi * (canvas.height);
+	contentSelect["pixels"] =  context.getImageData(x,y,wi,hi).data;
+}
+
+
+
+
+function indexContentSurroundings(mediaElement, propsMap){
+	
+	if(isNaN(mediaElement[0].duration) || mediaElement[0].duration==undefined){
+		console.log("media element has no duration set");
+		return;
+	}
+	
+	var limit = 60; //sec
+	var contentSelects = propsMap.contentSelect["list"];
+	
+	if(contentSelects==undefined){
+		return;
+	}
+	
+	var cleanupIndex = [];
+	for(var i=0; i<contentSelects.length; i++){		
+		if(contentSelects[i]==undefined){
+			return;
+		}
+		
+		if(contentSelects[i].markedForDel==true){
+			cleanupIndex.push(i);
+			continue;
+		}
+		
+		var offset;
+		var newStartTime;
+		var newEndTime;
+		if(contentSelects[i].origTime > mediaElement[0].currentTime){
+			offset = contentSelects[i].origTime - mediaElement[0].currentTime;
+			newStartTime = mediaElement[0].currentTime;
+		} else {
+			offset = mediaElement[0].currentTime - contentSelects[i].origTime;
+			newEndTime = mediaElement[0].currentTime;
+		}
+		if(offset > 60) { //over the border limit
+			contentSelects[i].markedForDel = true;
+			cleanupIndex.push(i);
+			continue;
+		}
+		
+		var currentCapture = {};
+		currentCapture.contentPos = contentSelects[i].contentPos;
+		capturePixels(mediaElement, currentCapture);
+		
+		var compareResult = {};
+		var compareTask = $.Deferred();
+		callComparePixels(contentSelects[i].pixels, currentCapture.pixels, compareResult, compareTask, propsMap);
+		compareTask.done(function() {
+			if(compareResult["result"]=="true"){
+				if(newStartTime!=undefined){	
+					if(contentSelects[i].startTime > newStartTime) { //only if new start time is before
+						contentSelects[i].startTime = newStartTime;
+						console.log("compare result is true; origtime:" + contentSelects[i].origTime + "; new start time:" + contentSelects[i].startTime + "; end time:" +  contentSelects[i].endTime);
+					}					
+				} else if(newEndTime!=undefined){
+					if(contentSelects[i].endTime < newEndTime){  //only if new end time is after
+						contentSelects[i].endTime = newEndTime;
+						console.log("compare result is true; origtime:" + contentSelects[i].origTime + "; start time:" + contentSelects[i].startTime + "; new end time:" +  contentSelects[i].endTime);
+					}					
+				}
+			} else {
+				console.log("compare result is false; origtime:" + contentSelects[i].origTime + "; start time:" + contentSelects[i].startTime + "; end time:" +  contentSelects[i].endTime);
+				contentSelects[i].markedForDel = true;
+			}
+		});		
+	}
+	
+	for(var i=0; i<cleanupIndex.length;i++){
+		var indexToRem = cleanupIndex[i];
+		//TBD - update the index
+		contentSelects.splice(indexToRem, 1);
+	}
+	
+}
+
+var callComparePixels = function callComparePixels(data, dataToCompare, compareResult, compareTask, propsMap){
+	
+	if(data==undefined){
+		data =  new Uint8ClampedArray(1);
+	} 
+	
+	if(dataToCompare==undefined){
+		dataToCompare = new Uint8ClampedArray(1);
+	}
+	
+	// call service to get compare results
+	var posting = $.ajax({
+		url: formCompareFrameURL(indexURI, propsMap.domain, propsMap.mediasrc),
+		data: "{\"frameMap\":{\"frame1\":{\"pixelMap\":" + JSON.stringify(data) + "},\"frame2\":{\"pixelMap\":" + JSON.stringify(dataToCompare) + "}}}",
+		type: "POST", 
+		headers : {
+			"Accept" : "*",
+			"Content-Type" : "application/json"
+		},
+		success: function(json) {			
+			if(json.compareResult=="true") {
+				compareResult["result"] = "true";			
+				compareTask.resolve();
+			} else {
+				compareResult["result"] = "false";			
+				compareTask.resolve();			
+			}
+		},
+		error: function(json){
+			console.log("error when calling service for compare frames");
+			compareResult["result"] = "false";			
+			compareTask.resolve();
+		}
+	});
+	
+	
+}
 
 function canvasMouseDown(e){
 	var playButton = getNearbyElement(".speechf-playbutton", $(this));
@@ -659,11 +842,15 @@ function createSuperParent(userObj, propsMap, replaceWithSuperParent) {
 	var controlsBase = createControlsBase(propsMap);	
 	controlsBase.appendTo(superParent);
 	
-	var canvas = createMediaCanvas({'top':mediaElm.position().top,
-		'left':mediaElm.position().left,
-		'height':propsMap.height,
-		'width':propsMap.width});
-	progressBar.before(canvas);
+	//add canvas only for video
+	if(propsMap.tagName=="video"){
+		var canvas = createMediaCanvas({'top':mediaElm.position().top,
+			'left':mediaElm.position().left,
+			'height':propsMap.height,
+			'width':propsMap.width});
+		progressBar.before(canvas);
+	}
+	
 	
 	//callback
 	replaceWithSuperParent(userObj, superParent);
@@ -678,7 +865,7 @@ function deriveProperties(userObj) {
 	}
 
 	var propsMap = {};
-	propsMap.tagName = userObj.tagName;
+	propsMap.tagName = userObj.tagName.toLowerCase();
 	propsMap.mediasrc = $(sourceElement[0]).attr("src");
 	propsMap.domain = document.domain;
 	propsMap.width = $(userObj).attr("width");
@@ -1030,6 +1217,10 @@ function formContentIndexURL(indexURI, domain, mediaId) {
 	return indexURI + "/tagContent?domain=" + domain + "&mediaId=" + mediaId;
 }
 
+function formCompareFrameURL(indexURI, domain, mediaId) {
+	return indexURI + "/compareFrame?domain=" + domain + "&mediaId=" + mediaId;
+}
+
 function formIndexURL(indexURI, domain, mediaId) {
 	return indexURI + "/tag?domain=" + domain + "&mediaId=" + mediaId;
 }
@@ -1184,8 +1375,24 @@ function addMediaEvents(elm) {
 				writeButton.click();
 			}
 		}
+		
+		//check for content select surrounding frames and if required adjust index
+		var superParent = $(elm).parents(".taggable-container");
+		var propsMap = globalPropsMap[superParent.attr("id")];	
+		if(propsMap.contentSelect["lastCheckTime"]==undefined){
+			propsMap.contentSelect["lastCheckTime"] = $(elm)[0].currentTime;
+		}
+		
+		var offset =  $(elm)[0].currentTime -  propsMap.contentSelect["lastCheckTime"];
+		if(offset>3 || offset<-3){ //if current time has been more than 3 sec since the last check time
+			indexContentSurroundings($(elm), propsMap);
+			propsMap.contentSelect["lastCheckTime"] = $(elm)[0].currentTime;
+		}
+		
 	});
 }
+
+
 
 function getNearbyElement(className, elm) {
 	var superparent = elm.parents(".taggable-container");
