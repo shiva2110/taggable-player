@@ -658,6 +658,7 @@ function indexContentSurroundings(mediaElement, propsMap){
 		}
 		if(offset > 60) { //over the border limit
 			contentSelects[i].markedForDel = true;
+			console.log("gone beyond 1 min");
 			cleanupIndex.push(i);
 			continue;
 		}
@@ -690,11 +691,38 @@ function indexContentSurroundings(mediaElement, propsMap){
 	}
 	
 	for(var i=0; i<cleanupIndex.length;i++){
+		console.log("updating and cleaning");
 		var indexToRem = cleanupIndex[i];
-		//TBD - update the index
+		callUpdateContentIndex(contentSelects[indexToRem], propsMap.domain, propsMap.mediasrc);
 		contentSelects.splice(indexToRem, 1);
-	}
+	}	
+}
+
+function callUpdateContentIndex(contentSelect, domain, mediasrc){
 	
+	console.log("update index to be called");
+	
+	var contentToUpdate  =  "{\"startTime\":\"" + contentSelect.origTime + "\"," +
+				"\"endTime\":\"" + contentSelect.origTime + "\"," +
+				"\"position\":{\"x\":" + contentSelect.contentPos.x + "," +
+				"\"y\":" + contentSelect.contentPos.y + "," +
+				"\"height\":" + contentSelect.contentPos.wi +"," +
+				"\"width\":" + contentSelect.contentPos.hi + "}}";
+	
+	var newContent =  "{\"startTime\":\"" + contentSelect.startTime + "\", " +
+	"\"endTime\":\"" + contentSelect.endTime + "\"}";
+	
+	
+	
+	var posting = $.ajax({
+		url: formUpdateContentIndexURL(indexURI, domain, mediasrc),
+		data: "[" + contentToUpdate + "," + newContent + "]",
+		type: "POST", 
+		headers : {
+			"Accept" : "*",
+			"Content-Type" : "application/json"
+		}
+	});
 }
 
 var callComparePixels = function callComparePixels(data, dataToCompare, compareResult, compareTask, propsMap){
@@ -1215,6 +1243,10 @@ function snippetClassNameSelector(resultClassName){
 
 function formContentIndexURL(indexURI, domain, mediaId) {
 	return indexURI + "/tagContent?domain=" + domain + "&mediaId=" + mediaId;
+}
+
+function formUpdateContentIndexURL(indexURI, domain, mediaId) {
+	return indexURI + "/updateContent?domain=" + domain + "&mediaId=" + mediaId;
 }
 
 function formCompareFrameURL(indexURI, domain, mediaId) {
