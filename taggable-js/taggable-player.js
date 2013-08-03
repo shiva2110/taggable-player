@@ -61,7 +61,8 @@ $(window).load(function() {
 		createSuperParent(this, propsMap, replaceWithSuperParent);
 		globalPropsMap[mediaIndexKey] = propsMap;
 		mediaIndexKey++;
-	});
+	});	
+	
 	
 	$(".tagabl-canvas").bind("mousedown", canvasMouseDown);
 
@@ -467,6 +468,7 @@ $(window).load(function() {
 	// have search button clicked as default
 	$(".speechf-searchButton").click(); 
 	
+	
 	$(".taggable-container").click(function(e){
 		
 		if(e.target.className=="tagabl-notes" || $(e.target).parent(".tagabl-notes").length!=0){ //if the click was propogated from notes, ignore
@@ -480,8 +482,8 @@ $(window).load(function() {
 		//remove canvas
 		 if(e.target.className=="tagabl-canvas" || $(e.target).parent(".tagabl-canvas").length!=0) { 
 			var propsMap = globalPropsMap[$(this).attr("id")];
-			if(!propsMap.contentSelect.contentSelect){ // if click was propogated from canvas, then be careful about it. Remove the notes only if content is NOT selected
-				removeCanvasNotes(canvas);	
+			if(!propsMap.contentSelect.contentSelect){ // if click was propogated from canvas, then be careful about it. Remove the notes only if click is not propogated while selecting the content
+				removeCanvasNotes(canvas);
 			}
 		} else { //if click was propogated from anywhere else, remove the notes
 			removeCanvasNotes(canvas);	
@@ -489,7 +491,84 @@ $(window).load(function() {
 		
 	});
 	
+	$(".taggable-container").on("mouseenter", ".tagabl-canvas", function(){
+		var superParent = $(this).parents(".taggable-container");
+		showAllContentTags(superParent);
+	});
+	
+	$(".taggable-container").on("mouseout", ".tagabl-canvas", function(){
+		var superParent = $(this).parents(".taggable-container");
+		hideAllContentTags(superParent);
+	});
+	
+	$(".taggable-container").on("mouseenter", ".tagabl-archivedtag, .tagabl-newtag", function(){
+		var tags = getNearbyElement(".tagabl-archivedtag, .tagabl-newtag", $(this));
+		for(var i=0; i<tags.length; i++){
+			if(tags[i].id==$(this).attr("id") && $(tags[i]).attr("class")==$(this).attr("class")){
+				$(tags[i]).show();
+				var superParent = $(this).parents(".taggable-container");
+				var propsMap = globalPropsMap[superParent.attr("id")];
+				if($(this).attr("class")=="tagabl-newtag"){
+					var canvas = superParent.find(".tagabl-canvas");
+					var position = propsMap.contentSelect["list"][$(this).attr("id")].contentPos;
+					displayContentNotes(canvas, position, $(this).attr("data-notes"));
+				} else {
+					fetchAndDisplayContentNotes(propsMap, tags[i].id, superParent);
+				}
+			} else {
+				$(tags[i]).hide();
+			}		
+		}		
+	});
+	
+	$(".taggable-container").on("mouseout", ".tagabl-archivedtag, .tagabl-newtag", function(){
+		var superParent = $(this).parents(".taggable-container");
+		showAllContentTags(superParent);	
+		var notes = getNearbyElement(".tagabl-notes", $(this));
+		for(var i=0; i<notes.length; i++){
+			$(notes[i]).remove();
+		}
+		
+	});
+	
 });
+
+
+
+
+function drawContentTag(canvas, contentTagPos, contentTagIndex, className, notes){
+	var absPos = getAbsolutePos(contentTagPos, canvas);	
+	var div = "<div class='" + className +  "' id='" + contentTagIndex + "' style='border:1px solid #fff; background-color:#333333; opacity:0.3; left:" + absPos.x  + "; top:" + absPos.y + "; width:" + absPos.width + "; height:" + absPos.height + "; position:absolute; z-index:4;'";
+	if(notes!=null && notes.length!=0){
+		div = div + " data-notes='" + notes + "'";
+	}
+	div = div + "></div>";
+	var progressBar = getNearbyElement(".progress-bar", canvas);
+	progressBar.before(div);
+}
+
+function removeContentTag(canvas, contentTagIndex, className){
+	var div = getNearbyElement(className, canvas);
+	for(var i=0;i<div.length; i++){
+		if($(div[i]).attr("id") == contentTagIndex){
+			$(div[i]).remove();
+		}		
+	}
+}
+
+function hideAllContentTags(superParent){
+	var div = superParent.find(".tagabl-archivedtag, .tagabl-newtag");
+	for(var i=0;i<div.length; i++){
+			$(div[i]).hide();
+	}
+}
+
+function showAllContentTags(superParent){
+	var div = superParent.find(".tagabl-archivedtag, .tagabl-newtag");
+	for(var i=0;i<div.length; i++){
+			$(div[i]).show();
+	}
+}
 
 /**
  * Takes any obj withing taggable data player and changes the stroke color of content select by setting the property propsMap.contentStroke
@@ -501,7 +580,7 @@ function changeStrokeColor(obj, propsMap){
 		return;
 	}
 	rgb = getComplementColor(rgb);
-	propsMap.contentSelect.contentStroke = "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+	propsMap.contentSelect.contentStroke = rgb;
 }
 
 /**
@@ -542,9 +621,32 @@ function getAvgColor(obj){
 
 function getComplementColor(rgb){
 	for(var i=0; i<rgb.length; i++){
-		rgb[i] = 255-rgb[i];
+		if(rgb[i]>125){
+			rgb[i]=0;
+		} else {
+			rgb[i] = 255;
+		}
 	}
 	return rgb;
+}
+
+function getAbsolutePos(pos, canvas){
+	var absPos = {"x": (pos.x * canvas[0].width),
+				  "y": (pos.y * canvas[0].height),
+				  "width": (pos.width * canvas[0].width),
+				  "height" : (pos.height * canvas[0].height)};
+	
+	return absPos;
+}
+
+function getNormalizedPos(pos, canvas){
+	var normalPos = {"x": (pos.x / canvas[0].width),
+			  "y": (pos.y / canvas[0].height),
+			  "width": (pos.width / canvas[0].width),
+			  "height" : (pos.height / canvas[0].height)};
+
+
+	return normalPos;
 }
 
 function indexContentNotes(canvas){
@@ -552,7 +654,7 @@ function indexContentNotes(canvas){
 	if(notes!=undefined && notes.length!=0){
 		var textElm = notes.find("textarea");
 		var text = textElm[0].value;
-		if(text.length==0 || text==""){
+		if(text.length==0 || text=="" || text=="Enter your notes here"){
 			return;
 		}
 		
@@ -571,6 +673,12 @@ function indexContentNotes(canvas){
 		var adjustedWi = (propsMap.contentSelect.prevRect.width) / (canvas[0].width);
 		var adjustedHi = (propsMap.contentSelect.prevRect.height) / (canvas[0].height);
 		
+		console.log("while indexing: canvas width:" + canvas[0].width + "; canvas height:" + canvas[0].height);
+		console.log("while indexing before normalizing: " +  "x:"+propsMap.contentSelect.cornerA.x+";y:"+propsMap.contentSelect.cornerA.y+";width:"+propsMap.contentSelect.prevRect.width+";height:"+propsMap.contentSelect.prevRect.height);
+		console.log("while indexing: " +  "x:"+adjustedX+";y:"+adjustedY+";width:"+adjustedWi+";height:"+adjustedHi);
+		var absPos = getAbsolutePos({"x":adjustedX, "y":adjustedY, "width":adjustedWi, "height":adjustedHi}, canvas);
+		console.log("while indexing abs position: " + "x:"+absPos.x+";y:"+absPos.y+";width:"+absPos.width+";height:"+absPos.height);
+		
 		var posting = $.ajax({
 			url: formContentIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
 			data: "{\"keywords\":\"" + text +"\", " +
@@ -578,8 +686,8 @@ function indexContentNotes(canvas){
 					"\"endTime\":\"" + endTime + "\"," +
 					"\"position\":{\"x\":" + adjustedX + "," +
 					"\"y\":" + adjustedY + "," +
-					"\"height\":" + adjustedWi +"," +
-					"\"width\":" + adjustedHi + "}}",
+					"\"height\":" + adjustedHi +"," +
+					"\"width\":" + adjustedWi + "}}",
 			type: "POST", 
 			headers : {
 				"Accept" : "*",
@@ -593,11 +701,14 @@ function indexContentNotes(canvas){
 								"origTime":mediaElement[0].currentTime,
 								"startTime":mediaElement[0].currentTime,
 								"endTime":mediaElement[0].currentTime,
-								"contentPos": {"x":adjustedX, "y":adjustedY, "wi":adjustedWi, "hi":adjustedHi},
-								"markedForDel": false
+								"contentPos": {"x":adjustedX, "y":adjustedY, "width":adjustedWi, "height":adjustedHi},
+								"markedForDel": false,
+								"beingCompared":false
 						};
 			capturePixels(mediaElement, contentSelect);
+			drawContentTag(canvas, contentSelect.contentPos, propsMap.contentSelect["list"].length, "tagabl-newtag", text);
 			propsMap.contentSelect["list"].push(contentSelect);
+			
 		});
 		
 	}
@@ -613,8 +724,8 @@ function capturePixels(mediaElement, contentSelect){
 	context.drawImage(mediaElement[0], 0, 0, canvas.width, canvas.height);
 	var x = contentSelect.contentPos.x * (canvas.width);
 	var y = contentSelect.contentPos.y * (canvas.height);
-	var wi = contentSelect.contentPos.wi * (canvas.width);
-	var hi = contentSelect.contentPos.hi * (canvas.height);
+	var wi = contentSelect.contentPos.width * (canvas.width);
+	var hi = contentSelect.contentPos.height * (canvas.height);
 	contentSelect["pixels"] =  context.getImageData(x,y,wi,hi).data;
 }
 
@@ -634,17 +745,30 @@ function indexContentSurroundings(mediaElement, propsMap){
 	if(contentSelects==undefined){
 		return;
 	}
-	
-	var cleanupIndex = [];
+
+	console.log("contentSelects length: " + contentSelects.length);
 	for(var i=0; i<contentSelects.length; i++){		
-		if(contentSelects[i]==undefined){
-			return;
-		}
-		
-		if(contentSelects[i].markedForDel==true){
-			cleanupIndex.push(i);
+		if(contentSelects[i]==undefined || contentSelects[i]==null){ //if null, this contentSelect is already removed, so ignore
+			console.log("contentSelects[" + i + "] is null, so continuing");
 			continue;
 		}
+		
+		if(contentSelects[i].markedForDel==true){  //if markedForDel, then make final updates to index and remove the contentSelect
+			console.log("updating and cleaning");
+			callUpdateContentIndex(contentSelects[i], propsMap);
+			var canvas = getNearbyElement(".tagabl-canvas", mediaElement);
+			removeContentTag(canvas, i, ".tagabl-newtag");
+			contentSelects[i] =  null;
+			console.log("contentSelects[" + i + "] is marked for del, so continuing");
+			continue;
+		}
+		
+		// in case, the timeupdate event called this method and if this contentSelect is still under comparison in the server, then it is not wise to make another server call for comparison.
+		// just ignore and continue
+		if(contentSelects[i].beingCompared==true){ 
+			console.log("contentSelects[" + i + "] is currently being compared, so continuing");
+			continue;
+		}		
 		
 		var offset;
 		var newStartTime;
@@ -658,8 +782,7 @@ function indexContentSurroundings(mediaElement, propsMap){
 		}
 		if(offset > 60) { //over the border limit
 			contentSelects[i].markedForDel = true;
-			console.log("gone beyond 1 min");
-			cleanupIndex.push(i);
+			console.log("contentSelects[" + i + "] is marked for del due to offset beyond 60, so continuing");
 			continue;
 		}
 		
@@ -667,10 +790,12 @@ function indexContentSurroundings(mediaElement, propsMap){
 		currentCapture.contentPos = contentSelects[i].contentPos;
 		capturePixels(mediaElement, currentCapture);
 		
+		contentSelects[i].beingCompared = true;
 		var compareResult = {};
 		var compareTask = $.Deferred();
 		callComparePixels(contentSelects[i].pixels, currentCapture.pixels, compareResult, compareTask, propsMap);
 		compareTask.done(function() {
+			console.log("done with comparison of contentSelects[" + i + "]");
 			if(compareResult["result"]=="true"){
 				if(newStartTime!=undefined){	
 					if(contentSelects[i].startTime > newStartTime) { //only if new start time is before
@@ -687,27 +812,31 @@ function indexContentSurroundings(mediaElement, propsMap){
 				console.log("compare result is false; origtime:" + contentSelects[i].origTime + "; start time:" + contentSelects[i].startTime + "; end time:" +  contentSelects[i].endTime);
 				contentSelects[i].markedForDel = true;
 			}
+			contentSelects[i].beingCompared = false;
 		});		
 	}
-	
-	for(var i=0; i<cleanupIndex.length;i++){
-		console.log("updating and cleaning");
-		var indexToRem = cleanupIndex[i];
-		callUpdateContentIndex(contentSelects[indexToRem], propsMap.domain, propsMap.mediasrc);
-		contentSelects.splice(indexToRem, 1);
-	}	
 }
 
-function callUpdateContentIndex(contentSelect, domain, mediasrc){
+function clearCanvasRect(elm, contentPos){
+	var canvas = getNearbyElement(".tagabl-canvas", elm);
+	var absPos = getAbsolutePos(contentPos, canvas);
+	var context = canvas[0].getContext('2d');		
+	context.clearRect((absPos.x-1), (absPos.y-1), (absPos.width+2), (absPos.height+2));
+	
+}
+
+function callUpdateContentIndex(contentSelect, propsMap){
 	
 	console.log("update index to be called");
+	
+	console.log("while updating: " +  "x:"+contentSelect.contentPos.x+";y:"+contentSelect.contentPos.y+";width:"+contentSelect.contentPos.width+";height:"+contentSelect.contentPos.height);
 	
 	var contentToUpdate  =  "{\"startTime\":\"" + contentSelect.origTime + "\"," +
 				"\"endTime\":\"" + contentSelect.origTime + "\"," +
 				"\"position\":{\"x\":" + contentSelect.contentPos.x + "," +
 				"\"y\":" + contentSelect.contentPos.y + "," +
-				"\"height\":" + contentSelect.contentPos.wi +"," +
-				"\"width\":" + contentSelect.contentPos.hi + "}}";
+				"\"height\":" + contentSelect.contentPos.height +"," +
+				"\"width\":" + contentSelect.contentPos.width + "}}";
 	
 	var newContent =  "{\"startTime\":\"" + contentSelect.startTime + "\", " +
 	"\"endTime\":\"" + contentSelect.endTime + "\"}";
@@ -715,7 +844,7 @@ function callUpdateContentIndex(contentSelect, domain, mediasrc){
 	
 	
 	var posting = $.ajax({
-		url: formUpdateContentIndexURL(indexURI, domain, mediasrc),
+		url: formUpdateContentIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
 		data: "[" + contentToUpdate + "," + newContent + "]",
 		type: "POST", 
 		headers : {
@@ -723,6 +852,16 @@ function callUpdateContentIndex(contentSelect, domain, mediasrc){
 			"Content-Type" : "application/json"
 		}
 	});
+	
+
+	var archivedTag = {"startTime":contentSelect.startTime,
+					   "endTime":contentSelect.endTime,
+					   "position": {"x":contentSelect.contentPos.x,
+						   "y":contentSelect.contentPos.y,
+						   "height":contentSelect.contentPos.height,
+						   "width":contentSelect.contentPos.width},
+						"displayStatus":false};
+	propsMap["archivedContentTags"].push(archivedTag);
 }
 
 var callComparePixels = function callComparePixels(data, dataToCompare, compareResult, compareTask, propsMap){
@@ -768,12 +907,16 @@ function canvasMouseDown(e){
 	if(playButton.prop("title")=="play" && e.which==1) { //if leftButton
 		var superParent = $(this).parents(".taggable-container");
 		var propsMap = globalPropsMap[superParent.attr("id")];
+		if(propsMap.contentSelect.contentSelect==true){
+			propsMap.contentSelect.contentSelect = false;
+			return;
+		}
 		changeStrokeColor(playButton, propsMap);			
 		//clear any content select
-		propsMap.contentSelect.contentSelect = false;
-		propsMap.contentSelect.leftButtonDown = true;
 		propsMap.contentSelect.cornerA.x = e.offsetX;	
 		propsMap.contentSelect.cornerA.y = e.offsetY;
+		propsMap.contentSelect.contentSelect = false;
+		propsMap.contentSelect.leftButtonDown = true;
 		$(this).bind("mousemove", canvasMouseMove);
 	}
 }
@@ -789,9 +932,9 @@ function canvasMouseMove(e) {
 			}
 			
 			var context = canvas.getContext('2d');
-			context.strokeStyle = propsMap.contentSelect.contentStroke;
-			context.lineWidth=1;
-			context.setLineDash([10,2]);
+			//context.strokeStyle = "rgb(" + propsMap.contentSelect.contentStroke[0] + "," + propsMap.contentSelect.contentStroke[1] + "," + propsMap.contentSelect.contentStroke[2] + ")";
+			//context.lineWidth=1;
+			//context.setLineDash([5,2]);
 
 			//if prevRect exists, clear it
 			if(propsMap.contentSelect.prevRect.width!=null && propsMap.contentSelect.prevRect.height!=null){
@@ -804,8 +947,10 @@ function canvasMouseMove(e) {
 			if(width==0 && height==0) { 
 				return;
 			}
-			context.strokeRect(propsMap.contentSelect.cornerA.x, propsMap.contentSelect.cornerA.y, width, height);
-			propsMap.contentSelect.contentSelect = true;
+			context.fillStyle = "rgba(32,32,32, 0.4)"
+			context.fillRect(propsMap.contentSelect.cornerA.x, propsMap.contentSelect.cornerA.y, width, height);
+			propsMap.contentSelect.contentSelect = true;			
+			
 			
 			//fill prevRect
 			propsMap.contentSelect.prevRect.width = width;
@@ -822,7 +967,7 @@ function canvasMouseUp(e) {
 		var propsMap = globalPropsMap[superParent.attr("id")];
 		propsMap.contentSelect.leftButtonDown = false;
 		if(propsMap.contentSelect.contentSelect){
-			var contentText = createContentText({"x":e.offsetX, "y":e.offsetY});
+			var contentText = createContentText({"x":e.offsetX, "y":e.offsetY}, "Enter your notes here");
 			var progressBar = getNearbyElement(".progress-bar", $(this));
 			progressBar.before(contentText);
 			contentText.show();
@@ -830,10 +975,12 @@ function canvasMouseUp(e) {
 	}	
 }
 
+
+
 function removeCanvasNotes(canvas){
-		var context = canvas[0].getContext('2d');		
-		context.clearRect(0, 0, canvas[0].width, canvas[0].height);		
-		var contentNotes = getNearbyElement(".tagabl-notes", $(canvas));
+	var context = canvas[0].getContext('2d');
+	context.clearRect(0, 0, canvas[0].width, canvas[0].height);
+		var contentNotes = getNearbyElement(".tagabl-notes", canvas);
 		for(i=0;i<contentNotes.length;i++){
 			var obj = $(contentNotes[i]);
 			obj.remove();
@@ -841,12 +988,10 @@ function removeCanvasNotes(canvas){
 }
 
 
-function createContentText(position){
+function createContentText(position, notesStr){
 	return $("<div class='tagabl-notes' style='position:absolute; z-index:4; left:" + position.x + "; top:" + position.y + "; " +
-			"box-shadow:3px 3px 5px #888888; opacity:1;'>" +
-				"<div style='background-color:FFFF99; color:black; " +
-					"font-family:calibri; font-size:small; height:20'>Notes</div>" +
-				"<textarea style='width:140; height:60; border:none; text-align:left; vertical-align:top;'></textarea>" +
+			"box-shadow:3px 3px 5px #888888; opacity:0.9;'>" +
+				"<textarea style='width:140; height:60; border:none; text-align:left; vertical-align:top; background-color:" + "black" + "; color:" + "white" + "'>" + notesStr + "</textarea>" +
 			"</div>");
 }
 
@@ -915,7 +1060,77 @@ function deriveProperties(userObj) {
 	propsMap.top = $(userObj).css("top");
 	propsMap.position = $(userObj).css("position");
 	initContentSelectProps(propsMap);
+	getArchivedContentTags(propsMap);
 	return propsMap;
+}
+
+function getArchivedContentTags(propsMap){
+	var posting = $.ajax({
+		url: formAllContentTagURL(indexURI, propsMap.domain, propsMap.mediasrc),
+		type: "GET", 
+		headers : {
+			"Accept" : "application/json"
+		},
+		success: function(json) {
+			for(var i=0; i<json.length; i++){
+				json[i]["displayStatus"] = false; //indicates whether the contentTag is displayed currently.
+			}
+			propsMap["archivedContentTags"] = json;
+		},
+		error: function(json){
+			console.log("error while fetching archived content tags");
+		}
+	});		
+}
+
+function fetchAndDisplayContentNotes(propsMap, archivedContentTagIndex, superParent){
+	var archivedContentTag = propsMap.archivedContentTags[archivedContentTagIndex];
+	var posting = $.ajax({
+		url: formSearchByFeildURL(indexURI, propsMap.domain, propsMap.mediasrc),
+		type: "POST", 
+		data: "[{\"fieldName\":\"START_TIME\",\"value\":\"" + archivedContentTag.startTime + "\"}," +
+				"{\"fieldName\":\"END_TIME\",\"value\":\"" + archivedContentTag.endTime + "\"}," +
+				"{\"fieldName\":\"CONTENT_POSX\",\"value\":\""+ archivedContentTag.position.x +"\"}," +
+				"{\"fieldName\":\"CONTENT_POSY\",\"value\":\"" + archivedContentTag.position.y +"\"}," +
+				"{\"fieldName\":\"CONTENT_WIDTH\",\"value\":\"" + archivedContentTag.position.width + "\"}," +
+				"{\"fieldName\":\"CONTENT_HEIGHT\",\"value\":\"" + archivedContentTag.position.height +"\"}," +
+				"{\"fieldName\":\"WORD\",\"value\":null}]",
+		headers : {
+			"Accept" : "*",
+			"Content-Type" : "application/json"
+		},
+		success: function(json) {
+			var text = null;
+			for(var i=0; i<json.length; i++){
+				if(json[i].length==0){
+					break;
+				}
+				for(var j=0; j<json[i].length; j++){
+					if(json[i][j]["fieldName"]!=undefined && json[i][j]["fieldName"]=="WORD"){
+						text = json[i][j]["value"];
+						break;
+					}		
+				}
+				break;
+			}
+			
+			var canvas = superParent.find(".tagabl-canvas");
+			displayContentNotes(canvas, archivedContentTag.position, text);
+		},
+		error: function(json){
+			console.log("error while fetching archived content tag");
+		}
+	});		
+}
+
+function displayContentNotes(canvas, position, text){
+	var absPos = getAbsolutePos(position, canvas);
+	var offsetX = absPos.x + absPos.width;
+	var offsetY = absPos.y + absPos.height;
+	var contentText = createContentText({"x":offsetX, "y":offsetY}, text);
+	var progressBar = getNearbyElement(".progress-bar", canvas);
+	progressBar.before(contentText);
+	contentText.show();
 }
 
 function initContentSelectProps(propsMap){
@@ -924,7 +1139,7 @@ function initContentSelectProps(propsMap){
 	propsMap.contentSelect.cornerA={'x':null,'y':null};
 	propsMap.contentSelect.prevRect = {'cornerA': propsMap.contentSelect.cornerA, 'width':null, 'height':null};
 	propsMap.contentSelect.contentSelect = false;
-	propsMap.contentSelect.contentStroke = "rgb(0,0,0)";
+	propsMap.contentSelect.contentStroke = [0,0,0];
 }
 
 
@@ -1241,6 +1456,14 @@ function snippetClassNameSelector(resultClassName){
 	return snippetClassName;
 }
 
+function formSearchByFeildURL(indexURI, domain, mediaId) {
+	return indexURI + "/searchByFeilds?domain=" + domain + "&mediaId=" + mediaId;
+}
+
+function formAllContentTagURL(indexURI, domain, mediaId) {
+	return indexURI + "/allContentTags?domain=" + domain + "&mediaId=" + mediaId;
+}
+
 function formContentIndexURL(indexURI, domain, mediaId) {
 	return indexURI + "/tagContent?domain=" + domain + "&mediaId=" + mediaId;
 }
@@ -1419,6 +1642,23 @@ function addMediaEvents(elm) {
 		if(offset>3 || offset<-3){ //if current time has been more than 3 sec since the last check time
 			indexContentSurroundings($(elm), propsMap);
 			propsMap.contentSelect["lastCheckTime"] = $(elm)[0].currentTime;
+		}
+		
+		//check if any archived content tags can be displayed or hidden at this time.
+		var len = propsMap["archivedContentTags"].length;
+		var canvas = superParent.find(".tagabl-canvas");
+		for(var i=0; i<len; i++){
+			if(propsMap["archivedContentTags"][i].displayStatus==false &&
+					propsMap["archivedContentTags"][i].startTime <=currentTime && 
+					propsMap["archivedContentTags"][i].endTime >=  currentTime) {
+				drawContentTag(canvas, propsMap["archivedContentTags"][i].position, i, "tagabl-archivedtag", null);
+				propsMap["archivedContentTags"][i].displayStatus=true;
+			} else if(propsMap["archivedContentTags"][i].displayStatus==true &&
+					(propsMap["archivedContentTags"][i].startTime > currentTime || 
+					propsMap["archivedContentTags"][i].endTime <  currentTime)) {
+				removeContentTag(canvas, i, ".tagabl-archivedtag");
+				propsMap["archivedContentTags"][i].displayStatus=false;
+			}
 		}
 		
 	});
