@@ -39,6 +39,8 @@ var taggedImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH8AAAAyCAYAAAB1e
 var searchBoxDividerImg = "data:image/png;base64,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";
 var timerImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAAjCAYAAAA9guKMAAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGFVd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWaGVWIlquunc8klZOnFpSeTYrSs9RLA9Sr6U4tkcvNEi7BFffO6+EdigjL7ZHu/k72I796i9zRiSJPwG4VHX0Z+AxRzNRrtksUvwf7+Gm3BtzzHPDTNgQCqwKXfZwSeNHHJz1OIT8JjtAq6xWtCLwGPLzYZi+3YV8DGMiT4VVuG7oiZpGzrZJhcs/hL49xtzH/Dy6bdfTsXYNY+5yluWO4D4neK/ZUvok/17X0HPBLsF+vuUlhfwX4j/rSfAJ4H1H0qZJ9dN7nR19frRTeBt4Fe9FwpwtN+2p1MXscGLHR9SXrmMgjONd1ZxKzpBeA71b4tNhj6JGoyFNp4GHgwUp9qplfmnFW5oTdy7NamcwCI49kv6fN5IAHgD+0rbyoBc3SOjczohbyS1drbq6pQdqumllRC/0ymTtej8gpbbuVwpQfyw66dqEZyxZKxtHpJn+tZnpnEdrYBbueF9qQn93S7HQGGHnYP7w6L+YGHNtd1FJitqPAR+hERCNOFi1i1alKO6RQnjKUxL1GNjwlMsiEhcPLYTEiT9ISbN15OY/jx4SMshe9LaJRpTvHr3C/ybFYP1PZAfwfYrPsMBtnE6SwN9ib7AhLwTrBDgUKcm06FSrTfSj187xPdVQWOk5Q8vxAfSiIUc7Z7xr6zY/+hpqwSyv0I0/QMTRb7RMgBxNodTfSPqdraz/sDjzKBrv4zu2+a2t0/HHzjd2Lbcc2sG7GtsL42K+xLfxtUgI7YHqKlqHK8HbCCXgjHT1cAdMlDetv4FnQ2lLasaOl6vmB0CMmwT/IPszSueHQqv6i/qluqF+oF9TfO2qEGTumJH0qfSv9KH0nfS/9TIp0Wboi/SRdlb6RLgU5u++9nyXYe69fYRPdil1o1WufNSdTTsp75BfllPy8/LI8G7AUuV8ek6fkvfDsCfbNDP0dvRh0CrNqTbV7LfEEGDQPJQadBtfGVMWEq3QWWdufk6ZSNsjG2PQjp3ZcnOWWing6noonSInvi0/Ex+IzAreevPhe+CawpgP1/pMTMDo64G0sTCXIM+KdOnFWRfQKdJvQzV1+Bt8OokmrdtY2yhVX2a+qrykJfMq4Ml3VR4cVzTQVz+UoNne4vcKLoyS+gyKO6EHe+75Fdt0Mbe5bRIf/wjvrVmhbqBN97RD1vxrahvBOfOYzoosH9bq94uejSOQGkVM6sN/7HelL4t10t9F4gPdVzydEOx83Gv+uNxo7XyL/FtFl8z9ZAHF4bBsrEwAAAAlwSFlzAAAXEgAAFxIBZ5/SUgAAAU1JREFUWAntlLFug0AMhnv0VCSWThnoGgkhxIQyZMuSN6j6AhnzPunIC1R9iGyZmBDiCTKkUxekRARqRzorYgmUi6xIvuV85mz/9geoIAjapwderutOnQfWT9KlCRoFsyEkmAFQeSFBo2A2hAQzACovJGgUzIaQYAZA5YUEjYLZEBLMAKi8kKBRMBtCghkAlRcSNApmQ0gwA6DyQoJGwWxoqH/4pwbdtu2rUup5aDzEnSHuF+LqobHd+3VdnxUk7Pp7n5MkmVRV9QU5Fn2DQPzW87yPLMt++sbcujfqm0Ahvu8vHcfZ3CqEz/Ee3rfZAOYdRQITmBWG4QqIfMLZNb6r/QgE1mVZplc+a6a1JlBRFEXzpmm+oZk3oxDE74HAe1EUO+OzvY96nbpiUCgInoHfCL6c79kAarBKwjQVx/EL/DVWWus0z/OT8d9r/wN7vlZS37DkFQAAAABJRU5ErkJggg==";
 var imgData;
+var screenH = screen.height-100; //full screen height
+var screenW = screen.width; //full screen width
 
 var replaceWithSuperParent = function(userObj, superParent){
 	$(userObj).replaceWith(superParent);
@@ -521,7 +523,14 @@ $(window).load(function() {
 		}		
 	});
 	
-	$(".taggable-container").on("mouseout", ".tagabl-archivedtag, .tagabl-newtag", function(){
+	$(".tagabl-notes").click(function() {
+		jQuery.data($(this)[0], "notesType", "update");
+	});
+	
+/*	$(".taggable-container").on("mouseout", ".tagabl-archivedtag, .tagabl-newtag", function(e){
+		if(e.target.className=="tagabl-notes"){
+			return;
+		}
 		var superParent = $(this).parents(".taggable-container");
 		showAllContentTags(superParent);	
 		var notes = getNearbyElement(".tagabl-notes", $(this));
@@ -529,7 +538,8 @@ $(window).load(function() {
 			$(notes[i]).remove();
 		}
 		
-	});
+	});*/
+	
 	
 });
 
@@ -652,64 +662,68 @@ function getNormalizedPos(pos, canvas){
 function indexContentNotes(canvas){
 	var notes = getNearbyElement(".tagabl-notes", canvas);
 	if(notes!=undefined && notes.length!=0){
-		var textElm = notes.find("textarea");
-		var text = textElm[0].value;
-		if(text.length==0 || text=="" || text=="Enter your notes here"){
-			return;
-		}
-		
-		$.support.cors = true;
-		
-		var superParent = canvas.parents(".taggable-container");
-		var propsMap = globalPropsMap[superParent.attr("id")];
-		var mediaElement = superParent.find("video");
-		if(mediaElement == undefined || mediaElement.length==0){
-			return;
-		}
-		var startTime = mediaElement[0].currentTime;
-		var endTime = mediaElement[0].currentTime;
-		var adjustedX = (propsMap.contentSelect.cornerA.x) / (canvas[0].width);
-		var adjustedY = (propsMap.contentSelect.cornerA.y) / (canvas[0].height);
-		var adjustedWi = (propsMap.contentSelect.prevRect.width) / (canvas[0].width);
-		var adjustedHi = (propsMap.contentSelect.prevRect.height) / (canvas[0].height);
-		
-		console.log("while indexing: canvas width:" + canvas[0].width + "; canvas height:" + canvas[0].height);
-		console.log("while indexing before normalizing: " +  "x:"+propsMap.contentSelect.cornerA.x+";y:"+propsMap.contentSelect.cornerA.y+";width:"+propsMap.contentSelect.prevRect.width+";height:"+propsMap.contentSelect.prevRect.height);
-		console.log("while indexing: " +  "x:"+adjustedX+";y:"+adjustedY+";width:"+adjustedWi+";height:"+adjustedHi);
-		var absPos = getAbsolutePos({"x":adjustedX, "y":adjustedY, "width":adjustedWi, "height":adjustedHi}, canvas);
-		console.log("while indexing abs position: " + "x:"+absPos.x+";y:"+absPos.y+";width:"+absPos.width+";height:"+absPos.height);
-		
-		var posting = $.ajax({
-			url: formContentIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
-			data: "{\"keywords\":\"" + text +"\", " +
-					"\"startTime\":\"" + startTime + "\", " +
-					"\"endTime\":\"" + endTime + "\"," +
-					"\"position\":{\"x\":" + adjustedX + "," +
-					"\"y\":" + adjustedY + "," +
-					"\"height\":" + adjustedHi +"," +
-					"\"width\":" + adjustedWi + "}}",
-			type: "POST", 
-			headers : {
-				"Accept" : "*",
-				"Content-Type" : "application/json"
+	
+		for(var i=0; i<notes.length; i++){
+			if(jQuery.data(notes[i], "notesType")==undefined || jQuery.data(notes[i], "notesType")==null){
+				return;
 			}
-		}).done(function(){
-			if(propsMap.contentSelect["list"]==undefined){
-				propsMap.contentSelect["list"] = [];
+			var textElm = $(notes[i]).find("textarea");
+			var text = textElm[0].value;
+			if(text.length==0 || text=="" || text=="Enter your notes here"){
+				return;
 			}
-			var contentSelect = {
-								"origTime":mediaElement[0].currentTime,
-								"startTime":mediaElement[0].currentTime,
-								"endTime":mediaElement[0].currentTime,
-								"contentPos": {"x":adjustedX, "y":adjustedY, "width":adjustedWi, "height":adjustedHi},
-								"markedForDel": false,
-								"beingCompared":false
-						};
-			capturePixels(mediaElement, contentSelect);
-			drawContentTag(canvas, contentSelect.contentPos, propsMap.contentSelect["list"].length, "tagabl-newtag", text);
-			propsMap.contentSelect["list"].push(contentSelect);
 			
-		});
+			$.support.cors = true;
+			
+			var superParent = canvas.parents(".taggable-container");
+			var propsMap = globalPropsMap[superParent.attr("id")];
+			var mediaElement = superParent.find("video");
+			if(mediaElement == undefined || mediaElement.length==0){
+				return;
+			}
+			var startTime = mediaElement[0].currentTime;
+			var endTime = mediaElement[0].currentTime;
+			var adjustedX =jQuery.data(notes[i], "tagPos").x / (canvas[0].width);
+			var adjustedY = jQuery.data(notes[i], "tagPos").y / (canvas[0].height);
+			var adjustedWi = jQuery.data(notes[i], "tagPos").width / (canvas[0].width);
+			var adjustedHi = jQuery.data(notes[i], "tagPos").height / (canvas[0].height);
+			
+			var absPos = getAbsolutePos({"x":adjustedX, "y":adjustedY, "width":adjustedWi, "height":adjustedHi}, canvas);
+			console.log("while indexing abs position: " + "x:"+absPos.x+";y:"+absPos.y+";width:"+absPos.width+";height:"+absPos.height);
+			
+			var posting = $.ajax({
+				url: formContentIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
+				data: "{\"keywords\":\"" + text +"\", " +
+						"\"startTime\":\"" + startTime + "\", " +
+						"\"endTime\":\"" + endTime + "\"," +
+						"\"position\":{\"x\":" + adjustedX + "," +
+						"\"y\":" + adjustedY + "," +
+						"\"height\":" + adjustedHi +"," +
+						"\"width\":" + adjustedWi + "}}",
+				type: "POST", 
+				headers : {
+					"Accept" : "*",
+					"Content-Type" : "application/json"
+				}
+			}).done(function(){
+				if(propsMap.contentSelect["list"]==undefined){
+					propsMap.contentSelect["list"] = [];
+				}
+				var contentSelect = {
+									"origTime":mediaElement[0].currentTime,
+									"startTime":mediaElement[0].currentTime,
+									"endTime":mediaElement[0].currentTime,
+									"contentPos": {"x":adjustedX, "y":adjustedY, "width":adjustedWi, "height":adjustedHi},
+									"markedForDel": false,
+									"beingCompared":false
+							};
+				capturePixels(mediaElement, contentSelect);
+				drawContentTag(canvas, contentSelect.contentPos, propsMap.contentSelect["list"].length, "tagabl-newtag", text);
+				propsMap.contentSelect["list"].push(contentSelect);
+				
+			});
+		}
+		
 		
 	}
 }
@@ -791,29 +805,7 @@ function indexContentSurroundings(mediaElement, propsMap){
 		capturePixels(mediaElement, currentCapture);
 		
 		contentSelects[i].beingCompared = true;
-		var compareResult = {};
-		var compareTask = $.Deferred();
-		callComparePixels(contentSelects[i].pixels, currentCapture.pixels, compareResult, compareTask, propsMap);
-		compareTask.done(function() {
-			console.log("done with comparison of contentSelects[" + i + "]");
-			if(compareResult["result"]=="true"){
-				if(newStartTime!=undefined){	
-					if(contentSelects[i].startTime > newStartTime) { //only if new start time is before
-						contentSelects[i].startTime = newStartTime;
-						console.log("compare result is true; origtime:" + contentSelects[i].origTime + "; new start time:" + contentSelects[i].startTime + "; end time:" +  contentSelects[i].endTime);
-					}					
-				} else if(newEndTime!=undefined){
-					if(contentSelects[i].endTime < newEndTime){  //only if new end time is after
-						contentSelects[i].endTime = newEndTime;
-						console.log("compare result is true; origtime:" + contentSelects[i].origTime + "; start time:" + contentSelects[i].startTime + "; new end time:" +  contentSelects[i].endTime);
-					}					
-				}
-			} else {
-				console.log("compare result is false; origtime:" + contentSelects[i].origTime + "; start time:" + contentSelects[i].startTime + "; end time:" +  contentSelects[i].endTime);
-				contentSelects[i].markedForDel = true;
-			}
-			contentSelects[i].beingCompared = false;
-		});		
+		callComparePixels(contentSelects[i].pixels, currentCapture.pixels, propsMap, i, mediaElement[0].currentTime);	
 	}
 }
 
@@ -864,7 +856,7 @@ function callUpdateContentIndex(contentSelect, propsMap){
 	propsMap["archivedContentTags"].push(archivedTag);
 }
 
-var callComparePixels = function callComparePixels(data, dataToCompare, compareResult, compareTask, propsMap){
+var callComparePixels = function callComparePixels(data, dataToCompare, propsMap, contentSelectIndex, currentTime){
 	
 	if(data==undefined){
 		data =  new Uint8ClampedArray(1);
@@ -885,17 +877,19 @@ var callComparePixels = function callComparePixels(data, dataToCompare, compareR
 		},
 		success: function(json) {			
 			if(json.compareResult=="true") {
-				compareResult["result"] = "true";			
-				compareTask.resolve();
+				if(propsMap.contentSelect["list"][contentSelectIndex].startTime > currentTime) { //only if new start time is before
+					propsMap.contentSelect["list"][contentSelectIndex].startTime = currentTime;
+				}
+				else if(propsMap.contentSelect["list"][contentSelectIndex].endTime < currentTime){  //only if new end time is after
+					propsMap.contentSelect["list"][contentSelectIndex].endTime = currentTime;
+				}			
 			} else {
-				compareResult["result"] = "false";			
-				compareTask.resolve();			
+				propsMap.contentSelect["list"][contentSelectIndex].markedForDel = true;	
 			}
+			propsMap.contentSelect["list"][contentSelectIndex].beingCompared=false;
 		},
 		error: function(json){
-			console.log("error when calling service for compare frames");
-			compareResult["result"] = "false";			
-			compareTask.resolve();
+			propsMap.contentSelect["list"][contentSelectIndex].beingCompared=false;
 		}
 	});
 	
@@ -967,7 +961,10 @@ function canvasMouseUp(e) {
 		var propsMap = globalPropsMap[superParent.attr("id")];
 		propsMap.contentSelect.leftButtonDown = false;
 		if(propsMap.contentSelect.contentSelect){
-			var contentText = createContentText({"x":e.offsetX, "y":e.offsetY}, "Enter your notes here");
+			var contentText = createContentText({"x":propsMap.contentSelect.cornerA.x, 
+												"y":propsMap.contentSelect.cornerA.y, 
+												"width":propsMap.contentSelect.prevRect.width, 
+												"height":propsMap.contentSelect.prevRect.height}, "Enter your notes here", "new");
 			var progressBar = getNearbyElement(".progress-bar", $(this));
 			progressBar.before(contentText);
 			contentText.show();
@@ -988,11 +985,21 @@ function removeCanvasNotes(canvas){
 }
 
 
-function createContentText(position, notesStr){
-	return $("<div class='tagabl-notes' style='position:absolute; z-index:4; left:" + position.x + "; top:" + position.y + "; " +
+function createContentText(position, notesStr, notesType){
+	var notesLeftPos = position.x + position.width;
+	var notesTopPos = position.y;
+	
+	var notes =  $("<div class='tagabl-notes' style='position:absolute; z-index:4; left:" + notesLeftPos + "; top:" + notesTopPos + "; " +
 			"box-shadow:3px 3px 5px #888888; opacity:0.9;'>" +
 				"<textarea style='width:140; height:60; border:none; text-align:left; vertical-align:top; background-color:" + "black" + "; color:" + "white" + "'>" + notesStr + "</textarea>" +
 			"</div>");
+	
+	jQuery.data(notes[0], "tagPos", position);
+	if(notesType!=null){
+		jQuery.data(notes[0], "notesType", notesType);
+	}
+	
+	return notes;
 }
 
 function createSuperParent(userObj, propsMap, replaceWithSuperParent) {
@@ -1125,9 +1132,7 @@ function fetchAndDisplayContentNotes(propsMap, archivedContentTagIndex, superPar
 
 function displayContentNotes(canvas, position, text){
 	var absPos = getAbsolutePos(position, canvas);
-	var offsetX = absPos.x + absPos.width;
-	var offsetY = absPos.y + absPos.height;
-	var contentText = createContentText({"x":offsetX, "y":offsetY}, text);
+	var contentText = createContentText(absPos, text, null);
 	var progressBar = getNearbyElement(".progress-bar", canvas);
 	progressBar.before(contentText);
 	contentText.show();
@@ -1157,9 +1162,6 @@ function fullscreen(fullscreenButton) {
 	if(fullscreenButton.attr("title")=="fullscreen") {
 		if($.isFunction(mediaElement[0].webkitEnterFullscreen)){
 
-			var screenH = screen.height;
-			var screenW = screen.width;
-
 			//adjust super parent
 			var superParent = fullscreenButton.parents(".taggable-container");
 			superParent.css("left", 0);
@@ -1168,7 +1170,7 @@ function fullscreen(fullscreenButton) {
 
 			//adjust media element
 			mediaElement.css("width", screenW);
-			mediaElement.css("height", screenH-100);
+			mediaElement.css("height", screenH);
 
 			// adjust controls-base
 			var controlsBase = getNearbyElement(".controls-base", fullscreenButton);
@@ -1191,19 +1193,22 @@ function fullscreen(fullscreenButton) {
 
 			//adjust search results if any
 			adjustSearchResults(superParent, true);
-
-			//make fullscreen request
-			document.webkitCancelFullScreen(); 
-			superParent[0].webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-			fullscreenButton.attr("src" , minscreenimg);
-			fullscreenButton.attr("title" , "minscreen");
 			
 			//adjust canvas
 			var canvas = getNearbyElement(".tagabl-canvas", fullscreenButton);
 			canvas.css("top", mediaElement.position().top);
 			canvas.css("left", mediaElement.position().left);
 			canvas.attr("width", screenW);
-			canvas.attr("height", screenH-100);
+			canvas.attr("height", screenH);
+			
+			//adjust content tags if any
+			adjustContentTags(superParent, true, ".tagabl-archivedtag, .tagabl-newtag");
+
+			//make fullscreen request
+			document.webkitCancelFullScreen(); 
+			superParent[0].webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+			fullscreenButton.attr("src" , minscreenimg);
+			fullscreenButton.attr("title" , "minscreen");
 
 		}
 	}
@@ -1229,7 +1234,7 @@ function minscreen(minscreenButton) {
 			var progressBar = getNearbyElement(".progress-bar", minscreenButton);
 			var borderWidth = progressBar.css("border-left-width");
 			borderWidth = borderWidth.replace("px", "");
-			var percentage = borderWidth/(screen.width);
+			var percentage = borderWidth/(screenW);
 			var width = propsMap.width.replace("px", "");				
 			var adjustedBorderWidth = percentage * (width);
 			progressBar.css("border-left-width", adjustedBorderWidth);
@@ -1241,9 +1246,12 @@ function minscreen(minscreenButton) {
 			var canvas = getNearbyElement(".tagabl-canvas", minscreenButton);
 			canvas.attr("width", propsMap.width);
 			canvas.attr("height", propsMap.height);
+			
+			//adjust content tags if any
+			adjustContentTags(superParent, false, ".tagabl-archivedtag, .tagabl-newtag");
 
 			//adjust super parent
-			superParent.css("width", propsMap.width);
+			//superParent.css("width", propsMap.width);
 			superParent.css("left", propsMap.left);
 			superParent.css("top", propsMap.top); 
 
@@ -1355,9 +1363,9 @@ function adjustWriteBar(superParent, fullscreenMode) {
 		var width = propsMap.width;
 		width = width.replace("px", "");
 		currentPercentage = currentleftPos/width;
-		adjustedMaxWidth = screen.width;
+		adjustedMaxWidth = screenW;
 	} else {
-		currentPercentage = currentleftPos/(screen.width);
+		currentPercentage = currentleftPos/(screenW);
 		adjustedMaxWidth = propsMap.width;
 		adjustedMaxWidth = adjustedMaxWidth.replace("px", "");
 	}	
@@ -1376,6 +1384,52 @@ function adjustWriteBar(superParent, fullscreenMode) {
 
 }
 
+function adjustContentTags(superParent, fullscreenmode, classSelector){
+	
+	var propsMap = globalPropsMap[superParent.attr("id")];
+	var tags = superParent.find(classSelector);
+	for(var i=0; i<tags.length; i++){
+		var jObj = $(tags[i]);
+		var left = jObj.css("left");
+		left = left.replace("px", "");
+		var top = jObj.css("top");
+		top = top.replace("px", "");
+		var width = jObj.css("width");
+		width = width.replace("px", "");
+		var height = jObj.css("height");
+		height = height.replace("px", "");
+	
+		var percentage;
+		var curWidth;
+		var maxWidth;
+		var curHeight;
+		var maxHeight;
+		
+		if(fullscreenmode){
+			curWidth = propsMap.width.replace("px","");
+			maxWidth = screenW;
+			curHeight = propsMap.height.replace("px","");
+			maxHeight = screenH;
+		} else {
+			curWidth = screenW;
+			maxWidth = propsMap.width.replace("px","");
+			curHeight = screenH;
+			maxHeight = propsMap.height.replace("px","");
+		}
+
+		percentage = left/curWidth;			
+		jObj.css("left", (percentage*(maxWidth))); //adjust left
+		percentage = top/curHeight;			
+		jObj.css("top", (percentage*(maxHeight))); //adjust top
+		percentage = width/curWidth;			
+		jObj.css("width", (percentage*(maxWidth))); //adjust width
+		percentage = height/curHeight;			
+		jObj.css("height", (percentage*(maxHeight))); //adjust width
+			
+	}
+	
+}
+
 
 function adjustSearchResults(superParent, fullscreenMode) {
 
@@ -1384,7 +1438,7 @@ function adjustSearchResults(superParent, fullscreenMode) {
 	var progressBar = superParent.find(".progress-bar");
 	var propsMap = globalPropsMap[superParent.attr("id")];
 
-	for(i=0; i<results.length; i++) {
+	for(var i=0; i<results.length; i++) {
 		var jObj = $(results[i]);
 		var left = jObj.css("left");
 		left = left.replace("px", "");
@@ -1395,10 +1449,10 @@ function adjustSearchResults(superParent, fullscreenMode) {
 			var curWidth = propsMap.width;
 			curWidth = curWidth.replace("px", "");
 			percentage = left/curWidth;
-			maxWidth = screen.width;
+			maxWidth = screenW;
 			adjustedLeftPos = percentage * (maxWidth);
 		} else {
-			percentage = left/(screen.width);
+			percentage = left/(screenW);
 			maxWidth = propsMap.width;
 			maxWidth = maxWidth.replace("px", "");
 			adjustedLeftPos = percentage * (maxWidth);
@@ -1827,7 +1881,7 @@ function createControlsBase(propsMap) {
 	var searchBox = createSearchBox(propsMap);
 	controlsBase.append(searchBox);
 
-	if(propsMap.tagName=="VIDEO"){
+	if(propsMap.tagName=="video"){
 		var screenAdjust = createScreenAdjust();
 		controlsBase.append(screenAdjust);
 	}
