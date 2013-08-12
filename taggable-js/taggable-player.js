@@ -24,8 +24,8 @@ resultColorMap[7] = "#FF9999";
 resultColorMap[8] = "#FFB2B2";
 resultColorMap[9] = "#FFCCCC";
 var mediaIndexKey = 0;
-var playimg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAIAAAC0Ujn1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADkSURBVEhL7ZYxDoQgEEW9qY2NjbUNjTU3oDaxoeUM1lhRegA6o2DjTkJi4WZxAI1bSD158+f/IZDlt53sNnL+og/ePmTIMAyMseicfaq3bVuWRSlV13VEgxM00OEYYzjnRVEENUChgW6t1Vo3TYOnY9FO/rqufd+XZYlpEIZ29HmeMfEGo518TLyR6D3erut+mZOEBu3jOF6Mdo63bevJM0Y1QKWUVVX59yQMDQ5M00QpvXj5wAQhBP5OolSDAxAXIQQjdq85QWPiitkQcBYTVww6aPzv4odemVd1ogP/8VlIHOID8G2+0cUDzd0AAAAASUVORK5CYII=";
-var pauseimg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAIAAAC0Ujn1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACOSURBVEhL7VbbCcAgEHNN8YVoHcQJ3MI1XKLztPfjYcUfQfshl99wAUMuJzPbwLYpG5LuvD3JEGvt9UX7WOcckt57rfUwZmNDYDjnfFdwznEYhIBFKsYopZyTLqU8FZ10CAGplBJJkyGUENg3Wpm2YqD5IBWIloJ6EkK0rFJqop6W3OKTrgwZssSB//4hL+9Rj3PoevgiAAAAAElFTkSuQmCC";
+var playimg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGFVd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWaGVWIlquunc8klZOnFpSeTYrSs9RLA9Sr6U4tkcvNEi7BFffO6+EdigjL7ZHu/k72I796i9zRiSJPwG4VHX0Z+AxRzNRrtksUvwf7+Gm3BtzzHPDTNgQCqwKXfZwSeNHHJz1OIT8JjtAq6xWtCLwGPLzYZi+3YV8DGMiT4VVuG7oiZpGzrZJhcs/hL49xtzH/Dy6bdfTsXYNY+5yluWO4D4neK/ZUvok/17X0HPBLsF+vuUlhfwX4j/rSfAJ4H1H0qZJ9dN7nR19frRTeBt4Fe9FwpwtN+2p1MXscGLHR9SXrmMgjONd1ZxKzpBeA71b4tNhj6JGoyFNp4GHgwUp9qplfmnFW5oTdy7NamcwCI49kv6fN5IAHgD+0rbyoBc3SOjczohbyS1drbq6pQdqumllRC/0ymTtej8gpbbuVwpQfyw66dqEZyxZKxtHpJn+tZnpnEdrYBbueF9qQn93S7HQGGHnYP7w6L+YGHNtd1FJitqPAR+hERCNOFi1i1alKO6RQnjKUxL1GNjwlMsiEhcPLYTEiT9ISbN15OY/jx4SMshe9LaJRpTvHr3C/ybFYP1PZAfwfYrPsMBtnE6SwN9ib7AhLwTrBDgUKcm06FSrTfSj187xPdVQWOk5Q8vxAfSiIUc7Z7xr6zY/+hpqwSyv0I0/QMTRb7RMgBxNodTfSPqdraz/sDjzKBrv4zu2+a2t0/HHzjd2Lbcc2sG7GtsL42K+xLfxtUgI7YHqKlqHK8HbCCXgjHT1cAdMlDetv4FnQ2lLasaOl6vmB0CMmwT/IPszSueHQqv6i/qluqF+oF9TfO2qEGTumJH0qfSv9KH0nfS/9TIp0Wboi/SRdlb6RLgU5u++9nyXYe69fYRPdil1o1WufNSdTTsp75BfllPy8/LI8G7AUuV8ek6fkvfDsCfbNDP0dvRh0CrNqTbV7LfEEGDQPJQadBtfGVMWEq3QWWdufk6ZSNsjG2PQjp3ZcnOWWing6noonSInvi0/Ex+IzAreevPhe+CawpgP1/pMTMDo64G0sTCXIM+KdOnFWRfQKdJvQzV1+Bt8OokmrdtY2yhVX2a+qrykJfMq4Ml3VR4cVzTQVz+UoNne4vcKLoyS+gyKO6EHe+75Fdt0Mbe5bRIf/wjvrVmhbqBN97RD1vxrahvBOfOYzoosH9bq94uejSOQGkVM6sN/7HelL4t10t9F4gPdVzydEOx83Gv+uNxo7XyL/FtFl8z9ZAHF4bBsrEwAAAAlwSFlzAAAXEgAAFxIBZ5/SUgAAAFBJREFUKBWVy9EJACAIRVFHaRRHbzPTD8FK8xU8QriHRGTqWEfoLPQH44hgnKEWv1CJEXThH2R46gaKLGad9dShLe5QGlfoGZ8IiiNiP9B/AfXeRwKxwe2iAAAAAElFTkSuQmCC";
+var pauseimg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGFVd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWaGVWIlquunc8klZOnFpSeTYrSs9RLA9Sr6U4tkcvNEi7BFffO6+EdigjL7ZHu/k72I796i9zRiSJPwG4VHX0Z+AxRzNRrtksUvwf7+Gm3BtzzHPDTNgQCqwKXfZwSeNHHJz1OIT8JjtAq6xWtCLwGPLzYZi+3YV8DGMiT4VVuG7oiZpGzrZJhcs/hL49xtzH/Dy6bdfTsXYNY+5yluWO4D4neK/ZUvok/17X0HPBLsF+vuUlhfwX4j/rSfAJ4H1H0qZJ9dN7nR19frRTeBt4Fe9FwpwtN+2p1MXscGLHR9SXrmMgjONd1ZxKzpBeA71b4tNhj6JGoyFNp4GHgwUp9qplfmnFW5oTdy7NamcwCI49kv6fN5IAHgD+0rbyoBc3SOjczohbyS1drbq6pQdqumllRC/0ymTtej8gpbbuVwpQfyw66dqEZyxZKxtHpJn+tZnpnEdrYBbueF9qQn93S7HQGGHnYP7w6L+YGHNtd1FJitqPAR+hERCNOFi1i1alKO6RQnjKUxL1GNjwlMsiEhcPLYTEiT9ISbN15OY/jx4SMshe9LaJRpTvHr3C/ybFYP1PZAfwfYrPsMBtnE6SwN9ib7AhLwTrBDgUKcm06FSrTfSj187xPdVQWOk5Q8vxAfSiIUc7Z7xr6zY/+hpqwSyv0I0/QMTRb7RMgBxNodTfSPqdraz/sDjzKBrv4zu2+a2t0/HHzjd2Lbcc2sG7GtsL42K+xLfxtUgI7YHqKlqHK8HbCCXgjHT1cAdMlDetv4FnQ2lLasaOl6vmB0CMmwT/IPszSueHQqv6i/qluqF+oF9TfO2qEGTumJH0qfSv9KH0nfS/9TIp0Wboi/SRdlb6RLgU5u++9nyXYe69fYRPdil1o1WufNSdTTsp75BfllPy8/LI8G7AUuV8ek6fkvfDsCfbNDP0dvRh0CrNqTbV7LfEEGDQPJQadBtfGVMWEq3QWWdufk6ZSNsjG2PQjp3ZcnOWWing6noonSInvi0/Ex+IzAreevPhe+CawpgP1/pMTMDo64G0sTCXIM+KdOnFWRfQKdJvQzV1+Bt8OokmrdtY2yhVX2a+qrykJfMq4Ml3VR4cVzTQVz+UoNne4vcKLoyS+gyKO6EHe+75Fdt0Mbe5bRIf/wjvrVmhbqBN97RD1vxrahvBOfOYzoosH9bq94uejSOQGkVM6sN/7HelL4t10t9F4gPdVzydEOx83Gv+uNxo7XyL/FtFl8z9ZAHF4bBsrEwAAAAlwSFlzAAAXEgAAFxIBZ5/SUgAAAE5JREFUKBVj/P//PxMDAwMjECODv0gcZiQ2iPmf5cuXL6uAGoORJZiYmFy4ubn3fv361fnfv397kOUYGRnXgmwhGYxqggbZcAwIRnLSHgBXzBmftF3WggAAAABJRU5ErkJggg==";
 var fullscreenimg = "data:image/png;base64,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";
 var minscreenimg = "data:image/png;base64,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";
 var writeHighlightImg = "data:image/png;base64,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";
@@ -129,7 +129,7 @@ $(window).load(function() {
 
 	});
 	
-	$(".progress-bar").mousemove(function(e){
+/*	$(".progress-bar").mousemove(function(e){
 		var timers = getNearbyElement(".tagable-timer", $(this));
 		for(var i=0; i<timers.length; i++){
 			timers[i].remove();
@@ -162,13 +162,12 @@ $(window).load(function() {
 		snippet.css("top", top);
 		snippet.css("left", left);				
 		$(this).before(snippet);
-	});
+	});*/
 	
 	$(".progress-bar").click(function(e){
 		var mouseX = e.offsetX;
 		var superParent = $(this).parents(".taggable-container");	
-		var progressBarWidth = superParent.css("width");
-		progressBarWidth = progressBarWidth.replace("px", "");
+		var progressBarWidth = jQuery.data(this, "origWidth");
 		var percentage = mouseX/progressBarWidth;
 		var mediaElement = getNearbyMediaElement($(this));	
 
@@ -471,30 +470,44 @@ $(window).load(function() {
 	$(".speechf-searchButton").click(); 
 	
 	
-	$(".taggable-container").click(function(e){
-		
-		if(e.target.className=="tagabl-notes" || $(e.target).parent(".tagabl-notes").length!=0){ //if the click was propogated from notes, ignore
-			return;
-		}
+	$(".taggable-container").click(function(e){		
+			//when notes is clicked, the user is trying to write notes
+			//make sure notesType is updated to indicate whether it is "new" or "update"
+			var notes;
+			if(e.target.className=="tagabl-notes"){
+				notes = e.target;
+			} else {
+				var parents = $(e.target).parent(".tagabl-notes");
+				if(parents.length!=0){
+					notes = parents[0];
+				}
+			}			
+			if(notes != undefined) {
+				if(jQuery.data(notes, "notesType")== "cached") {
+					jQuery.data(notes, "notesType", "cached-updated");
+				} else if(jQuery.data(notes, "notesType")== "archived") {
+					jQuery.data(notes, "notesType", "archived-updated");
+				}
+			}			
+	});
+	
+	$(".taggable-container").on("mouseenter", ".tagabl-canvas", function(e){
+		var superParent = $(this).parents(".taggable-container");
 		
 		//index notes if any
-		var canvas = $(this).find(".tagabl-canvas");
+		var canvas = superParent.find(".tagabl-canvas");
 		indexContentNotes(canvas);
 		
 		//remove canvas
 		 if(e.target.className=="tagabl-canvas" || $(e.target).parent(".tagabl-canvas").length!=0) { 
-			var propsMap = globalPropsMap[$(this).attr("id")];
+			var propsMap = globalPropsMap[superParent.attr("id")];
 			if(!propsMap.contentSelect.contentSelect){ // if click was propogated from canvas, then be careful about it. Remove the notes only if click is not propogated while selecting the content
 				removeCanvasNotes(canvas);
 			}
 		} else { //if click was propogated from anywhere else, remove the notes
 			removeCanvasNotes(canvas);	
 		}
-		
-	});
-	
-	$(".taggable-container").on("mouseenter", ".tagabl-canvas", function(){
-		var superParent = $(this).parents(".taggable-container");
+		 
 		showAllContentTags(superParent);
 	});
 	
@@ -513,7 +526,7 @@ $(window).load(function() {
 				if($(this).attr("class")=="tagabl-newtag"){
 					var canvas = superParent.find(".tagabl-canvas");
 					var position = propsMap.contentSelect["list"][$(this).attr("id")].contentPos;
-					displayContentNotes(canvas, position, $(this).attr("data-notes"));
+					displayContentNotes(canvas, position, propsMap.contentSelect["list"][$(this).attr("id")].notes, {"startTime":propsMap.contentSelect["list"][$(this).attr("id")].startTime, "endTime":propsMap.contentSelect["list"][$(this).attr("id")].endTime}, "cached", $(this).attr("id"));
 				} else {
 					fetchAndDisplayContentNotes(propsMap, tags[i].id, superParent);
 				}
@@ -523,9 +536,7 @@ $(window).load(function() {
 		}		
 	});
 	
-	$(".tagabl-notes").click(function() {
-		jQuery.data($(this)[0], "notesType", "update");
-	});
+	
 	
 /*	$(".taggable-container").on("mouseout", ".tagabl-archivedtag, .tagabl-newtag", function(e){
 		if(e.target.className=="tagabl-notes"){
@@ -546,15 +557,11 @@ $(window).load(function() {
 
 
 
-function drawContentTag(canvas, contentTagPos, contentTagIndex, className, notes){
+function drawContentTag(canvas, contentTagPos, contentTagIndex, className){
 	var absPos = getAbsolutePos(contentTagPos, canvas);	
-	var div = "<div class='" + className +  "' id='" + contentTagIndex + "' style='border:1px solid #fff; background-color:#333333; opacity:0.3; left:" + absPos.x  + "; top:" + absPos.y + "; width:" + absPos.width + "; height:" + absPos.height + "; position:absolute; z-index:4;'";
-	if(notes!=null && notes.length!=0){
-		div = div + " data-notes='" + notes + "'";
-	}
-	div = div + "></div>";
-	var progressBar = getNearbyElement(".progress-bar", canvas);
-	progressBar.before(div);
+	var div = "<div class='" + className +  "' id='" + contentTagIndex + "' style='border:1px solid 737373; background-color:#DBDBDB; opacity:0.3; left:" + absPos.x  + "; top:" + absPos.y + "; width:" + absPos.width + "; height:" + absPos.height + "; position:absolute; z-index:4;'></div>";
+	var controlsBase = getNearbyElement(".controls-base", canvas);
+	controlsBase.before(div);
 }
 
 function removeContentTag(canvas, contentTagIndex, className){
@@ -661,69 +668,104 @@ function getNormalizedPos(pos, canvas){
 
 function indexContentNotes(canvas){
 	var notes = getNearbyElement(".tagabl-notes", canvas);
-	if(notes!=undefined && notes.length!=0){
+
+	if(notes==undefined || notes.length==0){
+		return;
+	}
 	
-		for(var i=0; i<notes.length; i++){
-			if(jQuery.data(notes[i], "notesType")==undefined || jQuery.data(notes[i], "notesType")==null){
-				return;
-			}
-			var textElm = $(notes[i]).find("textarea");
-			var text = textElm[0].value;
-			if(text.length==0 || text=="" || text=="Enter your notes here"){
-				return;
-			}
+	
+	var superParent = canvas.parents(".taggable-container");
+	var propsMap = globalPropsMap[superParent.attr("id")];
+	var mediaElement = superParent.find("video");
+	if(mediaElement == undefined || mediaElement.length==0){
+		return;
+	}
+	
+	
+	for(var i=0; i<notes.length; i++){
+		if(jQuery.data(notes[i], "notesType")==null || jQuery.data(notes[i], "notesType")==undefined) {
+			continue;
+		}
+		
+		var adjustedX =jQuery.data(notes[i], "tagPos").x / (canvas[0].width);
+		var adjustedY = jQuery.data(notes[i], "tagPos").y / (canvas[0].height);
+		var adjustedWi = jQuery.data(notes[i], "tagPos").width / (canvas[0].width);
+		var adjustedHi = jQuery.data(notes[i], "tagPos").height / (canvas[0].height);
+		
+		var textElm = $(notes[i]).find("textarea");
+		var text = textElm[0].value;
+		if(text.length==0 || text=="" || text=="Enter your notes here"){
+			return;
+		}
+		
+		if(jQuery.data(notes[i], "notesType")=="archived-updated") {
+			//just update notes
+			var startTime = jQuery.data(notes[i], "tagTime").startTime;
+			var endTime = jQuery.data(notes[i], "tagTime").endTime
 			
-			$.support.cors = true;
-			
-			var superParent = canvas.parents(".taggable-container");
-			var propsMap = globalPropsMap[superParent.attr("id")];
-			var mediaElement = superParent.find("video");
-			if(mediaElement == undefined || mediaElement.length==0){
-				return;
-			}
-			var startTime = mediaElement[0].currentTime;
-			var endTime = mediaElement[0].currentTime;
-			var adjustedX =jQuery.data(notes[i], "tagPos").x / (canvas[0].width);
-			var adjustedY = jQuery.data(notes[i], "tagPos").y / (canvas[0].height);
-			var adjustedWi = jQuery.data(notes[i], "tagPos").width / (canvas[0].width);
-			var adjustedHi = jQuery.data(notes[i], "tagPos").height / (canvas[0].height);
-			
-			var absPos = getAbsolutePos({"x":adjustedX, "y":adjustedY, "width":adjustedWi, "height":adjustedHi}, canvas);
-			console.log("while indexing abs position: " + "x:"+absPos.x+";y:"+absPos.y+";width:"+absPos.width+";height:"+absPos.height);
+			var contentToUpdate  =  "{\"startTime\":\"" + startTime + "\"," +
+			"\"endTime\":\"" + endTime + "\"," +
+			"\"position\":{\"x\":" + adjustedX + "," +
+			"\"y\":" + adjustedY + "," +
+			"\"height\":" + adjustedHi +"," +
+			"\"width\":" + adjustedWi + "}}";
+
+			var newContent =  "{\"keywords\":\"" + text + "\"}";
 			
 			var posting = $.ajax({
-				url: formContentIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
-				data: "{\"keywords\":\"" + text +"\", " +
-						"\"startTime\":\"" + startTime + "\", " +
-						"\"endTime\":\"" + endTime + "\"," +
-						"\"position\":{\"x\":" + adjustedX + "," +
-						"\"y\":" + adjustedY + "," +
-						"\"height\":" + adjustedHi +"," +
-						"\"width\":" + adjustedWi + "}}",
+				url: formUpdateContentIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
+				data: "[" + contentToUpdate + "," + newContent + "]",
 				type: "POST", 
 				headers : {
 					"Accept" : "*",
 					"Content-Type" : "application/json"
 				}
-			}).done(function(){
-				if(propsMap.contentSelect["list"]==undefined){
-					propsMap.contentSelect["list"] = [];
-				}
-				var contentSelect = {
-									"origTime":mediaElement[0].currentTime,
-									"startTime":mediaElement[0].currentTime,
-									"endTime":mediaElement[0].currentTime,
-									"contentPos": {"x":adjustedX, "y":adjustedY, "width":adjustedWi, "height":adjustedHi},
-									"markedForDel": false,
-									"beingCompared":false
-							};
-				capturePixels(mediaElement, contentSelect);
-				drawContentTag(canvas, contentSelect.contentPos, propsMap.contentSelect["list"].length, "tagabl-newtag", text);
-				propsMap.contentSelect["list"].push(contentSelect);
-				
 			});
+			
+		} else if(jQuery.data(notes[i], "notesType")=="cached-updated"){
+			
+			if(jQuery.data(notes[i], "cachedIndex")!=null){
+				 propsMap.contentSelect["list"][jQuery.data(notes[i], "cachedIndex")].notes = text;
+			}
+			
+		} else if(jQuery.data(notes[i], "notesType")=="new") {
+			
+			//index notes, capture pixels, add to content select list, draw content tag div
+			var startTime = mediaElement[0].currentTime;
+			var endTime = mediaElement[0].currentTime;
+			
+			var posting = $.ajax({
+				url: formContentIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
+				data: "{\"keywords\":\"" + text +"\", " +
+				"\"startTime\":\"" + startTime + "\", " +
+				"\"endTime\":\"" + endTime + "\"," +
+				"\"position\":{\"x\":" + adjustedX + "," +
+				"\"y\":" + adjustedY + "," +
+				"\"height\":" + adjustedHi +"," +
+				"\"width\":" + adjustedWi + "}}",
+				type: "POST", 
+				headers : {
+					"Accept" : "*",
+					"Content-Type" : "application/json"
+				}
+			});
+			
+			if(propsMap.contentSelect["list"]==undefined){
+				propsMap.contentSelect["list"] = [];
+			}
+			var contentSelect = {
+					"origTime":mediaElement[0].currentTime,
+					"startTime":mediaElement[0].currentTime,
+					"endTime":mediaElement[0].currentTime,
+					"contentPos": {"x":adjustedX, "y":adjustedY, "width":adjustedWi, "height":adjustedHi},
+					"markedForDel": false,
+					"beingCompared":false, 
+					"notes":text
+			};
+			capturePixels(mediaElement, contentSelect);
+			drawContentTag(canvas, contentSelect.contentPos, propsMap.contentSelect["list"].length, "tagabl-newtag");
+			propsMap.contentSelect["list"].push(contentSelect);
 		}
-		
 		
 	}
 }
@@ -831,7 +873,8 @@ function callUpdateContentIndex(contentSelect, propsMap){
 				"\"width\":" + contentSelect.contentPos.width + "}}";
 	
 	var newContent =  "{\"startTime\":\"" + contentSelect.startTime + "\", " +
-	"\"endTime\":\"" + contentSelect.endTime + "\"}";
+	"\"endTime\":\"" + contentSelect.endTime + "\", " +
+	"\"keywords\":\"" + contentSelect.notes + "\"" + "}";
 	
 	
 	
@@ -941,7 +984,7 @@ function canvasMouseMove(e) {
 			if(width==0 && height==0) { 
 				return;
 			}
-			context.fillStyle = "rgba(32,32,32, 0.4)"
+			context.fillStyle = "rgba(201,201,201, 0.3)"
 			context.fillRect(propsMap.contentSelect.cornerA.x, propsMap.contentSelect.cornerA.y, width, height);
 			propsMap.contentSelect.contentSelect = true;			
 			
@@ -964,9 +1007,10 @@ function canvasMouseUp(e) {
 			var contentText = createContentText({"x":propsMap.contentSelect.cornerA.x, 
 												"y":propsMap.contentSelect.cornerA.y, 
 												"width":propsMap.contentSelect.prevRect.width, 
-												"height":propsMap.contentSelect.prevRect.height}, "Enter your notes here", "new");
+												"height":propsMap.contentSelect.prevRect.height}, "Enter your notes here", "new", null, null);
 			var progressBar = getNearbyElement(".progress-bar", $(this));
 			progressBar.before(contentText);
+			propsMap.contentSelect.contentSelect = false;
 			contentText.show();
 		}
 	}	
@@ -984,19 +1028,33 @@ function removeCanvasNotes(canvas){
 		}
 }
 
+function createTimeTag(position, indexStr){
+	var notes =  $("<div class='tagabl-notes' style='position:absolute; z-index:4; left:" + position.x + "; top:" + position.y + "; " +
+			 "opacity:0.5; background-color:000000; color:#E3E3E3; font-family:arial; font-size:15px;'>indexed text</div>");
+}
 
-function createContentText(position, notesStr, notesType){
-	var notesLeftPos = position.x + position.width;
-	var notesTopPos = position.y;
+
+
+function createContentText(position, notesStr, notesType, time, cachedIndex){
+	var notesLeftPos = position.x + position.width + 1;
+	var notesTopPos = position.y + 1;
 	
 	var notes =  $("<div class='tagabl-notes' style='position:absolute; z-index:4; left:" + notesLeftPos + "; top:" + notesTopPos + "; " +
-			"box-shadow:3px 3px 5px #888888; opacity:0.9;'>" +
-				"<textarea style='width:140; height:60; border:none; text-align:left; vertical-align:top; background-color:" + "black" + "; color:" + "white" + "'>" + notesStr + "</textarea>" +
+			"box-shadow:2px 2px 5px #888888; border:1px solid #FFFFFF; opacity:0.5'>" +
+				"<textarea style='width:140; height:60; text-align:left; vertical-align:top; background-color:000000; color:#E3E3E3; font-family:arial; font-size:15px;'>" + notesStr + "</textarea>" +
 			"</div>");
 	
 	jQuery.data(notes[0], "tagPos", position);
 	if(notesType!=null){
 		jQuery.data(notes[0], "notesType", notesType);
+	}
+	
+	if(time!=null){
+		jQuery.data(notes[0], "tagTime", time);
+	}
+	
+	if(cachedIndex!=null){
+		jQuery.data(notes[0], "cachedIndex", cachedIndex);
 	}
 	
 	return notes;
@@ -1016,8 +1074,8 @@ function createSuperParent(userObj, propsMap, replaceWithSuperParent) {
 	var mediaElm = createMediaElement(mediaObj, propsMap);
 	mediaElm.appendTo(superParent);
 
-	var progressBar = createProgressBar(propsMap);
-	progressBar.appendTo(superParent);
+//	var progressBar = createProgressBar(propsMap);
+//	progressBar.appendTo(superParent);
 
 	var controlsBase = createControlsBase(propsMap);	
 	controlsBase.appendTo(superParent);
@@ -1028,7 +1086,7 @@ function createSuperParent(userObj, propsMap, replaceWithSuperParent) {
 			'left':mediaElm.position().left,
 			'height':propsMap.height,
 			'width':propsMap.width});
-		progressBar.before(canvas);
+		controlsBase.before(canvas);
 	}
 	
 	
@@ -1122,7 +1180,7 @@ function fetchAndDisplayContentNotes(propsMap, archivedContentTagIndex, superPar
 			}
 			
 			var canvas = superParent.find(".tagabl-canvas");
-			displayContentNotes(canvas, archivedContentTag.position, text);
+			displayContentNotes(canvas, archivedContentTag.position, text, {"startTime":archivedContentTag.startTime, "endTime":archivedContentTag.endTime}, "archived", null);
 		},
 		error: function(json){
 			console.log("error while fetching archived content tag");
@@ -1130,11 +1188,11 @@ function fetchAndDisplayContentNotes(propsMap, archivedContentTagIndex, superPar
 	});		
 }
 
-function displayContentNotes(canvas, position, text){
+function displayContentNotes(canvas, position, text, time, notesType, cachedIndex){
 	var absPos = getAbsolutePos(position, canvas);
-	var contentText = createContentText(absPos, text, null);
-	var progressBar = getNearbyElement(".progress-bar", canvas);
-	progressBar.before(contentText);
+	var contentText = createContentText(absPos, text, notesType, time, cachedIndex);
+	var controlsBase = getNearbyElement(".controls-base", canvas);
+	controlsBase.before(contentText);
 	contentText.show();
 }
 
@@ -1669,21 +1727,21 @@ function addMediaEvents(elm) {
 		var percentage = currentTime/mediaDuration;	
 		var controlsBase = getNearbyElement(".controls-base", $(elm));	
 		var progressBar = getNearbyElement(".progress-bar", $(elm));	
-		var progressBarOrigWidth = controlsBase.css("width");
-		progressBarOrigWidth = progressBarOrigWidth.replace("px", "");
+		var progressBarOrigWidth = jQuery.data(progressBar[0], "origWidth");
+		progressBarOrigWidth = progressBarOrigWidth;
 		var borderWidth = (percentage*progressBarOrigWidth);
 		progressBar.css("border-left-width" , borderWidth);
 		progressBar.css("border-left-style", "solid");
-		progressBar.css("border-left-color", "#FCFCFC");
+		progressBar.css("border-left-color", "#FF4500");
 		progressBar.css("width" , (progressBarOrigWidth-borderWidth));	
 
 		//move write bar if required
-		var writeButton =  getNearbyElement(".speechf-writeButton", $(elm));
+	/*	var writeButton =  getNearbyElement(".speechf-writeButton", $(elm));
 		if(writeButton.attr("title").indexOf("writeClicked")!=-1) {
 			if(Math.abs(currentTime-currentIndexTime)>=indexSpan){
 				writeButton.click();
 			}
-		}
+		}*/
 		
 		//check for content select surrounding frames and if required adjust index
 		var superParent = $(elm).parents(".taggable-container");
@@ -1705,7 +1763,7 @@ function addMediaEvents(elm) {
 			if(propsMap["archivedContentTags"][i].displayStatus==false &&
 					propsMap["archivedContentTags"][i].startTime <=currentTime && 
 					propsMap["archivedContentTags"][i].endTime >=  currentTime) {
-				drawContentTag(canvas, propsMap["archivedContentTags"][i].position, i, "tagabl-archivedtag", null);
+				drawContentTag(canvas, propsMap["archivedContentTags"][i].position, i, "tagabl-archivedtag");
 				propsMap["archivedContentTags"][i].displayStatus=true;
 			} else if(propsMap["archivedContentTags"][i].displayStatus==true &&
 					(propsMap["archivedContentTags"][i].startTime > currentTime || 
@@ -1791,7 +1849,7 @@ function createPlayButton(controlsBase) {
 			"title=play " +
 			"src=" + playimg + " " +
 			"class='speechf-playbutton'" +
-			"style='float:left;  margin-top:3px;'>" +
+			"style='float:left;  margin-top:6px; margin-left:4px'>" +
 	"</input>");
 }
 
@@ -1867,7 +1925,7 @@ function supportedFormat(src) {
 
 
 function createControlsBase(propsMap) {
-	var controlsBase = $("<div class='controls-base' style='height:35px; background-color:#646060; '>"  +
+	var controlsBase = $("<div class='controls-base' style='height:23px; background-color:#646060; '>"  +
 	"</div>");
 	if(propsMap.hasOwnProperty("width")) {
 		controlsBase.css("width", propsMap.width);
@@ -1877,26 +1935,26 @@ function createControlsBase(propsMap) {
 
 	var playButton = createPlayButton();
 	controlsBase.append(playButton);
+	
+	var progressBar = createProgressBar(propsMap);
+	controlsBase.append(progressBar);
 
-	var searchBox = createSearchBox(propsMap);
-	controlsBase.append(searchBox);
+//	var searchBox = createSearchBox(propsMap);
+//	controlsBase.append(searchBox);
 
-	if(propsMap.tagName=="video"){
+/*	if(propsMap.tagName=="video"){
 		var screenAdjust = createScreenAdjust();
 		controlsBase.append(screenAdjust);
-	}
+	}*/
 
 	return controlsBase;
 }
 
 function createProgressBar(propsMap) {
-	var progressBar = $("<div class='progress-bar' style='height:" + progressBarHeight + "; background-color:#B8B8B8;'>" +
+	var width = 0.85 * (propsMap.width.replace("px",""));
+	var progressBar = $("<div class='progress-bar' style='height:15; width:" + width  + "; margin-left:10px; background-color:#E3E3E3; float:left; margin-top:4px;'>" +
 	"</div>");
-	if(propsMap.hasOwnProperty("width")) {
-		progressBar.css("width", propsMap.width);
-	} else {
-		progressBar.css("width", defaultMediaWidth);
-	}
+	jQuery.data(progressBar[0], "origWidth", width);
 	return progressBar;
 }
 
