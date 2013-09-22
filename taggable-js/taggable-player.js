@@ -10,7 +10,8 @@ var currentSearchQuery = "";
 var currentIndexTime = "";
 var indexSpan =  15; //15 sec
 //var indexURI = "http://ec2-54-235-225-226.compute-1.amazonaws.com/speechf-web";
-var indexURI = "http://ec2-54-235-225-226.compute-1.amazonaws.com/speechf-web";
+//var indexURI = "http://ec2-54-235-225-226.compute-1.amazonaws.com/speechf-web";
+var indexURI = "http://localhost:8080/speechf-web";
 var globalPropsMap = [];
 var resultColorMap = [];
 resultColorMap[0] = "#FF0000";
@@ -70,11 +71,12 @@ $(window).load(function() {
 			return;
 		}		
 		createSuperParent(this, propsMap, replaceWithSuperParent);
-		globalPropsMap[mediaIndexKey] = propsMap;
+		globalPropsMap[mediaIndexKey] = propsMap;		
 		mediaIndexKey++;
+		console.log("done with player init");
 	});	
 	
-	requestUserID(OAuthProp); ///TBD - need to check if this gets executed after $("[data-player='taggable']").each
+	//requestUserID(OAuthProp);
 	
 	$(".tagabl-canvas").bind("mousedown", canvasMouseDown);
 
@@ -125,6 +127,13 @@ $(window).load(function() {
 		$(controlsBase).before(timetag);
 	});
 	
+	$(".progress-bar").mouseout(function(){
+		var timetag = getNearbyElement(".tagabl-timetag", $(this));
+		for(var i=0; i<timetag.length; i++){
+			$(timetag[i]).fadeOut();
+		}
+	});
+	
 	$(".progress-bar").click(function(e){
 		var mouseX = e.offsetX;
 		var superParent = $(this).parents(".taggable-container");	
@@ -138,14 +147,6 @@ $(window).load(function() {
 
 		var mediaDuration =  $(mediaElement)[0].duration;
 		$(mediaElement)[0].currentTime = (percentage*mediaDuration);
-	
-		$(".speechf-searchBox").show("slow");
-
-		//move write bar when progress bar is clicked explicitly
-		var writeButton =  getNearbyElement(".speechf-writeButton", $(this));
-		if(writeButton.attr("title").indexOf("writeClicked")!=-1) {
-			writeButton.click();
-		}
 
 	});	
 	
@@ -367,6 +368,8 @@ $(window).load(function() {
 			var notes;
 			if(e.target.className=="tagabl-notes"){
 				notes = e.target;
+			} else if(e.target.className=="tagabl-closeTag") {
+				closeContentTag($(e.target));
 			} else {
 				var parents = $(e.target).parent(".tagabl-notes");
 				if(parents.length!=0){
@@ -390,10 +393,7 @@ $(window).load(function() {
 		indexContentNotes(canvas);
 		
 		var propsMap = globalPropsMap[superParent.attr("id")];
-		/*if(propsMap.indexTagState == undefined){
-			loadIndexTags(superParent.find(".controls-base"), propsMap);
-			propsMap.indexTagState = "loaded";
-		}*/
+		
 		//remove canvas
 		 if(e.target.className=="tagabl-canvas" || $(e.target).parent(".tagabl-canvas").length!=0) { 
 			if(!propsMap.contentSelect.contentSelect){ // if click was propogated from canvas, then be careful about it. Remove the notes only if click is not propogated while selecting the content
@@ -507,7 +507,27 @@ $(window).load(function() {
 			$(timeTag[i]).remove();
 		}
 	});
+	
 });
+
+function closeContentTag(closeButton){
+	var mediaElement =  getNearbyMediaElement(closeButton);
+	var superParent = closeButton.parents(".taggable-container");
+	var propsMap = globalPropsMap[superParent.attr("id")];
+	var contentSelectIndex = closeButton.parent().attr("id");
+
+	var contentSelects = propsMap.contentSelect["list"];
+	var currentTime = mediaElement[0].currentTime;
+	if(contentSelects[contentSelectIndex].startTime > currentTime) { //only if new start time is before
+		contentSelects[contentSelectIndex].startTime = currentTime;
+	}
+	else if(contentSelects[contentSelectIndex].endTime < currentTime){  //only if new end time is after
+		contentSelects[contentSelectIndex].endTime = currentTime;
+	}
+	
+	callUpdateContentIndex(contentSelects[contentSelectIndex], propsMap);	
+	closeButton.parent().remove();
+}
 
 function indexTag(indexTime, text, superParent){
 	var propsMap = globalPropsMap[superParent.attr("id")];
@@ -560,7 +580,18 @@ function fetchTag(indexTime, superParent, indexTagPosition, indexTagMarker){
 
 function drawContentTag(canvas, contentTagPos, contentTagIndex, className){
 	var absPos = getAbsolutePos(contentTagPos, canvas);	
-	var div = "<div class='" + className +  "' id='" + contentTagIndex + "' style='border:1px solid 737373; background-color:#DBDBDB; opacity:0.3; left:" + absPos.x  + "; top:" + absPos.y + "; width:" + absPos.width + "; height:" + absPos.height + "; position:absolute; z-index:4;'></div>";
+	
+	var div = $(
+		"<div class='" + className +  "' id='" + contentTagIndex + "' style='border:1px solid 737373; background-color:#DBDBDB; opacity:0.3; left:" + absPos.x  + "; top:" + absPos.y + "; width:" + absPos.width + "; height:" + absPos.height + "; position:absolute; z-index:4;'>" +
+		"</div>");
+
+	var closePos = {};
+	if(className=="tagabl-newtag" && absPos.height>=2 && absPos.width>=15){
+		closePos["top"] = 2;
+		closePos["left"] =  (absPos.width-15);
+		div.append("<input class='tagabl-closeTag' type='image' src='closeSelect.png' style='position:absolute; top:" + closePos["top"] + ";left:" + closePos["left"] + "'></input>");
+	}
+	
 	var controlsBase = getNearbyElement(".controls-base", canvas);
 	controlsBase.before(div);
 }
@@ -790,7 +821,6 @@ function capturePixels(mediaElement, contentSelect){
 
 
 
-
 function indexContentSurroundings(mediaElement, propsMap){
 	
 	if(isNaN(mediaElement[0].duration) || mediaElement[0].duration==undefined){
@@ -1012,8 +1042,8 @@ function canvasMouseUp(e) {
 												"y":propsMap.contentSelect.cornerA.y, 
 												"width":propsMap.contentSelect.prevRect.width, 
 												"height":propsMap.contentSelect.prevRect.height}, "Enter your notes here", "new", null, null);
-			var progressBar = getNearbyElement(".progress-bar", $(this));
-			progressBar.before(contentText);
+			var controlsBase = getNearbyElement(".controls-base", $(this));
+			controlsBase.before(contentText);
 			propsMap.contentSelect.contentSelect = false;
 			contentText.show();
 		}
@@ -1163,7 +1193,7 @@ function deriveProperties(userObj) {
 	propsMap.top = $(userObj).css("top");
 	propsMap.position = $(userObj).css("position");
 	initContentSelectProps(propsMap);
-	//getArchivedContentTags(propsMap);
+	propsMap["archivedContentTags"] = [];
 	return propsMap;
 }
 
@@ -1178,7 +1208,8 @@ function getArchivedContentTags(propsMap){
 			for(var i=0; i<json.length; i++){
 				json[i]["displayStatus"] = false; //indicates whether the contentTag is displayed currently.
 			}
-			propsMap["archivedContentTags"] = json;
+			
+			propsMap["archivedContentTags"].push.apply(propsMap["archivedContentTags"], json);
 		},
 		error: function(json){
 			console.log("error while fetching archived content tags");
@@ -1276,16 +1307,9 @@ function fullscreen(fullscreenButton) {
 			//arrangeControlsBase(controlsBase, true);
 			
 
-			//adjust border-width and widh of progressBar
+			//adjust border-width and widh of progressBar			
 			var progressBar = getNearbyElement(".progress-bar", fullscreenButton);
-			var borderWidth = progressBar.css("border-left-width");
-			borderWidth = borderWidth.replace("px", "");
-			var percentage = borderWidth/jQuery.data(progressBar[0], "origWidth");			
-			var newProgressBarWidth = getProgressBarWidth(screenW);
-			var adjustedBorderWidth = percentage * (newProgressBarWidth);
-			progressBar.css("border-left-width", adjustedBorderWidth);
-			progressBar.css("width" , (newProgressBarWidth-adjustedBorderWidth));
-			jQuery.data(progressBar[0], "origWidth", newProgressBarWidth);
+			adjustProgressBar(progressBar, screenW);
 			
 			//adjust canvas
 			var canvas = getNearbyElement(".tagabl-canvas", fullscreenButton);
@@ -1334,15 +1358,8 @@ function minscreen(minscreenButton) {
 
 			//adjust border-width and widh of progressBar
 			var progressBar = getNearbyElement(".progress-bar", minscreenButton);
-			var borderWidth = progressBar.css("border-left-width");
-			borderWidth = borderWidth.replace("px", "");
-			var percentage = borderWidth/jQuery.data(progressBar[0], "origWidth");	
-			var newProgressBarWidth = getProgressBarWidth(propsMap.width.replace("px", ""));		
-			var adjustedBorderWidth = percentage * (newProgressBarWidth);
-			progressBar.css("border-left-width", adjustedBorderWidth);
-			progressBar.css("width" , (newProgressBarWidth-adjustedBorderWidth));
-			jQuery.data(progressBar[0], "origWidth", newProgressBarWidth);
-
+			adjustProgressBar(progressBar, propsMap.width.replace("px", ""));
+			
 			//adjust mediaElement
 			mediaElement.css("width", propsMap.width);
 			mediaElement.css("height", propsMap.height);
@@ -1367,14 +1384,36 @@ function minscreen(minscreenButton) {
 			//superParent.css("width", propsMap.width);
 			superParent.css("left", propsMap.left);
 			superParent.css("top", propsMap.top); 
+			superParent.css("box-shadow", "2px 2px 5px #888888");
 
 			//exit fullscreen
 			document.webkitCancelFullScreen(); 
-
-		//	minscreenButton.attr("src" , fullscreenimg);
 			minscreenButton.attr("title" , "fullscreen");
 		}
 	}
+}
+
+
+function adjustProgressBar(progressBar, playerWidth){
+	
+	var newProgressBarWidth = getProgressBarWidth(playerWidth);
+	var seekedBar = progressBar.find(".seeked-bar");
+	var seekableBar = progressBar.find(".seekable-bar");
+	
+	if(seekedBar.length!=0){
+		var seekedWidth = seekedBar.css("width").replace("px", "");
+		var percentage = seekedWidth/jQuery.data(progressBar[0], "origWidth");			
+		seekedWidth = percentage * (newProgressBarWidth);
+		seekedBar.css("width", seekedWidth);
+	}	
+	if(seekableBar.length!=0){
+		var seekableWidth = seekableBar.css("width").replace("px", "");
+		percentage = seekableWidth/jQuery.data(progressBar[0], "origWidth");			
+		seekableWidth = percentage * (newProgressBarWidth);
+		seekableBar.css("width", seekableWidth);
+	}	
+	progressBar.css("width" ,newProgressBarWidth);
+	jQuery.data(progressBar[0], "origWidth", newProgressBarWidth);
 }
 
 function arrangeControlsBase(controlsBase, fullscreenMode) {
@@ -1547,6 +1586,10 @@ function formUpdateContentIndexURL(indexURI, domain, mediaId) {
 	return indexURI + "/updateContent?domain=" + domain + "&mediaId=" + mediaId;
 }
 
+function formUpdateIndexURL(indexURI, domain, mediaId) {
+	return indexURI + "/updateIndexTag?domain=" + domain + "&mediaId=" + mediaId;
+}
+
 function formCompareFrameURL(indexURI) {
 	return indexURI + "/compareFrame";
 }
@@ -1584,18 +1627,16 @@ function addMediaEvents(elm) {
 		var progressBarOrigWidth = jQuery.data(progressBar[0], "origWidth");
 		progressBarOrigWidth = progressBarOrigWidth;
 		var borderWidth = (percentage*progressBarOrigWidth);
-		progressBar.css("border-left-width" , borderWidth);
-		progressBar.css("border-left-style", "solid");
-		progressBar.css("border-left-color", "#FF4500");
-		progressBar.css("width" , (progressBarOrigWidth-borderWidth));	
-
-		//move write bar if required
-	/*	var writeButton =  getNearbyElement(".speechf-writeButton", $(elm));
-		if(writeButton.attr("title").indexOf("writeClicked")!=-1) {
-			if(Math.abs(currentTime-currentIndexTime)>=indexSpan){
-				writeButton.click();
-			}
-		}*/
+		
+		//adjust seeked bar
+		var seekedBar = progressBar.find(".seeked-bar");
+		for(var i=0; i<seekedBar.length; i++){
+			seekedBar[i].remove();
+		}
+		seekedBar = $("<div class='seeked-bar' style='position:absolute; height:15; width:" + borderWidth  + "; " +
+					"background-color:red; float:left; z-index:2'>" +
+					"</div>")
+		progressBar.append(seekedBar);
 		
 		//check for content select surrounding frames and if required adjust index
 		var superParent = $(elm).parents(".taggable-container");
@@ -1604,14 +1645,17 @@ function addMediaEvents(elm) {
 			propsMap.contentSelect["lastCheckTime"] = $(elm)[0].currentTime;
 		}
 		
-		var offset =  $(elm)[0].currentTime -  propsMap.contentSelect["lastCheckTime"];
+		/*var offset =  $(elm)[0].currentTime -  propsMap.contentSelect["lastCheckTime"];
 		if(offset>3 || offset<-3){ //if current time has been more than 3 sec since the last check time
 			indexContentSurroundings($(elm), propsMap);
 			propsMap.contentSelect["lastCheckTime"] = $(elm)[0].currentTime;
-		}
+		}*/
 		
 		//check if any archived content tags can be displayed or hidden at this time.
-		var len = propsMap["archivedContentTags"].length;
+		var len = 0;
+		if(propsMap["archivedContentTags"]!=undefined){
+			len = propsMap["archivedContentTags"].length;
+		}
 		var canvas = superParent.find(".tagabl-canvas");
 		for(var i=0; i<len; i++){
 			if(propsMap["archivedContentTags"][i].displayStatus==false &&
@@ -1625,9 +1669,33 @@ function addMediaEvents(elm) {
 				removeContentTag(canvas, i, ".tagabl-archivedtag");
 				propsMap["archivedContentTags"][i].displayStatus=false;
 			}
+		}		
+	});
+	
+	$(elm)[0].addEventListener("progress", function(){
+		var mediaDuration =  $(elm)[0].duration;
+		var progressBar = getNearbyElement(".progress-bar", $(elm));	
+		var progressBarOrigWidth = jQuery.data(progressBar[0], "origWidth");
+		
+		//adjust seekable bar
+		var seekableBar = progressBar.find(".seekable-bar");
+		for(var i=0; i<seekableBar.length; i++){
+			seekableBar[i].remove();
 		}
 		
+		if(this.buffered==undefined || this.buffered.end==undefined || this.buffered.end.length==0){
+			return;
+		}
+		
+		var seekableTime = this.buffered.end(0);
+		var percentage = seekableTime/mediaDuration;	
+		var seekableWidth =  (percentage*progressBarOrigWidth);
+		seekableBar = $("<div class='seekable-bar' style='position:absolute; height:15; width:" + seekableWidth  + "; " +
+					"background-color:D4D4D4; z-index=-1;'>" +
+					"</div>")
+		progressBar.append(seekableBar);
 	});
+	
 }
 
 
@@ -1813,7 +1881,7 @@ function setControlsBasePos(mediaElmHeight, controlsBase){
 function createProgressBar(propsMap) {
 	var width = getProgressBarWidth(propsMap.width.replace("px",""));
 	var progressBar = $("<div class='progress-bar' style='height:15; width:" + width  + "; " +
-			"margin-left:11px; background-color:#7D7D7D; float:left; margin-top:4px;'>" +
+			"margin-left:11px; float:left; margin-top:3px; border:1px solid black;'>" +
 	"</div>");
 	jQuery.data(progressBar[0], "origWidth", width);
 	return progressBar;

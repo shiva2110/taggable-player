@@ -45,3 +45,23 @@ test("tagable canvas mouse down->mouse move->move up event", function(){
 	equal(prevRect.height, 50, "not equal");
 	
 });
+
+test("test indexContentSurroundings when only the frames before the current frame are similar", function(){
+	var $fixture = $( "#qunit-fixture" );
+	$fixture.append("<video class='tagabl-video' width=500 height=100><source src='/Users/shiva2110/Downloads/UnrollingParams.mp4'></source></video>");
+	$(window).load();
+	
+	//prepare stubs and set expectations
+	var stub = sinon.stub(window, "callComparePixels");  //stub that replaces the original function
+	stub.returns("left"); //make stub return a value
+
+	//call function under test
+	var mediaElement = $(".tagabl-video");
+	mediaElement[0].load();
+	indexContentSurroundings(mediaElement, 100, 0.5, 0.5, 0.3, 0.2);
+	
+	equal(stub.callCount, 10, "not equal");
+	stub.restore();
+	
+});
+

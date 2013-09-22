@@ -33,6 +33,9 @@ function makeCacheTokenRequest(clientKey, authToken, isDeclined){
 		success: function(json){
 			console.log("done with caching");
 			//makeFetchTokenRequest(clientKey);
+		},
+		complete: function() {
+			window.close();
 		}
 	});
 }

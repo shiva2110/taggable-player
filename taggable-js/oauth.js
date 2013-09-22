@@ -11,7 +11,7 @@ function requestUserID(OAuthProp){
 	window.open(formOAuthURL(stateID));
 	console.log("continuing to fetch auth token from cache server");
 	OAuthProp["OAuthCallCounter"] = 0;
-	OAuthProp["OAuthIntervalId"] = setInterval(function(){getOpenAuthID(stateID, globalPropsMap);}, 10000);
+	OAuthProp["OAuthIntervalId"] = setInterval(function(){getOpenAuthID(stateID, OAuthProp);}, 10000);
 }
 
 
@@ -83,21 +83,42 @@ function stopOAuthIdCalls(OAuthProp){
 function postIdFetchCallBack(userId){
 	//set propsMap["userId"]
 	globalPropsMap["userId"] = userId;
+	var superParents = $(document).find(".taggable-container");
 	
 	if(globalPropsMap["sessionId"]!=undefined){
-		//make updateIndexTag and updateContentTag calls to replace sessionId with userId
-		//this is done to ensure that any indexes performed by user before logging in, are updated with userId.
+		//update all indexes with sessionId: replace sessionId with userId.
+		
+		for(var i=0; i<superParents.length; i++){
+			var superParent = $(superParents[i]);
+			var propsMap = globalPropsMap[superParent.attr("id")];
+			
+			var contentToUpdate  =  "{\"userId\":\"" + globalPropsMap["sessionId"] + "\"}";
+			
+			var newContent =  "{\"userId\":\"" + globalPropsMap["userId"] + "\"}";
+			
+			var posting = $.ajax({
+				url: formUpdateIndexURL(indexURI, propsMap.domain, propsMap.mediasrc),
+				data: "[" + contentToUpdate + "," + newContent + "]",
+				type: "POST", 
+				headers : {
+					"Accept" : "*",
+					"Content-Type" : "application/json"
+				}
+			});
+		}
+		
 	}
 	
 	//call getAllIndexTags and getAllContentTags	
-	for(var i=0; i<globalPropsMap.length; i++){
-		var propsMap = globalPropsMap[i];
+	for(var i=0; i<superParents.length; i++){
+		var superParent = $(superParents[i]);
+		var propsMap = globalPropsMap[superParent.attr("id")];
 		if(propsMap.indexTagState == undefined){
 			loadIndexTags(superParent.find(".controls-base"), propsMap); //TBD - superParent is not accessible from here.
 			propsMap.indexTagState = "loaded";
 		}
 		getArchivedContentTags(propsMap);
-	}	
+	}
 }
 
 function getComputedUserId(){
